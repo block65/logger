@@ -1,0 +1,7 @@
+.*
+lib
+*.js
+*.json
+!dist/cjs/*.js
+!dist/es/*.js
+*.map
