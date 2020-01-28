@@ -2,6 +2,7 @@
 lib
 *.js
 *.json
+__tests__
 !dist/cjs/*.js
 !dist/es/*.js
 *.map

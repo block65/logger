@@ -11,7 +11,8 @@
     "module": "commonjs",
     "sourceMap": true,
     "inlineSources": false,
-    "noEmitOnError": false
+    "noEmitOnError": false,
+    "removeComments": true
   },
   "include": [
     "./lib"
