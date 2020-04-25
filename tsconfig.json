@@ -9,7 +9,7 @@
       "es2017"
     ],
     "module": "commonjs",
-    "sourceMap": true,
+    "sourceMap": false,
     "inlineSources": false,
     "noEmitOnError": false,
     "removeComments": true

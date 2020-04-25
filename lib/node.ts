@@ -10,6 +10,9 @@ type LoggerWithNamespace = {
   cls: Namespace;
 } & pino.Logger;
 
+// nicer name for external usage
+export type Logger = LoggerWithNamespace;
+
 interface ClsContext {
   _contextId: string;
   _context?: Record<string, any>;
