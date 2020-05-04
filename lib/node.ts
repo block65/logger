@@ -2,9 +2,9 @@ import { serializeError } from 'serialize-error';
 import * as pino from 'pino';
 import * as pinoHttp from 'pino-http';
 import { createNamespace, Namespace } from 'cls-hooked';
-import * as core from 'express-serve-static-core';
 import { hostname } from 'os';
 import { randomBytes } from 'crypto';
+import type { RequestHandler } from 'express';
 
 type LoggerWithNamespace = {
   cls: Namespace;
@@ -162,7 +162,7 @@ export function expressLogger(
   namespace: Namespace,
   contextId: ClsContext['_contextId'],
   context?: ClsContext['_context'],
-): core.RequestHandler {
+): RequestHandler {
   return (req, res, next): void => {
     res.set('x-context-id', contextId);
 

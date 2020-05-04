@@ -1,3 +1,3 @@
 module.exports = {
-  extends: '@colacube/eslint-config'
+  extends: '@block65/eslint-config'
 };
