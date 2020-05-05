@@ -192,8 +192,18 @@ export function lambdaLogger(
   };
 }
 
-export function createHttpLogger(logger: pino.Logger): pinoHttp.HttpLogger {
+export function createHttpLogger(
+  logger: pino.Logger,
+  opts: Omit<pinoHttp.Options, 'logger' | 'customLogLevel'> = {},
+): pinoHttp.HttpLogger {
   return pinoHttp({
+    ...opts,
+    customSuccessMessage(res) {
+      return `${res.statusCode} ${res.statusMessage} ${res.url}`;
+    },
+    customErrorMessage(res) {
+      return `${res.statusCode} ${res.statusMessage} ${res.url}`;
+    },
     logger,
     customLogLevel(res, err) {
       if (res.statusCode >= 400 && res.statusCode < 500) {
@@ -202,7 +212,7 @@ export function createHttpLogger(logger: pino.Logger): pinoHttp.HttpLogger {
       if (res.statusCode >= 500 || err) {
         return 'error';
       }
-      return 'info';
+      return 'trace';
     },
   });
 }
