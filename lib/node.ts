@@ -1,17 +1,17 @@
+import type { RequestHandler } from 'express';
 import { serializeError } from 'serialize-error';
 import * as pino from 'pino';
 import * as pinoHttp from 'pino-http';
 import { createNamespace, Namespace } from 'cls-hooked';
 import { hostname } from 'os';
 import { randomBytes } from 'crypto';
-import type { RequestHandler } from 'express';
 
-type LoggerWithNamespace = {
+export type Logger = {
   cls: Namespace;
 } & pino.Logger;
 
 // nicer name for external usage
-export type Logger = LoggerWithNamespace;
+// export type Logger = LoggerWithNamespace;
 
 interface ClsContext {
   _contextId: string;
@@ -51,26 +51,35 @@ const defaultLoggerOptions: pino.LoggerOptions = {
 
 let counter = 0;
 
-function getPlatformOverrideMethods(
-  pinoInstance: pino.Logger,
-  platform?: ComputePlatform,
-): { [k in pino.Level]: PropertyDescriptor } | null {
-  switch (platform) {
-    case 'gcp-cloudrun':
-      return {
-        fatal: { value: pinoInstance.FATAL },
-        error: { value: pinoInstance.ERROR },
-        warn: { value: pinoInstance.WARNING },
-        info: { value: pinoInstance.INFO },
-        debug: { value: pinoInstance.DEBUG },
-        trace: { value: pinoInstance.DEBUG },
-      };
-    // NOTE: AWS NOT YET IMPLEMENTED - MAY NOT EVEN BE NEEDED
-    case 'aws':
-    case 'aws-lambda':
-    default:
-      return null;
-  }
+// function getPlatformOverrideMethods(
+//   pinoInstance: pino.Logger,
+//   platform?: ComputePlatform,
+// ): { [k in pino.Level]: PropertyDescriptor } | null {
+//   switch (platform) {
+//     case 'gcp-cloudrun':
+//       return {
+//         fatal: { value: pinoInstance.FATAL },
+//         error: { value: pinoInstance.ERROR },
+//         warn: { value: pinoInstance.WARNING },
+//         info: { value: pinoInstance.INFO },
+//         debug: { value: pinoInstance.DEBUG },
+//         trace: { value: pinoInstance.DEBUG },
+//       };
+//     // NOTE: AWS NOT YET IMPLEMENTED - MAY NOT EVEN BE NEEDED
+//     case 'aws':
+//     case 'aws-lambda':
+//     default:
+//       return null;
+//   }
+// }
+
+const gcpLevelMap: Record<string, string> = {
+  trace: 'DEFAULT',
+  debug: 'DEBUG',
+  info: 'INFO',
+  warn: 'WARNING',
+  error: 'ERROR',
+  fatal: 'CRITICAL',
 }
 
 function getPlatformLoggerOptions(
@@ -79,27 +88,24 @@ function getPlatformLoggerOptions(
   switch (platform) {
     case 'gcp-cloudrun':
       return {
-        level: 'INFO',
-        customLevels: {
-          DEBUG: 100,
-          INFO: 200,
-          NOTICE: 300,
-          WARNING: 400,
-          ERROR: 500,
-          CRITICAL: 600,
-          ALERT: 700,
-          EMERGENCY: 800,
-        },
-        useOnlyCustomLevels: true,
+        level: 'info',
+        // customLevels: {
+        //   DEBUG: 100,
+        //   INFO: 200,
+        //   NOTICE: 300,
+        //   WARNING: 400,
+        //   ERROR: 500,
+        //   CRITICAL: 600,
+        //   ALERT: 700,
+        //   EMERGENCY: 800,
+        // },
         messageKey: 'message',
-        changeLevelName: 'severity',
-        useLevelLabels: true,
+        formatters: {
+          level (levelLabel , levelNumber) {
+            return { severity: gcpLevelMap[levelLabel] }
+          }
+        },
         timestamp: pino.stdTimeFunctions.isoTime,
-        // mixin: () => {
-        //   return {
-        //     timestamp: new Date().toJSON()
-        //   }
-        // }};
       };
     case 'aws':
     case 'aws-lambda':
@@ -112,7 +118,7 @@ export function createLogger(
   opts: CreateLoggerOptions = {},
   stream?: pino.DestinationStream,
   // destination?: pino.DestinationStream,
-): LoggerWithNamespace {
+): Logger {
   const cls = createNamespace(`logger/${counter}`);
   counter += 1;
 
@@ -146,11 +152,11 @@ export function createLogger(
         mixin,
       });
 
-  const overrideMethods =
-    getPlatformOverrideMethods(pinoInstance, platform) || {};
+  // const overrideMethods =
+  //   getPlatformOverrideMethods(pinoInstance, platform) || {};
 
   return Object.create(pinoInstance, {
-    ...overrideMethods,
+    // ...overrideMethods,
     cls: {
       value: cls,
       configurable: false,
