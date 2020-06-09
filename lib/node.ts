@@ -5,6 +5,7 @@ import * as pinoHttp from 'pino-http';
 import { createNamespace, Namespace } from 'cls-hooked';
 import { hostname } from 'os';
 import { randomBytes } from 'crypto';
+import { IncomingMessage, ServerResponse } from 'http';
 
 export type Logger = {
   cls: Namespace;
@@ -80,7 +81,7 @@ const gcpLevelMap: Record<string, string> = {
   warn: 'WARNING',
   error: 'ERROR',
   fatal: 'CRITICAL',
-}
+};
 
 function getPlatformLoggerOptions(
   platform?: ComputePlatform,
@@ -101,9 +102,9 @@ function getPlatformLoggerOptions(
         // },
         messageKey: 'message',
         formatters: {
-          level (levelLabel , levelNumber) {
-            return { severity: gcpLevelMap[levelLabel] }
-          }
+          level(levelLabel, levelNumber) {
+            return { severity: gcpLevelMap[levelLabel] };
+          },
         },
         timestamp: pino.stdTimeFunctions.isoTime,
       };
@@ -202,23 +203,27 @@ export function createHttpLogger(
   logger: pino.Logger,
   opts: Omit<pinoHttp.Options, 'logger' | 'customLogLevel'> = {},
 ): pinoHttp.HttpLogger {
-  return pinoHttp({
+  return pinoHttp(({
     ...opts,
-    customSuccessMessage(res) {
-      return `${res.statusCode} ${res.statusMessage} ${res.url}`;
-    },
-    customErrorMessage(res) {
-      return `${res.statusCode} ${res.statusMessage} ${res.url}`;
-    },
+    genReqId: false,
     logger,
-    customLogLevel(res, err) {
-      if (res.statusCode >= 400 && res.statusCode < 500) {
-        return 'warn';
-      }
+    customSuccessMessage(res: ServerResponse) {
+      return `${res.statusCode} ${res.statusMessage}`;
+    },
+    customErrorMessage(err: Error, res: ServerResponse) {
+      return `${res.statusCode} ${res.statusMessage}`;
+    },
+    customLogLevel(res: ServerResponse, err: Error) {
       if (res.statusCode >= 500 || err) {
         return 'error';
       }
+      if (res.statusCode >= 400 && res.statusCode < 500) {
+        return 'warn';
+      }
       return 'trace';
     },
-  });
+    reqCustomProps(req: IncomingMessage) {
+      return { url: req.url };
+    },
+  } as unknown) as pinoHttp.Options); // types are totally busted
 }
