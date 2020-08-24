@@ -1,1 +1,1 @@
-module.exports = require('@colacube/eslint-config/prettier.config');
+module.exports = require('@block65/eslint-config/prettier.config');

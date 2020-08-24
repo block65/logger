@@ -7,6 +7,8 @@ import { hostname } from 'os';
 import { randomBytes } from 'crypto';
 import { IncomingMessage, ServerResponse } from 'http';
 
+type VoidFunction = (...args: any[]) => void;
+
 export type Logger = {
   cls: Namespace;
 } & pino.Logger;
@@ -187,8 +189,8 @@ export function lambdaLogger(
   namespace: Namespace,
   contextId: ClsContext['_contextId'],
   context?: ClsContext['_context'],
-): Function {
-  return (next: Function): void => {
+): VoidFunction {
+  return (next: VoidFunction): void => {
     return namespace.runAndReturn(() => {
       namespace.set('_contextId', contextId);
       if (context) {
