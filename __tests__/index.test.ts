@@ -10,7 +10,7 @@ import {
   lambdaLogger,
 } from '../lib/node';
 
-type Log = pino.LogDescriptor & { msg: object };
+type Log = pino.LogDescriptor; // & { msg: Record<string, unknown> };
 
 async function doHttpStuff(
   httpLogger: pinoHttp.HttpLogger,

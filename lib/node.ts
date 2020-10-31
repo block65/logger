@@ -7,18 +7,13 @@ import { hostname } from 'os';
 import { randomBytes } from 'crypto';
 import { IncomingMessage, ServerResponse } from 'http';
 
-type VoidFunction = (...args: any[]) => void;
-
 export type Logger = {
   cls: Namespace;
 } & pino.Logger;
 
-// nicer name for external usage
-// export type Logger = LoggerWithNamespace;
-
 interface ClsContext {
   _contextId: string;
-  _context?: Record<string, any>;
+  _context?: Record<string, unknown>;
 }
 
 type NamespaceContext = {
@@ -44,37 +39,13 @@ const defaultLoggerOptions: pino.LoggerOptions = {
     pid: process.pid,
     // in the case we get localhost (gcp cloud run), use random bytes instead
     // this helps us debug if we need to isolate calls running in a specific
-    // container or instance
+    // container or instance (one which stays alive between invocations)
     hostname:
       suggestedHostname !== 'localhost'
         ? suggestedHostname
         : `zz${randomBytes(5).toString('hex')}`, // zz indicates synthetic hostname
   },
 };
-
-let counter = 0;
-
-// function getPlatformOverrideMethods(
-//   pinoInstance: pino.Logger,
-//   platform?: ComputePlatform,
-// ): { [k in pino.Level]: PropertyDescriptor } | null {
-//   switch (platform) {
-//     case 'gcp-cloudrun':
-//       return {
-//         fatal: { value: pinoInstance.FATAL },
-//         error: { value: pinoInstance.ERROR },
-//         warn: { value: pinoInstance.WARNING },
-//         info: { value: pinoInstance.INFO },
-//         debug: { value: pinoInstance.DEBUG },
-//         trace: { value: pinoInstance.DEBUG },
-//       };
-//     // NOTE: AWS NOT YET IMPLEMENTED - MAY NOT EVEN BE NEEDED
-//     case 'aws':
-//     case 'aws-lambda':
-//     default:
-//       return null;
-//   }
-// }
 
 const gcpLevelMap: Record<string, string> = {
   trace: 'DEFAULT',
@@ -117,6 +88,7 @@ function getPlatformLoggerOptions(
   }
 }
 
+let counter = 0;
 export function createLogger(
   opts: CreateLoggerOptions = {},
   stream?: pino.DestinationStream,
@@ -129,7 +101,8 @@ export function createLogger(
 
   function mixin(): Partial<ClsContext> {
     const { active }: { active: NamespaceContext | null } = cls || {};
-    // eslint-disable-next-line camelcase, @typescript-eslint/camelcase,@typescript-eslint/no-unused-vars
+
+    // eslint-disable-next-line camelcase
     const { id, _ns_name, ...clsContext } = active || {};
     return userPinoOpts.mixin
       ? { ...clsContext, ...userPinoOpts.mixin() }
@@ -155,11 +128,7 @@ export function createLogger(
         mixin,
       });
 
-  // const overrideMethods =
-  //   getPlatformOverrideMethods(pinoInstance, platform) || {};
-
   return Object.create(pinoInstance, {
-    // ...overrideMethods,
     cls: {
       value: cls,
       configurable: false,
@@ -185,12 +154,28 @@ export function expressLogger(
   };
 }
 
-export function lambdaLogger(
+export function lambdaLogger<T extends unknown, R = Promise<T>>(
   namespace: Namespace,
   contextId: ClsContext['_contextId'],
   context?: ClsContext['_context'],
-): VoidFunction {
-  return (next: VoidFunction): void => {
+): (next: () => R) => R {
+  return (next) => {
+    return namespace.runAndReturn(() => {
+      namespace.set('_contextId', contextId);
+      if (context) {
+        namespace.set('_context', context);
+      }
+      return next();
+    });
+  };
+}
+
+export function loggerContextWrapper<T extends unknown, R = Promise<T>>(
+  namespace: Namespace,
+  contextId: ClsContext['_contextId'],
+  context?: ClsContext['_context'],
+): (next: () => R) => R {
+  return (next) => {
     return namespace.runAndReturn(() => {
       namespace.set('_contextId', contextId);
       if (context) {
@@ -205,9 +190,9 @@ export function createHttpLogger(
   logger: pino.Logger,
   opts: Omit<pinoHttp.Options, 'logger' | 'customLogLevel'> = {},
 ): pinoHttp.HttpLogger {
-  return pinoHttp(({
+  return pinoHttp({
     ...opts,
-    genReqId: false,
+    genReqId: () => ({}),
     logger,
     customSuccessMessage(res: ServerResponse) {
       return `${res.statusCode} ${res.statusMessage}`;
@@ -227,5 +212,5 @@ export function createHttpLogger(
     reqCustomProps(req: IncomingMessage) {
       return { url: req.url };
     },
-  } as unknown) as pinoHttp.Options); // types are totally busted
+  }); // types are totally busted
 }
