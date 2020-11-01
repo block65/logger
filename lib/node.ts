@@ -154,34 +154,18 @@ export function expressLogger(
   };
 }
 
-export function lambdaLogger<T extends unknown, R = Promise<T>>(
+export function lambdaLogger<T extends (...args: any[]) => any>(
   namespace: Namespace,
   contextId: ClsContext['_contextId'],
   context?: ClsContext['_context'],
-): (next: () => R) => R {
-  return (next) => {
+): (next: T) => (fn: T) => ReturnType<T> {
+  return (fn) => {
     return namespace.runAndReturn(() => {
       namespace.set('_contextId', contextId);
       if (context) {
         namespace.set('_context', context);
       }
-      return next();
-    });
-  };
-}
-
-export function loggerContextWrapper<T extends unknown, R = Promise<T>>(
-  namespace: Namespace,
-  contextId: ClsContext['_contextId'],
-  context?: ClsContext['_context'],
-): (next: () => R) => R {
-  return (next) => {
-    return namespace.runAndReturn(() => {
-      namespace.set('_contextId', contextId);
-      if (context) {
-        namespace.set('_context', context);
-      }
-      return next();
+      return fn();
     });
   };
 }
