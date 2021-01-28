@@ -18,17 +18,16 @@ interface ClsContext {
 
 type NamespaceContext = {
   id?: unknown;
-  // eslint-disable-next-line camelcase
   _ns_name?: unknown;
 } & Partial<ClsContext>;
-
-const suggestedHostname = hostname();
 
 type ComputePlatform = 'gcp-cloudrun' | 'aws-lambda' | 'aws';
 
 export interface CreateLoggerOptions extends pino.LoggerOptions {
   platform?: ComputePlatform;
 }
+
+const suggestedHostname = hostname();
 
 const defaultLoggerOptions: pino.LoggerOptions = {
   level: 'info',
@@ -75,7 +74,7 @@ function getPlatformLoggerOptions(
         // },
         messageKey: 'message',
         formatters: {
-          level(levelLabel, levelNumber) {
+          level(levelLabel /* , levelNumber */) {
             return { severity: gcpLevelMap[levelLabel] };
           },
         },
@@ -89,6 +88,7 @@ function getPlatformLoggerOptions(
 }
 
 let counter = 0;
+
 export function createLogger(
   opts: CreateLoggerOptions = {},
   stream?: pino.DestinationStream,
@@ -102,7 +102,7 @@ export function createLogger(
   function mixin(): Partial<ClsContext> {
     const { active }: { active: NamespaceContext | null } = cls || {};
 
-    // eslint-disable-next-line camelcase
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     const { id, _ns_name, ...clsContext } = active || {};
     return userPinoOpts.mixin
       ? { ...clsContext, ...userPinoOpts.mixin() }
