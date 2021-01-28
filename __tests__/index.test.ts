@@ -36,7 +36,7 @@ async function doHttpStuff(
 }
 
 function expectStream(): [pino.DestinationStream, Promise<Log>] {
-  const emitter = new Emittery.Typed<{ write: string }>();
+  const emitter = new Emittery<{ write: string }>();
   const stream = {
     write: (str: string): void => {
       emitter.emit('write', str).catch((err) => {
