@@ -6,11 +6,11 @@ Object {
     "message": "failed with status code 500",
     "stack": "Error: failed with status code 500
     at ServerResponse.onResFinished (/srv/test/node_modules/pino-http/logger.js:73:38)
-    at ServerResponse.emit (events.js:326:22)
-    at onFinish (_http_outgoing.js:744:10)
-    at callback (_stream_writable.js:501:21)
-    at afterWrite (_stream_writable.js:454:5)
-    at afterWriteTick (_stream_writable.js:441:10)
+    at ServerResponse.emit (events.js:327:22)
+    at onFinish (_http_outgoing.js:766:10)
+    at callback (internal/streams/writable.js:513:21)
+    at afterWrite (internal/streams/writable.js:466:5)
+    at afterWriteTick (internal/streams/writable.js:453:10)
     at processTicksAndRejections (internal/process/task_queues.js:79:21)",
     "type": "Error",
   },

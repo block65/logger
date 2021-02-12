@@ -8,10 +8,6 @@
   "browser": "dist/browser.js",
   "types": "dist/node.d.ts",
   "scripts": {
-    "build": "tsc",
-    "build:clean": "rimraf dist/*",
-    "build:watch": "yarn build -w",
-    "prepare": "yarn build:clean && yarn build",
     "test": "jest"
   },
   "dependencies": {
