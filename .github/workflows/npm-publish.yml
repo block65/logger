@@ -13,7 +13,7 @@ jobs:
       - run: make test
 
   build-publish:
-    needs: build
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
