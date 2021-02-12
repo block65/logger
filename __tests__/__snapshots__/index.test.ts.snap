@@ -78,8 +78,9 @@ Object {
 }
 `;
 
-exports[`Basic Plain logger, no context 1`] = `
+exports[`Basic Trace Caller Force (production) 1`] = `
 Object {
+  "caller": "/srv/test/lib/node.ts:129:12",
   "hostname": "testhost",
   "level": 40,
   "msg": "hello",

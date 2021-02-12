@@ -9,6 +9,7 @@ import { IncomingMessage, ServerResponse } from 'http';
 import { sep } from 'path';
 
 type Falsy = false | undefined | null;
+
 type MixinFnWithData = (
   data: ReturnType<pino.MixinFn>,
 ) => ReturnType<pino.MixinFn>;
@@ -97,8 +98,6 @@ function getPlatformLoggerOptions(
 
 let counter = 0;
 
-const isDevelopment = process.env.NODE_ENV === 'development';
-
 function callerMixin(): { caller: string | undefined } {
   return {
     caller: Error()
@@ -149,6 +148,8 @@ export function createLogger(
 ): Logger {
   const cls = createNamespace(`logger/${counter}`);
   counter += 1;
+
+  const isDevelopment = process.env.NODE_ENV === 'development';
 
   const {
     platform,
