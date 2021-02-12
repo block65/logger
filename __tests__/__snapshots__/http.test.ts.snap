@@ -1,0 +1,94 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HTTP Errors 1`] = `
+Object {
+  "err": Object {
+    "message": "failed with status code 500",
+    "stack": "Error: failed with status code 500
+    at ServerResponse.onResFinished (/srv/test/node_modules/pino-http/logger.js:73:38)
+    at ServerResponse.emit (events.js:326:22)
+    at onFinish (_http_outgoing.js:744:10)
+    at callback (_stream_writable.js:501:21)
+    at afterWrite (_stream_writable.js:454:5)
+    at afterWriteTick (_stream_writable.js:441:10)
+    at processTicksAndRejections (internal/process/task_queues.js:79:21)",
+    "type": "Error",
+  },
+  "hostname": "testhost",
+  "level": 50,
+  "msg": "500 Internal Server Error",
+  "pid": 1337,
+  "req": Object {
+    "headers": Object {
+      "connection": "close",
+      "host": "127.0.0.1:8888",
+    },
+    "id": Object {},
+    "method": "GET",
+    "remoteAddress": "::ffff:127.0.0.1",
+    "remotePort": 18888,
+    "url": "/broken-page",
+  },
+  "res": Object {
+    "headers": Object {},
+    "statusCode": 500,
+  },
+  "responseTime": 0,
+  "time": 1234567890000,
+  "url": "/broken-page",
+}
+`;
+
+exports[`HTTP OKs 1`] = `
+Object {
+  "hostname": "testhost",
+  "level": 10,
+  "msg": "200 OK",
+  "pid": 1337,
+  "req": Object {
+    "headers": Object {
+      "connection": "close",
+      "host": "127.0.0.1:8890",
+    },
+    "id": Object {},
+    "method": "GET",
+    "remoteAddress": "::ffff:127.0.0.1",
+    "remotePort": 18888,
+    "url": "/existing-page",
+  },
+  "res": Object {
+    "headers": Object {},
+    "statusCode": 200,
+  },
+  "responseTime": 0,
+  "time": 1234567890000,
+  "url": "/existing-page",
+}
+`;
+
+exports[`HTTP Warns 1`] = `
+Object {
+  "hostname": "testhost",
+  "level": 40,
+  "msg": "404 Not Found",
+  "pid": 1337,
+  "req": Object {
+    "headers": Object {
+      "connection": "close",
+      "host": "127.0.0.1:8889",
+    },
+    "id": Object {},
+    "method": "GET",
+    "remoteAddress": "::ffff:127.0.0.1",
+    "remotePort": 18888,
+    "url": "/missing-page",
+  },
+  "res": Object {
+    "headers": Object {},
+    "statusCode": 404,
+  },
+  "responseTime": 0,
+  "time": 1234567890000,
+  "url": "/missing-page",
+}
+`;

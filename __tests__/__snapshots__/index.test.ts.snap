@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Basic Mixins basic + accum 1`] = `
+Object {
+  "accum": Object {
+    "logger": Object {
+      "go": "log",
+    },
+    "luger": Object {
+      "go": "bang",
+    },
+  },
+  "hostname": "testhost",
+  "level": 40,
+  "logger": Object {
+    "go": "log",
+  },
+  "luger": Object {
+    "go": "bang",
+  },
+  "msg": "hello",
+  "pid": 1337,
+  "time": 1234567890000,
+}
+`;
+
+exports[`Basic Mixins property overwrite 1`] = `
+Object {
+  "hostname": "testhost",
+  "level": 40,
+  "logger": Object {
+    "go": "brrr",
+  },
+  "msg": "hello",
+  "pid": 1337,
+  "time": 1234567890000,
+}
+`;
+
+exports[`Basic Object + String = Format 1`] = `
+Object {
+  "hostname": "testhost",
+  "level": 40,
+  "msg": "hello {\\"omg\\":true}",
+  "pid": 1337,
+  "time": 1234567890000,
+}
+`;
+
+exports[`Basic Object + String = Format 2`] = `
+Object {
+  "hostname": "testhost",
+  "level": 40,
+  "msg": "hello",
+  "omg": true,
+  "pid": 1337,
+  "time": 1234567890000,
+}
+`;
+
+exports[`Basic Object + String 1`] = `
+Object {
+  "hostname": "testhost",
+  "level": 40,
+  "msg": "hello",
+  "pid": 1337,
+  "time": 1234567890000,
+}
+`;
+
+exports[`Basic Object 1`] = `
+Object {
+  "hostname": "testhost",
+  "level": 40,
+  "omg": true,
+  "pid": 1337,
+  "time": 1234567890000,
+}
+`;
+
+exports[`Basic Plain logger, no context 1`] = `
+Object {
+  "hostname": "testhost",
+  "level": 40,
+  "msg": "hello",
+  "pid": 1337,
+  "time": 1234567890000,
+}
+`;

@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Platform Loggers AWS Lambda Logger + contextId 1`] = `
+Object {
+  "_context": Object {
+    "stuff": true,
+  },
+  "_contextId": "testContextId",
+  "hostname": "testhost",
+  "level": 40,
+  "msg": "hello",
+  "pid": 1337,
+  "time": 1234567890000,
+}
+`;
+
+exports[`Platform Loggers GCP Cloud Run 1`] = `
+Object {
+  "hostname": "testhost",
+  "message": "hello",
+  "pid": 1337,
+  "severity": "WARNING",
+  "time": "2009-02-13T23:31:30.000Z",
+}
+`;
