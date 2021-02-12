@@ -1,12 +1,23 @@
-DOCKER_FLAGS=-ti
+DOCKER_FLAGS ?= -ti
 
-TESTCMD := docker run \
-			--rm $(DOCKER_FLAGS) \
-			-u $(shell id -u) \
+USER_ID = $(shell id -u)
+
+CMD=yarn test
+
+ifdef DEBUG
+	DOCKER_FLAGS=-p 9229:9229
+	CMD=node --inspect-brk=0.0.0.0:9229 node_modules/.bin/jest
+endif
+
+TESTCMD = docker run \
+			--rm \
+			--init \
+			-u $(USER_ID) \
 			-v $(CURDIR):/srv/test \
 			-w /srv/test \
+			$(DOCKER_FLAGS) \
 			node:14 \
-			yarn test
+			$(CMD)
 
 all: dist
 
@@ -23,7 +34,7 @@ node_modules:
 	yarn install --production=false --non-interactive --frozen-lockfile
 
 test: node_modules
-	$(TESTCMD)
+	$(TESTCMD) $(if DEBUG, --runInBand)
 
 dev: node_modules
 	$(TESTCMD) --watchAll
