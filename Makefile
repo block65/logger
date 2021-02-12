@@ -1,5 +1,7 @@
+DOCKER_FLAGS=-ti
+
 TESTCMD := docker run \
-			--rm -ti \
+			--rm $(DOCKER_FLAGS) \
 			-u $(shell id -u) \
 			-v $(CURDIR):/srv/test \
 			-w /srv/test \
