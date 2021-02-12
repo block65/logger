@@ -6,6 +6,12 @@ import { createNamespace, Namespace } from 'cls-hooked';
 import { hostname } from 'os';
 import { randomBytes } from 'crypto';
 import { IncomingMessage, ServerResponse } from 'http';
+import { sep } from 'path';
+
+type Falsy = false | undefined | null;
+type MixinFnWithData = (
+  data: ReturnType<pino.MixinFn>,
+) => ReturnType<pino.MixinFn>;
 
 export type Logger = {
   cls: Namespace;
@@ -23,8 +29,10 @@ type NamespaceContext = {
 
 type ComputePlatform = 'gcp-cloudrun' | 'aws-lambda' | 'aws';
 
-export interface CreateLoggerOptions extends pino.LoggerOptions {
+export interface CreateLoggerOptions extends Omit<pino.LoggerOptions, 'mixin'> {
+  traceCaller?: boolean;
   platform?: ComputePlatform;
+  mixins?: (MixinFnWithData | pino.MixinFn | Falsy)[];
 }
 
 const suggestedHostname = hostname();
@@ -89,6 +97,51 @@ function getPlatformLoggerOptions(
 
 let counter = 0;
 
+const isDevelopment = process.env.NODE_ENV === 'development';
+
+function callerMixin(): { caller: string | undefined } {
+  return {
+    caller: Error()
+      .stack?.split('\n')
+      .slice(2)
+      .filter(
+        (s) =>
+          // !s.includes(`api${sep}src${sep}app`) &&
+          // !s.includes(
+          //   `node_modules${sep}express${sep}lib${sep}router`,
+          // ) &&
+          !s.includes(`node_modules${sep}pino`) &&
+          !s.includes(`block65${sep}logger`),
+      )?.[0]
+      ?.substr(7),
+  };
+}
+
+function composeMixins(
+  mixins: (MixinFnWithData | pino.MixinFn | Falsy)[],
+): pino.MixinFn {
+  return () =>
+    mixins.reduce((accum, mixin) => {
+      if (!mixin) {
+        return accum;
+      }
+      return {
+        ...accum,
+        ...mixin(accum),
+      };
+    }, {});
+}
+
+function createContextMixin(cls: Namespace): pino.MixinFn {
+  return (): Partial<ClsContext> => {
+    const { active }: { active: NamespaceContext | null } = cls || {};
+
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const { id, _ns_name, ...clsContext } = active || {};
+    return clsContext;
+  };
+}
+
 export function createLogger(
   opts: CreateLoggerOptions = {},
   stream?: pino.DestinationStream,
@@ -97,19 +150,20 @@ export function createLogger(
   const cls = createNamespace(`logger/${counter}`);
   counter += 1;
 
-  const { platform, ...userPinoOpts } = opts;
-
-  function mixin(): Partial<ClsContext> {
-    const { active }: { active: NamespaceContext | null } = cls || {};
-
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    const { id, _ns_name, ...clsContext } = active || {};
-    return userPinoOpts.mixin
-      ? { ...clsContext, ...userPinoOpts.mixin() }
-      : clsContext;
-  }
+  const {
+    platform,
+    traceCaller = isDevelopment,
+    mixins = [],
+    ...userPinoOpts
+  } = opts;
 
   const platformLoggerOptions = getPlatformLoggerOptions(platform);
+
+  const mixin = composeMixins([
+    ...mixins,
+    createContextMixin(cls),
+    traceCaller && callerMixin,
+  ]);
 
   const pinoInstance = stream
     ? pino(
@@ -196,5 +250,5 @@ export function createHttpLogger(
     reqCustomProps(req: IncomingMessage) {
       return { url: req.url };
     },
-  }); // types are totally busted
+  });
 }
