@@ -99,20 +99,20 @@ function getPlatformLoggerOptions(
 let counter = 0;
 
 function callerMixin(): { caller: string | undefined } {
+  const stackParts = Error().stack?.split('\n') || [];
+
+  const nonModuleFramesIndex = stackParts
+    .map(
+      (s) =>
+        s.includes(`node_modules${sep}pino`) ||
+        s.includes(`block65${sep}logger`),
+    )
+    .lastIndexOf(true);
+
+  const frameCandidate = stackParts[nonModuleFramesIndex + 1];
+
   return {
-    caller: Error()
-      .stack?.split('\n')
-      .slice(2)
-      .filter(
-        (s) =>
-          // !s.includes(`api${sep}src${sep}app`) &&
-          // !s.includes(
-          //   `node_modules${sep}express${sep}lib${sep}router`,
-          // ) &&
-          !s.includes(`node_modules${sep}pino`) &&
-          !s.includes(`block65${sep}logger`),
-      )?.[0]
-      ?.substr(7),
+    caller: frameCandidate ? frameCandidate.substr(7) : frameCandidate,
   };
 }
 
