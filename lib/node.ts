@@ -55,8 +55,8 @@ const defaultLoggerOptions: pino.LoggerOptions = {
   },
 };
 
-const gcpLevelMap: Record<string, string> = {
-  trace: 'DEFAULT',
+const gcpLevelToSeverity: Record<string, string> = {
+  trace: 'DEBUG',
   debug: 'DEBUG',
   info: 'INFO',
   warn: 'WARNING',
@@ -64,30 +64,56 @@ const gcpLevelMap: Record<string, string> = {
   fatal: 'CRITICAL',
 };
 
+export function isPlainObject<T extends Record<string, unknown>>(
+  value: unknown | T,
+): value is T {
+  if (Object.prototype.toString.call(value) !== '[object Object]') {
+    return false;
+  }
+
+  const prototype = Object.getPrototypeOf(value);
+  return prototype === null || prototype === Object.getPrototypeOf({});
+}
+
 function getPlatformLoggerOptions(
   platform?: ComputePlatform,
 ): pino.LoggerOptions {
   switch (platform) {
+    // See https://cloud.google.com/error-reporting/docs/formatting-error-messages
     case 'gcp-cloudrun':
       return {
         level: 'info',
-        // customLevels: {
-        //   DEBUG: 100,
-        //   INFO: 200,
-        //   NOTICE: 300,
-        //   WARNING: 400,
-        //   ERROR: 500,
-        //   CRITICAL: 600,
-        //   ALERT: 700,
-        //   EMERGENCY: 800,
-        // },
         messageKey: 'message',
+        timestamp: pino.stdTimeFunctions.isoTime,
         formatters: {
-          level(levelLabel /* , levelNumber */) {
-            return { severity: gcpLevelMap[levelLabel] };
+          level(levelLabel, levelNumber) {
+            return {
+              severity: gcpLevelToSeverity[levelLabel],
+              ...(levelNumber > 50 && {
+                '@type':
+                  'type.googleapis.com/google.devtools.clouderrorreporting.v1beta1.ReportedErrorEvent',
+              }),
+              // serviceContext: process.env.SERVICE_IDENTIFIER,
+              // appContext: {
+              //   env: process.env.NODE_ENV,
+              //   stage: process.env.PRODUCT_STAGE,
+              // },
+            };
+          },
+          log(maybeErr) {
+            if (isPlainObject(maybeErr)) {
+              const { stack, ...rest } = maybeErr;
+              if (stack) {
+                return {
+                  stack_trace: stack,
+                  ...rest,
+                };
+              }
+            }
+
+            return maybeErr;
           },
         },
-        timestamp: pino.stdTimeFunctions.isoTime,
       };
     case 'aws':
     case 'aws-lambda':

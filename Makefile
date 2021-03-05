@@ -15,6 +15,7 @@ TESTCMD = docker run \
 			-u $(USER_ID) \
 			-v $(CURDIR):/srv/test \
 			-w /srv/test \
+			-e SERVICE_IDENTIFIER=test \
 			$(DOCKER_FLAGS) \
 			node:14 \
 			$(CMD)

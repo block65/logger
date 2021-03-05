@@ -23,4 +23,31 @@ describe('Platform Loggers', () => {
     logger.warn('hello');
     await expect(logPromise).resolves.toMatchSnapshot();
   });
+
+  test('GCP Cloud Run Error Object', async () => {
+    const [logger, logPromise] = testLogger({
+      platform: 'gcp-cloudrun',
+    });
+
+    logger.error(new Error('Ded'));
+    await expect(logPromise).resolves.toMatchSnapshot();
+  });
+
+  test('AWS Error Object', async () => {
+    const [logger, logPromise] = testLogger({
+      platform: 'aws',
+    });
+
+    logger.error(new Error('Ded'));
+    await expect(logPromise).resolves.toMatchSnapshot();
+  });
+
+  test('AWS Lambda Error Object', async () => {
+    const [logger, logPromise] = testLogger({
+      platform: 'aws-lambda',
+    });
+
+    logger.error(new Error('Ded'));
+    await expect(logPromise).resolves.toMatchSnapshot();
+  });
 });
