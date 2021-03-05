@@ -7,6 +7,7 @@ import { hostname } from 'os';
 import { randomBytes } from 'crypto';
 import { IncomingMessage, ServerResponse } from 'http';
 import { sep } from 'path';
+import { CustomError } from '@block65/custom-error';
 
 type Falsy = false | undefined | null;
 
@@ -100,18 +101,35 @@ function getPlatformLoggerOptions(
               // },
             };
           },
-          log(maybeErr) {
-            if (isPlainObject(maybeErr)) {
-              const { stack, ...rest } = maybeErr;
-              if (stack) {
-                return {
-                  stack_trace: stack,
-                  ...rest,
-                };
+          log(details) {
+            debugger;
+            if (isPlainObject(details)) {
+              if ('stack' in details) {
+                const { stack, ...rest } = details;
+                if (stack) {
+                  return {
+                    stack_trace: stack,
+                    ...rest,
+                  };
+                }
+              }
+
+              if (
+                ('err' in details && isPlainObject(details.err)) ||
+                details.err instanceof Error
+              ) {
+                const { err, ...rest } = details;
+                const { stack, ...restErr } = err;
+                if (stack) {
+                  return {
+                    stack_trace: stack,
+                    ...rest,
+                    ...restErr,
+                  };
+                }
               }
             }
-
-            return maybeErr;
+            return details;
           },
         },
       };

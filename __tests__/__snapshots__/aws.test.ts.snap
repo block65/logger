@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AWS Error Object 1`] = `
+Object {
+  "hostname": "testhost",
+  "level": 50,
+  "msg": "Ded 3",
+  "pid": 1337,
+  "stack": "Error: Ded 3
+    at Object.<anonymous> (/srv/test/__tests__/aws.test.ts:32:18)
+    at Object.asyncJestTest (/srv/test/node_modules/jest-jasmine2/build/jasmineAsyncInstall.js:106:37)
+    at /srv/test/node_modules/jest-jasmine2/build/queueRunner.js:45:12
+    at new Promise (<anonymous>)
+    at mapper (/srv/test/node_modules/jest-jasmine2/build/queueRunner.js:28:19)
+    at /srv/test/node_modules/jest-jasmine2/build/queueRunner.js:75:41",
+  "time": 1234567890000,
+  "type": "Error",
+}
+`;
+
+exports[`AWS Lambda Error Object 1`] = `
+Object {
+  "hostname": "testhost",
+  "level": 50,
+  "msg": "Ded 4",
+  "pid": 1337,
+  "stack": "Error: Ded 4
+    at Object.<anonymous> (/srv/test/__tests__/aws.test.ts:23:18)
+    at Object.asyncJestTest (/srv/test/node_modules/jest-jasmine2/build/jasmineAsyncInstall.js:106:37)
+    at /srv/test/node_modules/jest-jasmine2/build/queueRunner.js:45:12
+    at new Promise (<anonymous>)
+    at mapper (/srv/test/node_modules/jest-jasmine2/build/queueRunner.js:28:19)
+    at /srv/test/node_modules/jest-jasmine2/build/queueRunner.js:75:41",
+  "time": 1234567890000,
+  "type": "Error",
+}
+`;
+
+exports[`AWS Lambda Logger + contextId 1`] = `
+Object {
+  "_context": Object {
+    "stuff": true,
+  },
+  "_contextId": "testContextId",
+  "hostname": "testhost",
+  "level": 40,
+  "msg": "hello",
+  "pid": 1337,
+  "time": 1234567890000,
+}
+`;
