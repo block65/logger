@@ -80,7 +80,7 @@ Object {
 
 exports[`Basic Trace Caller Force (production) 1`] = `
 Object {
-  "caller": "Object.<anonymous> (/srv/test/__tests__/index.test.ts:59:12)",
+  "caller": "Object.<anonymous> (__tests__/index.test.ts:59:12)",
   "hostname": "testhost",
   "level": 40,
   "msg": "hello",
