@@ -14,9 +14,11 @@ type MixinFnWithData = (
   data: ReturnType<pino.MixinFn>,
 ) => ReturnType<pino.MixinFn>;
 
+export type BaseLogger = pino.Logger;
+
 export type Logger = {
   cls: Namespace;
-} & pino.Logger;
+} & BaseLogger;
 
 interface ClsContext {
   _contextId: string;
@@ -154,7 +156,10 @@ function callerMixin(): { caller: string | undefined } {
   const frameCandidate = stackParts[nonModuleFramesIndex + 1];
 
   return {
-    caller: frameCandidate ? frameCandidate.substr(7) : frameCandidate,
+    caller: (frameCandidate
+      ? frameCandidate.substr(7)
+      : frameCandidate
+    ).replace(`${process.cwd()}/`, ''),
   };
 }
 
