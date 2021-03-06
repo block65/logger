@@ -65,7 +65,7 @@ const gcpLevelToSeverity: Record<string, string> = {
   fatal: 'CRITICAL',
 };
 
-export function isPlainObject<T extends Record<string, unknown>>(
+function isPlainObject<T extends Record<string, unknown>>(
   value: unknown | T,
 ): value is T {
   if (Object.prototype.toString.call(value) !== '[object Object]') {
