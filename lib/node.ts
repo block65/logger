@@ -7,7 +7,6 @@ import { hostname } from 'os';
 import { randomBytes } from 'crypto';
 import { IncomingMessage, ServerResponse } from 'http';
 import { sep } from 'path';
-import { CustomError } from '@block65/custom-error';
 
 type Falsy = false | undefined | null;
 
@@ -102,7 +101,6 @@ function getPlatformLoggerOptions(
             };
           },
           log(details) {
-            debugger;
             if (isPlainObject(details)) {
               if ('stack' in details) {
                 const { stack, ...rest } = details;
