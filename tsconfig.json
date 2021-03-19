@@ -5,6 +5,7 @@
     "moduleResolution": "node",
     "declaration": true,
     "target": "es2019",
+    "noUncheckedIndexedAccess": true,
     "lib": [
       "es2017"
     ],

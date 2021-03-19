@@ -153,13 +153,13 @@ function callerMixin(): { caller: string | undefined } {
     )
     .lastIndexOf(true);
 
-  const frameCandidate = stackParts[nonModuleFramesIndex + 1];
+  const frameCandidate: string | undefined =
+    stackParts[nonModuleFramesIndex + 1];
 
   return {
-    caller: (frameCandidate
-      ? frameCandidate.substr(7)
-      : frameCandidate
-    ).replace(`${process.cwd()}/`, ''),
+    caller: frameCandidate
+      ? frameCandidate.substr(7).replace(`${process.cwd()}/`, '')
+      : frameCandidate,
   };
 }
 
