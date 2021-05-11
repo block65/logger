@@ -4,13 +4,12 @@
     "strict": true,
     "moduleResolution": "node",
     "declaration": true,
-    "target": "es2019",
+    "target": "es2020",
     "noUncheckedIndexedAccess": true,
     "lib": [
-      "es2017"
+      "es2020"
     ],
     "module": "commonjs",
-    "sourceMap": false,
     "inlineSources": false,
     "noEmitOnError": false,
     "removeComments": true,

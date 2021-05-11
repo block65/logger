@@ -18,7 +18,7 @@ TESTCMD = docker run \
 			-e SERVICE_IDENTIFIER=test \
 			-e NODE_ENV=production \
 			$(DOCKER_FLAGS) \
-			node:14 \
+			node:16 \
 			$(CMD)
 
 all: dist

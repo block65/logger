@@ -7,35 +7,41 @@
   "main": "dist/node.js",
   "browser": "dist/browser.js",
   "types": "dist/node.d.ts",
+  "files": [
+    "dist/*.js",
+    "dist/*.d.ts",
+    "CREDITS",
+    "LICENSE.md"
+  ],
   "scripts": {
     "test": "jest"
   },
   "dependencies": {
     "@types/cls-hooked": "^4.3.3",
     "@types/express": "^4.17.11",
-    "@types/jest": "^26.0.20",
-    "@types/pino": "^6.3.6",
-    "@types/pino-http": "^5.4.0",
+    "@types/jest": "^26.0.23",
+    "@types/pino": "^6.3.8",
+    "@types/pino-http": "^5.4.1",
     "cls-hooked": "^4.2.2",
-    "pino": "^6.11.1",
+    "pino": "^6.11.3",
     "pino-http": "^5.5.0",
-    "serialize-error": "8.0.1",
-    "supports-color": "^8.1.1"
+    "serialize-error": "8.1.0",
+    "supports-color": "^9.0.0"
   },
   "devDependencies": {
-    "@block65/eslint-config": "^3.2.2",
-    "@types/node": "^14.14.31",
-    "@typescript-eslint/eslint-plugin": "^4.16.1",
-    "@typescript-eslint/parser": "^4.16.1",
+    "@block65/eslint-config": "^4.1.1",
+    "@types/node": "^15.0.2",
+    "@typescript-eslint/eslint-plugin": "^4.23.0",
+    "@typescript-eslint/parser": "^4.23.0",
     "emittery": "^0.8.1",
-    "eslint": "^7.21.0",
+    "eslint": "^7.26.0",
     "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-prettier": "^3.4.0",
     "jest": "^26.6.3",
     "jest-environment-node": "^26.6.2",
-    "prettier": "^2.2.1",
+    "prettier": "^2.3.0",
     "rimraf": "^3.0.2",
-    "ts-jest": "^26.5.3",
-    "typescript": "^4.2.3"
+    "ts-jest": "^26.5.6",
+    "typescript": "^4.2.4"
   }
 }
