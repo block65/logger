@@ -38,5 +38,8 @@ node_modules:
 test: node_modules
 	$(TESTCMD) $(if DEBUG, --runInBand)
 
+test-update: node_modules
+	$(TESTCMD) -u
+
 dev: node_modules
 	$(TESTCMD) --watchAll
