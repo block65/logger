@@ -7,7 +7,7 @@ Object {
     "stack": "Error: failed with status code 500
     at ServerResponse.onResFinished (/srv/test/node_modules/pino-http/logger.js:73:38)
     at ServerResponse.emit (node:events:406:35)
-    at onFinish (node:_http_outgoing:828:10)
+    at onFinish (node:_http_outgoing:827:10)
     at callback (node:internal/streams/writable:552:21)
     at afterWrite (node:internal/streams/writable:497:5)
     at afterWriteTick (node:internal/streams/writable:484:10)

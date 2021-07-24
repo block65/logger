@@ -77,6 +77,50 @@ function isPlainObject<T extends Record<string, unknown>>(
   return prototype === null || prototype === Object.getPrototypeOf({});
 }
 
+function gcpLogs(details: object): object {
+  if (isPlainObject(details)) {
+    if ('stack' in details) {
+      const { stack, ...rest } = details;
+      if (stack) {
+        return {
+          stack_trace: stack,
+          ...rest,
+        };
+      }
+    }
+
+    if (
+      ('err' in details && isPlainObject(details.err)) ||
+      details.err instanceof Error
+    ) {
+      const { err, ...rest } = details;
+      const { stack, ...restErr } = err;
+      if (stack) {
+        return {
+          stack_trace: stack,
+          ...rest,
+          ...restErr,
+        };
+      }
+    }
+  }
+  return details;
+}
+
+function stringifyUndefined(details: unknown | object): object {
+  if (isPlainObject(details)) {
+    return Object.fromEntries(
+      Object.entries(details).map(([k, v]) => {
+        if (typeof v === 'undefined') {
+          return [k, '_(undefined)'];
+        }
+        return [k, stringifyUndefined(v)];
+      }),
+    );
+  }
+  return Object(details);
+}
+
 function getPlatformLoggerOptions(
   platform?: ComputePlatform,
 ): pino.LoggerOptions {
@@ -102,41 +146,18 @@ function getPlatformLoggerOptions(
               // },
             };
           },
-          log(details) {
-            if (isPlainObject(details)) {
-              if ('stack' in details) {
-                const { stack, ...rest } = details;
-                if (stack) {
-                  return {
-                    stack_trace: stack,
-                    ...rest,
-                  };
-                }
-              }
-
-              if (
-                ('err' in details && isPlainObject(details.err)) ||
-                details.err instanceof Error
-              ) {
-                const { err, ...rest } = details;
-                const { stack, ...restErr } = err;
-                if (stack) {
-                  return {
-                    stack_trace: stack,
-                    ...rest,
-                    ...restErr,
-                  };
-                }
-              }
-            }
-            return details;
-          },
+          log: (details: object) => gcpLogs(stringifyUndefined(details)),
         },
       };
+
     case 'aws':
     case 'aws-lambda':
     default:
-      return {};
+      return {
+        formatters: {
+          log: (details: object) => stringifyUndefined(details),
+        },
+      };
   }
 }
 

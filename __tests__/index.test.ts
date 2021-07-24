@@ -19,15 +19,33 @@ describe('Basic', () => {
     await expect(logPromise).resolves.toMatchSnapshot();
   });
 
-  test('Object + String', async () => {
+  // test('Object with undefined props', async () => {
+  //   const [logger, logPromise] = testLogger();
+  //   logger.warn({ omg: undefined });
+  //   await expect(logPromise).resolves.toMatchSnapshot();
+  // });
+
+  test('String, Object', async () => {
     const [logger, logPromise] = testLogger();
     logger.warn('hello', { omg: true });
     await expect(logPromise).resolves.toMatchSnapshot();
   });
 
-  test('Object + String = Format', async () => {
+  test('String Format, Object', async () => {
     const [logger, logPromise] = testLogger();
     logger.warn('hello %o', { omg: true });
+    await expect(logPromise).resolves.toMatchSnapshot();
+  });
+
+  test('Object, String Format, String', async () => {
+    const [logger, logPromise] = testLogger();
+    logger.warn({ omg: true }, 'hello %s', 'world');
+    await expect(logPromise).resolves.toMatchSnapshot();
+  });
+
+  test('Object, String Format, String', async () => {
+    const [logger, logPromise] = testLogger();
+    logger.warn({ omg: true }, 'hello %s:%s %d', 'world', 'and', 123);
     await expect(logPromise).resolves.toMatchSnapshot();
   });
 
