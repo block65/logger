@@ -41,28 +41,8 @@ exports[`Basic Object + String = Format 1`] = `
 Object {
   "hostname": "testhost",
   "level": 40,
-  "msg": "hello {\\"omg\\":true}",
-  "pid": 1337,
-  "time": 1234567890000,
-}
-`;
-
-exports[`Basic Object + String = Format 2`] = `
-Object {
-  "hostname": "testhost",
-  "level": 40,
   "msg": "hello",
   "omg": true,
-  "pid": 1337,
-  "time": 1234567890000,
-}
-`;
-
-exports[`Basic Object + String 1`] = `
-Object {
-  "hostname": "testhost",
-  "level": 40,
-  "msg": "hello",
   "pid": 1337,
   "time": 1234567890000,
 }
@@ -78,9 +58,51 @@ Object {
 }
 `;
 
+exports[`Basic Object, String Format, String 1`] = `
+Object {
+  "hostname": "testhost",
+  "level": 40,
+  "msg": "hello world",
+  "omg": true,
+  "pid": 1337,
+  "time": 1234567890000,
+}
+`;
+
+exports[`Basic Object, String Format, String 2`] = `
+Object {
+  "hostname": "testhost",
+  "level": 40,
+  "msg": "hello world:and 123",
+  "omg": true,
+  "pid": 1337,
+  "time": 1234567890000,
+}
+`;
+
+exports[`Basic String Format, Object 1`] = `
+Object {
+  "hostname": "testhost",
+  "level": 40,
+  "msg": "hello {\\"omg\\":true}",
+  "pid": 1337,
+  "time": 1234567890000,
+}
+`;
+
+exports[`Basic String, Object 1`] = `
+Object {
+  "hostname": "testhost",
+  "level": 40,
+  "msg": "hello",
+  "pid": 1337,
+  "time": 1234567890000,
+}
+`;
+
 exports[`Basic Trace Caller Force (production) 1`] = `
 Object {
-  "caller": "Object.<anonymous> (__tests__/index.test.ts:59:12)",
+  "caller": "Object.<anonymous> (__tests__/index.test.ts:77:12)",
   "hostname": "testhost",
   "level": 40,
   "msg": "hello",
