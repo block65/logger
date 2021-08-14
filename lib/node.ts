@@ -1,7 +1,7 @@
 import type { RequestHandler } from 'express';
 import { serializeError } from 'serialize-error';
 import pino from 'pino';
-import * as pinoHttp from 'pino-http';
+import pinoHttp from 'pino-http';
 import { createNamespace, Namespace } from 'cls-hooked';
 import { hostname } from 'os';
 import { randomBytes } from 'crypto';

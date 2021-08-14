@@ -1,5 +1,5 @@
 import pino from 'pino';
-import * as Emittery from 'emittery';
+import Emittery from 'emittery';
 import { createLogger, CreateLoggerOptions } from '../lib/node.js';
 
 export function expectStream(): [
