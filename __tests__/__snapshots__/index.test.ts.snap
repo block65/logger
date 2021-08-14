@@ -19,8 +19,7 @@ Object {
     at runAndTransformResultsToJestFormat (/srv/test/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:166:21)
     at jestAdapter (/srv/test/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:82:19)
     at runTestInternal (/srv/test/node_modules/jest-runner/build/runTest.js:389:16)
-    at runTest (/srv/test/node_modules/jest-runner/build/runTest.js:481:34)
-    at Object.worker (/srv/test/node_modules/jest-runner/build/testWorker.js:133:12)",
+    at runTest (/srv/test/node_modules/jest-runner/build/runTest.js:481:34)",
     "type": "Error",
   },
   "hostname": "testhost",
@@ -49,8 +48,7 @@ Object {
     at runAndTransformResultsToJestFormat (/srv/test/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:166:21)
     at jestAdapter (/srv/test/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:82:19)
     at runTestInternal (/srv/test/node_modules/jest-runner/build/runTest.js:389:16)
-    at runTest (/srv/test/node_modules/jest-runner/build/runTest.js:481:34)
-    at Object.worker (/srv/test/node_modules/jest-runner/build/testWorker.js:133:12)",
+    at runTest (/srv/test/node_modules/jest-runner/build/runTest.js:481:34)",
     "type": "Error",
   },
   "hostname": "testhost",

@@ -22,7 +22,6 @@ Object {
     at new Promise (<anonymous>)
     at callAsyncCircusFn (/srv/test/node_modules/jest-circus/build/utils.js:315:10)
     at _callCircusTest (/srv/test/node_modules/jest-circus/build/run.js:218:40)
-    at processTicksAndRejections (node:internal/process/task_queues:96:5)
     at _runTest (/srv/test/node_modules/jest-circus/build/run.js:155:3)
     at _runTestsForDescribeBlock (/srv/test/node_modules/jest-circus/build/run.js:66:9)
     at _runTestsForDescribeBlock (/srv/test/node_modules/jest-circus/build/run.js:60:9)
@@ -30,8 +29,7 @@ Object {
     at runAndTransformResultsToJestFormat (/srv/test/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:166:21)
     at jestAdapter (/srv/test/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:82:19)
     at runTestInternal (/srv/test/node_modules/jest-runner/build/runTest.js:389:16)
-    at runTest (/srv/test/node_modules/jest-runner/build/runTest.js:481:34)
-    at Object.worker (/srv/test/node_modules/jest-runner/build/testWorker.js:133:12)",
+    at runTest (/srv/test/node_modules/jest-runner/build/runTest.js:481:34)",
   "time": "2009-02-13T23:31:30.000Z",
 }
 `;
@@ -49,7 +47,6 @@ Object {
     at new Promise (<anonymous>)
     at callAsyncCircusFn (/srv/test/node_modules/jest-circus/build/utils.js:315:10)
     at _callCircusTest (/srv/test/node_modules/jest-circus/build/run.js:218:40)
-    at processTicksAndRejections (node:internal/process/task_queues:96:5)
     at _runTest (/srv/test/node_modules/jest-circus/build/run.js:155:3)
     at _runTestsForDescribeBlock (/srv/test/node_modules/jest-circus/build/run.js:66:9)
     at _runTestsForDescribeBlock (/srv/test/node_modules/jest-circus/build/run.js:60:9)
@@ -57,8 +54,7 @@ Object {
     at runAndTransformResultsToJestFormat (/srv/test/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:166:21)
     at jestAdapter (/srv/test/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:82:19)
     at runTestInternal (/srv/test/node_modules/jest-runner/build/runTest.js:389:16)
-    at runTest (/srv/test/node_modules/jest-runner/build/runTest.js:481:34)
-    at Object.worker (/srv/test/node_modules/jest-runner/build/testWorker.js:133:12)",
+    at runTest (/srv/test/node_modules/jest-runner/build/runTest.js:481:34)",
   "time": "2009-02-13T23:31:30.000Z",
 }
 `;
