@@ -1,6 +1,6 @@
 import type { RequestHandler } from 'express';
 import { serializeError } from 'serialize-error';
-import * as pino from 'pino';
+import pino from 'pino';
 import * as pinoHttp from 'pino-http';
 import { createNamespace, Namespace } from 'cls-hooked';
 import { hostname } from 'os';
