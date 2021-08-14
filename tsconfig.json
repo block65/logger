@@ -9,7 +9,7 @@
     "lib": [
       "es2020"
     ],
-    "module": "commonjs",
+    "module": "es2020",
     "inlineSources": false,
     "noEmitOnError": false,
     "removeComments": true,

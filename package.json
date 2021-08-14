@@ -4,10 +4,11 @@
   "private": false,
   "license": "MIT",
   "sideEffects": false,
-  "main": "dist/node.js",
-  "browser": "dist/browser.js",
-  "types": "dist/node.d.ts",
   "type": "module",
+  "exports": {
+    "node": "./dist/node.js"
+  },
+  "types": "./dist/node.d.ts",
   "files": [
     "dist/*.js",
     "dist/*.d.ts",

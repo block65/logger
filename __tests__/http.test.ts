@@ -1,9 +1,9 @@
 import * as pinoHttp from 'pino-http';
-import * as pino from 'pino';
+import pino from 'pino';
 import * as http from 'http';
 import { URL } from 'url';
-import { createHttpLogger, createLogger } from '../lib/node';
-import { expectStream } from './helpers';
+import { createHttpLogger, createLogger } from '../lib/node.js';
+import { expectStream } from './helpers.js';
 
 const localPort = 18888;
 const agent = new http.Agent({
