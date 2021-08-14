@@ -33,3 +33,12 @@ export function testLogger(
   const logger = createLogger(opts, stream);
   return [logger, logPromise];
 }
+
+export function testVanillaLogger(
+  opts: pino.LoggerOptions = {},
+): [pino.Logger, Promise<pino.LogDescriptor>] {
+  const [stream, logPromise] = expectStream();
+
+  const logger = pino(opts, stream);
+  return [logger, logPromise];
+}

@@ -2,11 +2,10 @@
 
 exports[`AWS Error Object 1`] = `
 Object {
-  "hostname": "testhost",
-  "level": 50,
-  "msg": "Ded 3",
-  "pid": 1337,
-  "stack": "Error: Ded 3
+  "err": Object {
+    "message": "Ded 3",
+    "name": "Error",
+    "stack": "Error: Ded 3
     at Object.<anonymous> (/srv/test/__tests__/aws.test.ts:32:18)
     at Promise.then.completed (/srv/test/node_modules/jest-circus/build/utils.js:390:28)
     at new Promise (<anonymous>)
@@ -17,18 +16,21 @@ Object {
     at _runTestsForDescribeBlock (/srv/test/node_modules/jest-circus/build/run.js:66:9)
     at _runTestsForDescribeBlock (/srv/test/node_modules/jest-circus/build/run.js:60:9)
     at run (/srv/test/node_modules/jest-circus/build/run.js:25:3)",
+  },
+  "hostname": "testhost",
+  "level": 50,
+  "msg": "Ded 3",
+  "pid": 1337,
   "time": 1234567890000,
-  "type": "Error",
 }
 `;
 
 exports[`AWS Lambda Error Object 1`] = `
 Object {
-  "hostname": "testhost",
-  "level": 50,
-  "msg": "Ded 4",
-  "pid": 1337,
-  "stack": "Error: Ded 4
+  "err": Object {
+    "message": "Ded 4",
+    "name": "Error",
+    "stack": "Error: Ded 4
     at Object.<anonymous> (/srv/test/__tests__/aws.test.ts:23:18)
     at Promise.then.completed (/srv/test/node_modules/jest-circus/build/utils.js:390:28)
     at new Promise (<anonymous>)
@@ -39,8 +41,12 @@ Object {
     at _runTestsForDescribeBlock (/srv/test/node_modules/jest-circus/build/run.js:66:9)
     at _runTestsForDescribeBlock (/srv/test/node_modules/jest-circus/build/run.js:60:9)
     at run (/srv/test/node_modules/jest-circus/build/run.js:25:3)",
+  },
+  "hostname": "testhost",
+  "level": 50,
+  "msg": "Ded 4",
+  "pid": 1337,
   "time": 1234567890000,
-  "type": "Error",
 }
 `;
 

@@ -1,23 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`GCP Cloud Run 1`] = `
+exports[`Control Error Object 1`] = `
 Object {
-  "hostname": "testhost",
-  "message": "hello",
-  "pid": 1337,
-  "severity": "WARNING",
-  "time": "2009-02-13T23:31:30.000Z",
-}
-`;
-
-exports[`GCP Cloud Run Error Object 1`] = `
-Object {
-  "hostname": "testhost",
-  "message": "Ded 1",
-  "pid": 1337,
-  "severity": "ERROR",
-  "stack_trace": "Error: Ded 1
-    at Object.<anonymous> (/srv/test/__tests__/gcp.test.ts:18:18)
+  "err": Object {
+    "debug": "wooyeah",
+    "message": "hallo",
+    "stack": "Error: hallo
+    at Object.<anonymous> (/srv/test/__tests__/control.test.ts:6:32)
     at Promise.then.completed (/srv/test/node_modules/jest-circus/build/utils.js:390:28)
     at new Promise (<anonymous>)
     at callAsyncCircusFn (/srv/test/node_modules/jest-circus/build/utils.js:315:10)
@@ -27,19 +16,22 @@ Object {
     at _runTestsForDescribeBlock (/srv/test/node_modules/jest-circus/build/run.js:66:9)
     at _runTestsForDescribeBlock (/srv/test/node_modules/jest-circus/build/run.js:60:9)
     at run (/srv/test/node_modules/jest-circus/build/run.js:25:3)",
-  "time": "2009-02-13T23:31:30.000Z",
+    "type": "Error",
+  },
+  "hostname": "testhost",
+  "level": 50,
+  "msg": "hallo",
+  "pid": 1337,
+  "time": 1234567890000,
 }
 `;
 
-exports[`GCP Cloud Run Fatal with Error Object 1`] = `
+exports[`Control Error Object serialized on non-error level 1`] = `
 Object {
-  "@type": "type.googleapis.com/google.devtools.clouderrorreporting.v1beta1.ReportedErrorEvent",
-  "hostname": "testhost",
-  "message": "Ded 2",
-  "pid": 1337,
-  "severity": "CRITICAL",
-  "stack_trace": "Error: Ded 2
-    at Object.<anonymous> (/srv/test/__tests__/gcp.test.ts:27:18)
+  "err": Object {
+    "message": "hallo",
+    "stack": "Error: hallo
+    at Object.<anonymous> (/srv/test/__tests__/control.test.ts:12:17)
     at Promise.then.completed (/srv/test/node_modules/jest-circus/build/utils.js:390:28)
     at new Promise (<anonymous>)
     at callAsyncCircusFn (/srv/test/node_modules/jest-circus/build/utils.js:315:10)
@@ -49,6 +41,12 @@ Object {
     at _runTestsForDescribeBlock (/srv/test/node_modules/jest-circus/build/run.js:66:9)
     at _runTestsForDescribeBlock (/srv/test/node_modules/jest-circus/build/run.js:60:9)
     at run (/srv/test/node_modules/jest-circus/build/run.js:25:3)",
-  "time": "2009-02-13T23:31:30.000Z",
+    "type": "Error",
+  },
+  "hostname": "testhost",
+  "level": 30,
+  "msg": "hallo",
+  "pid": 1337,
+  "time": 1234567890000,
 }
 `;

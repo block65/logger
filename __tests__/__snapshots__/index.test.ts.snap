@@ -1,5 +1,56 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Basic Error Object 1`] = `
+Object {
+  "err": Object {
+    "debug": "wooyeah",
+    "message": "hallo",
+    "stack": "Error: hallo
+    at Object.<anonymous> (/srv/test/__tests__/index.test.ts:12:32)
+    at Promise.then.completed (/srv/test/node_modules/jest-circus/build/utils.js:390:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (/srv/test/node_modules/jest-circus/build/utils.js:315:10)
+    at _callCircusTest (/srv/test/node_modules/jest-circus/build/run.js:218:40)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at _runTest (/srv/test/node_modules/jest-circus/build/run.js:155:3)
+    at _runTestsForDescribeBlock (/srv/test/node_modules/jest-circus/build/run.js:66:9)
+    at _runTestsForDescribeBlock (/srv/test/node_modules/jest-circus/build/run.js:60:9)
+    at run (/srv/test/node_modules/jest-circus/build/run.js:25:3)",
+    "type": "Error",
+  },
+  "hostname": "testhost",
+  "level": 50,
+  "msg": "hallo",
+  "pid": 1337,
+  "time": 1234567890000,
+}
+`;
+
+exports[`Basic Error Object serialized on non-error level 1`] = `
+Object {
+  "err": Object {
+    "message": "hallo",
+    "stack": "Error: hallo
+    at Object.<anonymous> (/srv/test/__tests__/index.test.ts:18:17)
+    at Promise.then.completed (/srv/test/node_modules/jest-circus/build/utils.js:390:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (/srv/test/node_modules/jest-circus/build/utils.js:315:10)
+    at _callCircusTest (/srv/test/node_modules/jest-circus/build/run.js:218:40)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at _runTest (/srv/test/node_modules/jest-circus/build/run.js:155:3)
+    at _runTestsForDescribeBlock (/srv/test/node_modules/jest-circus/build/run.js:66:9)
+    at _runTestsForDescribeBlock (/srv/test/node_modules/jest-circus/build/run.js:60:9)
+    at run (/srv/test/node_modules/jest-circus/build/run.js:25:3)",
+    "type": "Error",
+  },
+  "hostname": "testhost",
+  "level": 30,
+  "msg": "hallo",
+  "pid": 1337,
+  "time": 1234567890000,
+}
+`;
+
 exports[`Basic Mixins basic + accum 1`] = `
 Object {
   "accum": Object {
@@ -10,6 +61,7 @@ Object {
       "go": "bang",
     },
   },
+  "caller": "Object.<anonymous> (__tests__/index.test.ts:108:12)",
   "hostname": "testhost",
   "level": 40,
   "logger": Object {
@@ -26,6 +78,7 @@ Object {
 
 exports[`Basic Mixins property overwrite 1`] = `
 Object {
+  "caller": "Object.<anonymous> (__tests__/index.test.ts:127:12)",
   "hostname": "testhost",
   "level": 40,
   "logger": Object {

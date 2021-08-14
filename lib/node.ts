@@ -146,7 +146,7 @@ function getPlatformLoggerOptions(
               // },
             };
           },
-          log: (details: object) => gcpLogs(stringifyUndefined(details)),
+          log: (details) => gcpLogs(stringifyUndefined(details)),
         },
       };
 
@@ -155,7 +155,7 @@ function getPlatformLoggerOptions(
     default:
       return {
         formatters: {
-          log: (details: object) => stringifyUndefined(details),
+          log: (details) => stringifyUndefined(details),
         },
       };
   }
@@ -299,7 +299,7 @@ export function createHttpLogger(
 ): pinoHttp.HttpLogger {
   return pinoHttp({
     ...opts,
-    genReqId: () => ({}),
+    // genReqId: () => ({}),
     logger,
     customSuccessMessage(res: ServerResponse) {
       return `${res.statusCode} ${res.statusMessage}`;

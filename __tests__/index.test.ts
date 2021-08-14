@@ -1,21 +1,21 @@
-import { testLogger } from './helpers.js';
+import { testLogger, testVanillaLogger } from './helpers.js';
 
 describe('Basic', () => {
-  jest.setSystemTime(new Date('2009-02-13T23:31:30.000Z'));
-  const OLD_ENV = process.env;
-
-  beforeEach(() => {
-    jest.resetModules();
-    process.env = { ...OLD_ENV };
-  });
-
-  afterAll(() => {
-    process.env = OLD_ENV;
-  });
-
   test('Object', async () => {
     const [logger, logPromise] = testLogger();
     logger.warn({ omg: true });
+    await expect(logPromise).resolves.toMatchSnapshot();
+  });
+
+  test('Error Object', async () => {
+    const [logger, logPromise] = testVanillaLogger();
+    logger.error(Object.assign(new Error('hallo'), { debug: 'wooyeah' }));
+    await expect(logPromise).resolves.toMatchSnapshot();
+  });
+
+  test('Error Object serialized on non-error level', async () => {
+    const [logger, logPromise] = testVanillaLogger();
+    logger.info(new Error('hallo'));
     await expect(logPromise).resolves.toMatchSnapshot();
   });
 
