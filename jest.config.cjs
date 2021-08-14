@@ -6,5 +6,4 @@ module.exports = {
   moduleNameMapper: {
     '^(\\..*)\\.jsx?$': '$1',
   },
-  maxWorkers: 1
 };

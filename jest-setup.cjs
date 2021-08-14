@@ -16,4 +16,4 @@ jest.mock('os', () => {
 
 // Ensures all envs are the same, GH Actions has some non-default setting
 // needed because stack traces are part of the log metadata
-Error.stackTraceLimit = Infinity;
+Error.stackTraceLimit = 2;
