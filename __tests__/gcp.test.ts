@@ -24,7 +24,7 @@ describe('GCP', () => {
       platform: 'gcp-cloudrun',
     });
 
-    logger.fatal({ err: new Error('Ded 2') });
+    logger.fatal(new Error('Ded 2'));
     await expect(logPromise).resolves.toMatchSnapshot();
   });
 });
