@@ -1,4 +1,4 @@
-import { testLogger } from './helpers';
+import { testLogger } from './helpers.js';
 
 describe('GCP', () => {
   test('Cloud Run', async () => {

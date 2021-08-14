@@ -1,4 +1,4 @@
-import { testLogger } from './helpers';
+import { testLogger } from './helpers.js';
 
 describe('Basic', () => {
   jest.setSystemTime(new Date('2009-02-13T23:31:30.000Z'));

@@ -1,6 +1,6 @@
-import * as pino from 'pino';
+import pino from 'pino';
 import * as Emittery from 'emittery';
-import { createLogger, CreateLoggerOptions } from '../lib/node';
+import { createLogger, CreateLoggerOptions } from '../lib/node.js';
 
 export function expectStream(): [
   pino.DestinationStream,

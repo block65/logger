@@ -1,5 +1,5 @@
-import { lambdaLogger } from '../lib/node';
-import { testLogger } from './helpers';
+import { lambdaLogger } from '../lib/node.js';
+import { testLogger } from './helpers.js';
 
 describe('AWS', () => {
   test('Lambda Logger + contextId', async () => {
