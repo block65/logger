@@ -24,7 +24,7 @@
     "@types/jest": "^27.0.1",
     "@types/pino": "^6.3.11",
     "cls-hooked": "^4.2.2",
-    "pino": "^7.0.0-rc.2",
+    "pino": "^7.0.0-rc.3",
     "serialize-error": "8.1.0",
     "supports-color": "^9.0.2"
   },
