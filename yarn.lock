@@ -696,30 +696,6 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-16.7.1.tgz#c6b9198178da504dfca1fd0be9b2e1002f1586f0"
   integrity sha512-ncRdc45SoYJ2H4eWU9ReDfp3vtFqDYhjOsKlFFUDEn8V1Bgr2RjYal8YT5byfadWIRluhPFU6JiDOl0H6Sl87A==
 
-"@types/pino-pretty@*":
-  version "4.7.1"
-  resolved "https://registry.yarnpkg.com/@types/pino-pretty/-/pino-pretty-4.7.1.tgz#2ce3f56f3cf4f9632374419d616ae2e6c933b935"
-  integrity sha512-l1ntNXdpVWsnPYUk5HyO5Lxfr38zLCgxVfEn/9Zhhm+nGF04/BiIou/m8XPwvoVZLV+livUo79VdHXMJPfUYxA==
-  dependencies:
-    "@types/pino" "*"
-
-"@types/pino-std-serializers@*":
-  version "2.4.1"
-  resolved "https://registry.yarnpkg.com/@types/pino-std-serializers/-/pino-std-serializers-2.4.1.tgz#f8bd52a209c8b3c97d1533b1ba27f57c816382bf"
-  integrity sha512-17XcksO47M24IVTVKPeAByWUd3Oez7EbIjXpSbzMPhXVzgjGtrOa49gKBwxH9hb8dKv58OelsWQ+A1G1l9S3wQ==
-  dependencies:
-    "@types/node" "*"
-
-"@types/pino@*", "@types/pino@^6.3.11":
-  version "6.3.11"
-  resolved "https://registry.yarnpkg.com/@types/pino/-/pino-6.3.11.tgz#83652799e76b3ad692aaf68f6fbf994e83af5db2"
-  integrity sha512-S7+fLONqSpHeW9d7TApUqO6VN47KYgOXhCNKwGBVLHObq8HhaAYlVqUNdfnvoXjCMiwE5xcPm/5R2ZUh8bgaXQ==
-  dependencies:
-    "@types/node" "*"
-    "@types/pino-pretty" "*"
-    "@types/pino-std-serializers" "*"
-    sonic-boom "^2.1.0"
-
 "@types/prettier@^2.1.5":
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/@types/prettier/-/prettier-2.3.2.tgz#fc8c2825e4ed2142473b4a81064e6e081463d1b3"
@@ -1908,11 +1884,6 @@ has-flag@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/has-flag/-/has-flag-4.0.0.tgz#944771fd9c81c81265c4d6941860da06bb59479b"
   integrity sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==
-
-has-flag@^5.0.0:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/has-flag/-/has-flag-5.0.1.tgz#5483db2ae02a472d1d0691462fc587d1843cd940"
-  integrity sha512-CsNUt5x9LUdx6hnk/E2SZLsDyvfqANZSUq4+D3D8RzDJ2M+HDTIkF60ibS1vHaK55vzgiZw1bEPFG9yH7l33wA==
 
 has-symbols@^1.0.1, has-symbols@^1.0.2:
   version "1.0.2"
@@ -3563,13 +3534,6 @@ supports-color@^8.0.0:
   integrity sha512-MpUEN2OodtUzxvKQl72cUF7RQ5EiHsGvSsVG0ia9c5RbWGL2CI4C7EpPS8UTBIplnlzZiNuV56w+FuNxy3ty2Q==
   dependencies:
     has-flag "^4.0.0"
-
-supports-color@^9.0.2:
-  version "9.0.2"
-  resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-9.0.2.tgz#50f082888e4b0a4e2ccd2d0b4f9ef4efcd332485"
-  integrity sha512-ii6tc8ImGFrgMPYq7RVAMKkhPo9vk8uA+D3oKbJq/3Pk2YSMv1+9dUAesa9UxMbxBTvxwKTQffBahNVNxEvM8Q==
-  dependencies:
-    has-flag "^5.0.0"
 
 supports-hyperlinks@^2.0.0:
   version "2.2.0"
