@@ -1,12 +1,10 @@
-import type { RequestHandler } from 'express';
-import { serializeError } from 'serialize-error';
-import pino from 'pino';
-import pinoHttp from 'pino-http';
 import { createNamespace, Namespace } from 'cls-hooked';
-import { hostname } from 'os';
 import { randomBytes } from 'crypto';
-import { IncomingMessage, ServerResponse } from 'http';
+import type { RequestHandler } from 'express';
+import { hostname } from 'os';
 import { sep } from 'path';
+import pino from 'pino';
+import { serializeError } from 'serialize-error';
 
 type Falsy = false | undefined | null;
 
@@ -291,33 +289,4 @@ export function lambdaLogger<T extends (...args: any[]) => any>(
       return fn();
     });
   };
-}
-
-export function createHttpLogger(
-  logger: pino.Logger,
-  opts: Omit<pinoHttp.Options, 'logger' | 'customLogLevel'> = {},
-): pinoHttp.HttpLogger {
-  return pinoHttp({
-    ...opts,
-    // genReqId: () => ({}),
-    logger,
-    customSuccessMessage(res: ServerResponse) {
-      return `${res.statusCode} ${res.statusMessage}`;
-    },
-    customErrorMessage(err: Error, res: ServerResponse) {
-      return `${res.statusCode} ${res.statusMessage}`;
-    },
-    customLogLevel(res: ServerResponse, err: Error) {
-      if (res.statusCode >= 500 || err) {
-        return 'error';
-      }
-      if (res.statusCode >= 400 && res.statusCode < 500) {
-        return 'warn';
-      }
-      return 'trace';
-    },
-    reqCustomProps(req: IncomingMessage) {
-      return { url: req.url };
-    },
-  });
 }
