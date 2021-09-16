@@ -1,6 +1,6 @@
 import util from 'util';
 import chalk from 'chalk';
-import type { LogDescriptor, Logger } from './node.js';
+import type { LogDescriptor, Logger } from './types.js';
 
 function formatLevel(level: number) {
   switch (level) {

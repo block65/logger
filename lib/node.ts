@@ -5,18 +5,13 @@ import { hostname } from 'os';
 import { sep } from 'path';
 import pino from 'pino';
 import { serializeError } from 'serialize-error';
+import { Logger } from './types.js';
 
 type Falsy = false | undefined | null;
 
 type MixinFnWithData = (
   data: ReturnType<pino.MixinFn>,
 ) => ReturnType<pino.MixinFn>;
-
-export type BaseLogger = pino.Logger;
-
-export type Logger = {
-  cls: Namespace;
-} & BaseLogger;
 
 interface ClsContext {
   _contextId: string;
