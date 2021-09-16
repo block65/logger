@@ -12,6 +12,7 @@ Object {
 
 exports[`GCP Cloud Run Error Object 1`] = `
 Object {
+  "@type": "type.googleapis.com/google.devtools.clouderrorreporting.v1beta1.ReportedErrorEvent",
   "hostname": "testhost",
   "message": "Ded 1",
   "pid": 1337,

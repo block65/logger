@@ -133,7 +133,7 @@ function getPlatformLoggerOptions(
           level(levelLabel, levelNumber) {
             return {
               severity: gcpLevelToSeverity[levelLabel],
-              ...(levelNumber > 50 && {
+              ...(levelNumber >= 50 && {
                 '@type':
                   'type.googleapis.com/google.devtools.clouderrorreporting.v1beta1.ReportedErrorEvent',
               }),
