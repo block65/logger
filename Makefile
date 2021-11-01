@@ -35,10 +35,10 @@ distclean: clean
 node_modules:
 	yarn install --production=false --non-interactive --frozen-lockfile
 
-test: node_modules
+test: dist
 	$(TESTCMD) $(ifdef DEBUG, --runInBand)
 
-test-update: node_modules
+test-update: dist
 	$(TESTCMD) -u
 
 dev: node_modules
