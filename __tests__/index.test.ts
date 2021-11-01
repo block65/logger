@@ -59,8 +59,11 @@ describe('Basic', () => {
   test('Trace Caller Auto (development)', async () => {
     process.env.NODE_ENV = 'development';
     const [logger, logPromise] = testLogger();
+    const previousStackTraceLimit = Error.stackTraceLimit;
+    Error.stackTraceLimit = 10;
     logger.warn('hello');
     await expect(logPromise).resolves.toHaveProperty('caller');
+    Error.stackTraceLimit = previousStackTraceLimit;
   });
 
   test('Trace Caller Auto (production)', async () => {
