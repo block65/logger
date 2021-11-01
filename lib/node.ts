@@ -1,9 +1,8 @@
 import { createNamespace, Namespace } from 'cls-hooked';
-import { randomBytes } from 'crypto';
 import type { RequestHandler } from 'express';
-import { hostname } from 'os';
 import { sep } from 'path';
 import pino from 'pino';
+import PinoPretty from 'pino-pretty';
 import { serializeError } from 'serialize-error';
 import { Logger } from './types.js';
 
@@ -25,10 +24,13 @@ type NamespaceContext = {
 
 type ComputePlatform = 'gcp-cloudrun' | 'aws-lambda' | 'aws';
 
-export interface CreateLoggerOptions extends Omit<pino.LoggerOptions, 'mixin'> {
+export interface CreateLoggerOptions
+  extends Omit<pino.LoggerOptions, 'mixin' | 'prettyPrint' | 'prettifier'> {
+  pretty?: boolean;
   traceCaller?: boolean;
   platform?: ComputePlatform;
   mixins?: (MixinFnWithData | pino.MixinFn | Falsy)[];
+  transports?: pino.TransportMultiOptions;
 }
 
 const defaultLoggerOptions: pino.LoggerOptions = {
@@ -167,7 +169,6 @@ function getPlatformLoggerOptions(
 
 let counter = 0;
 
-function callerMixin(): { caller: string | undefined } {
 function callerMixin(): { caller?: string } {
   const stackParts = new Error().stack?.split('\n') || [];
 
@@ -220,11 +221,28 @@ function createContextMixin(cls: Namespace): pino.MixinFn {
   };
 }
 
+export type CreateLoggerOptionsWithoutTransports = Omit<
+  CreateLoggerOptions,
+  'pretty' | 'transports'
+>;
+
+export function createLogger(
+  opts: CreateLoggerOptionsWithoutTransports,
+  destination: pino.DestinationStream,
+): Logger;
+export function createLogger(opts?: CreateLoggerOptions): Logger;
 export function createLogger(
   opts: CreateLoggerOptions = {},
-  stream?: pino.DestinationStream,
-  // destination?: pino.DestinationStream,
+  destination?: pino.DestinationStream,
 ): Logger {
+  if (destination && opts.transports) {
+    throw new Error('Please provide only one of `destination` or `transports`');
+  }
+
+  if (destination && opts.pretty) {
+    throw new Error('Please provide only one of `destination` or `pretty`');
+  }
+
   const cls = createNamespace(`logger/${counter}`);
   counter += 1;
 
@@ -245,22 +263,38 @@ export function createLogger(
     traceCaller && callerMixin,
   ]);
 
-  const pinoInstance = stream
-    ? pino(
-        {
-          ...defaultLoggerOptions,
-          ...platformLoggerOptions,
-          ...userPinoOpts,
-          mixin,
-        },
-        stream,
-      )
-    : pino({
-        ...defaultLoggerOptions,
-        ...platformLoggerOptions,
-        ...userPinoOpts,
-        mixin,
-      });
+  const transport =
+    destination ||
+    pino.transport({
+      ...opts.transports,
+      targets: [
+        ...(opts.transports?.targets || []),
+        ...(opts.pretty
+          ? [
+              {
+                target: 'pino-pretty',
+                level: 'info',
+                options: {
+                  ignore: 'pid,hostname',
+                  translateTime: true,
+                  singleLine: true,
+                } as PinoPretty.PrettyOptions,
+              },
+            ]
+          : ([] as any[])),
+      ],
+    });
+
+  const pinoInstance = pino(
+    {
+      ...defaultLoggerOptions,
+      ...platformLoggerOptions,
+      ...userPinoOpts,
+      // ...transportOptions,
+      mixin,
+    },
+    transport,
+  );
 
   return Object.create(pinoInstance, {
     cls: {

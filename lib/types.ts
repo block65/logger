@@ -12,7 +12,7 @@ export interface LogDescriptor {
   [key: string]: unknown;
 }
 
-export type BaseLogger = pino.Logger;
+export type BaseLogger = pino.BaseLogger & pino.LoggerExtras;
 
 export type Logger = {
   cls: Namespace;

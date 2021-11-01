@@ -10,7 +10,7 @@ import {
   whiteBright,
 } from 'colorette';
 import util from 'util';
-import type { LogDescriptor, Logger } from './types.js';
+import type { LogDescriptor } from './types.js';
 
 function formatLevel(level: number): string {
   switch (level) {
@@ -31,8 +31,8 @@ function formatLevel(level: number): string {
   }
 }
 
-export function prettifier(thisArg: Logger, options: unknown) {
-  return (log: LogDescriptor) => {
+export function createPrettifier(/*options?: unknown*/) {
+  return (log: LogDescriptor): string => {
     const { level, msg = '', time, name, hostname, pid, ...rest } = log;
 
     if (msg?.startsWith('pino.final with prettyPrint')) {

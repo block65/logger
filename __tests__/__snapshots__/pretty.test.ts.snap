@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Prettifier via createPrettifier 1`] = `
+"[90m1970-01-15T06:56:07.890Z[39m [32mDEBUG[39m 
+"
+`;
+
+exports[`Prettifier via createPrettifier 2`] = `
+"[90m1970-01-15T06:56:07.890Z[39m [32mDEBUG[39m  [97mkek[39m
+"
+`;
+
+exports[`Prettifier via createPrettifier 3`] = `
+"[90m1970-01-15T06:56:07.890Z[39m [32mDEBUG[39m  [97mkek[39m { random: { arr: [ [33m1[39m, [33m2[39m, [33m3[39m ], bool: [33mtrue[39m, number: [33m12[39m, str: [32m'hello'[39m } }
+"
+`;

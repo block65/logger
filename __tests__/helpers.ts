@@ -1,22 +1,24 @@
-import pino from 'pino';
 import Emittery from 'emittery';
-import { createLogger, CreateLoggerOptions } from '../lib/node.js';
+import pino from 'pino';
+import {
+  createLogger,
+  CreateLoggerOptionsWithoutTransports,
+} from '../lib/node.js';
+import type { LogDescriptor, Logger } from '../lib/types.js';
 
-export function expectStream(): [
-  pino.DestinationStream,
-  Promise<pino.LogDescriptor>,
-] {
+export function expectStream<T>(): [pino.DestinationStream, Promise<T>] {
   const emitter = new Emittery<{ write: string }>();
   const stream = {
     write: (str: string): void => {
       emitter.emit('write', str).catch((err) => {
         console.error(err);
-        process.exit(1);
+        process.exitCode = 1;
+        throw err;
       });
     },
   };
 
-  const promise = new Promise<pino.LogDescriptor>((resolve) => {
+  const promise = new Promise<T>((resolve) => {
     emitter.on('write', (str) => {
       resolve(JSON.parse(str));
     });
@@ -26,9 +28,9 @@ export function expectStream(): [
 }
 
 export function testLogger(
-  opts?: CreateLoggerOptions,
-): [ReturnType<typeof createLogger>, Promise<pino.LogDescriptor>] {
-  const [stream, logPromise] = expectStream();
+  opts: CreateLoggerOptionsWithoutTransports = {},
+): [Logger, Promise<LogDescriptor>] {
+  const [stream, logPromise] = expectStream<LogDescriptor>();
 
   const logger = createLogger(opts, stream);
   return [logger, logPromise];
@@ -37,7 +39,7 @@ export function testLogger(
 export function testVanillaLogger(
   opts: pino.LoggerOptions = {},
 ): [pino.Logger, Promise<pino.LogDescriptor>] {
-  const [stream, logPromise] = expectStream();
+  const [stream, logPromise] = expectStream<pino.LogDescriptor>();
 
   const logger = pino(opts, stream);
   return [logger, logPromise];
