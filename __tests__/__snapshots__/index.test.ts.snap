@@ -45,7 +45,6 @@ Object {
       "go": "bang",
     },
   },
-  "caller": "",
   "hostname": "testhost",
   "level": 40,
   "logger": Object {
@@ -62,7 +61,6 @@ Object {
 
 exports[`Basic Mixins property overwrite 1`] = `
 Object {
-  "caller": "",
   "hostname": "testhost",
   "level": 40,
   "logger": Object {
@@ -139,7 +137,6 @@ Object {
 
 exports[`Basic Trace Caller Force (production) 1`] = `
 Object {
-  "caller": "",
   "hostname": "testhost",
   "level": 40,
   "msg": "hello",
