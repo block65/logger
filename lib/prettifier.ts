@@ -9,6 +9,7 @@ import {
   red,
   whiteBright,
 } from 'colorette';
+import { isatty } from 'tty';
 import util from 'util';
 import type { LogDescriptor } from './types.js';
 
@@ -46,7 +47,11 @@ export function createPrettifier(/*options?: unknown*/) {
       Object.keys(rest).length > 0
         ? ' ' +
           util.inspect(rest, {
-            colors: true,
+            colors:
+              'FORCE_COLOR' in process.env ||
+              (isatty(1) &&
+                process.env.TERM !== 'dumb' &&
+                !('NO_COLOR' in process.env)),
             compact: true,
             sorted: true,
           })
