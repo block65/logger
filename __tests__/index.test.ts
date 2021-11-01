@@ -1,3 +1,4 @@
+import { describe, test, expect } from '@jest/globals';
 import { testLogger, testVanillaLogger } from './helpers.js';
 
 describe('Basic', () => {
