@@ -1,6 +1,6 @@
 {
   "name": "@block65/logger",
-  "version": "7.2.0",
+  "version": "7.2.1",
   "private": false,
   "license": "MIT",
   "sideEffects": false,
