@@ -1,21 +1,33 @@
+import {
+  bgRed,
+  bgYellow,
+  black,
+  blue,
+  bold,
+  gray,
+  green,
+  red,
+  whiteBright,
+} from 'colorette';
 import util from 'util';
-import chalk from 'chalk';
 import type { LogDescriptor, Logger } from './types.js';
 
-function formatLevel(level: number) {
+function formatLevel(level: number): string {
   switch (level) {
     case 60: //fatal
-      return chalk.whiteBright.bgRed.bold('FATAL');
+      return whiteBright(bgRed(bold('FATAL')));
     case 50: //error
-      return chalk.red('ERROR');
+      return red('ERROR');
     case 40: // warn
-      return chalk.bgYellow.black.bold('WARN');
+      return bgYellow(black(bold('WARN')));
     case 30: //info
-      return chalk.blue('INFO');
+      return blue('INFO');
     case 20: //debug
-      return chalk.green('DEBUG');
+      return green('DEBUG');
     case 10: //trace
-      return chalk.gray('TRACE');
+      return gray('TRACE');
+    default:
+      return gray('SILENT');
   }
 }
 
@@ -28,7 +40,7 @@ export function prettifier(thisArg: Logger, options: unknown) {
     }
 
     const formattedName = name ? `(${name})` : '';
-    const formattedMsg = msg && ' ' + chalk.whiteBright(msg);
+    const formattedMsg = msg && ' ' + whiteBright(msg);
 
     const formattedRest =
       Object.keys(rest).length > 0
@@ -40,8 +52,9 @@ export function prettifier(thisArg: Logger, options: unknown) {
           })
         : '';
 
-    return `${formatLevel(level)}${formattedName}: ${chalk.gray(
-      new Date(time).toJSON(),
-    )}${formattedMsg}${formattedRest}\n`;
+    return `${gray(new Date(time).toJSON())} ${formatLevel(level).padEnd(
+      6,
+      ' ',
+    )}${formattedName} ${formattedMsg}${formattedRest}\n`;
   };
 }
