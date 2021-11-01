@@ -168,7 +168,8 @@ function getPlatformLoggerOptions(
 let counter = 0;
 
 function callerMixin(): { caller: string | undefined } {
-  const stackParts = Error().stack?.split('\n') || [];
+function callerMixin(): { caller?: string } {
+  const stackParts = new Error().stack?.split('\n') || [];
 
   const nonModuleFramesIndex = stackParts
     .map(
@@ -178,13 +179,19 @@ function callerMixin(): { caller: string | undefined } {
     )
     .lastIndexOf(true);
 
+  if (nonModuleFramesIndex === -1) {
+    return {};
+  }
+
   const frameCandidate: string | undefined =
     stackParts[nonModuleFramesIndex + 1];
 
+  const caller = frameCandidate
+    ? frameCandidate.substr(7).replace(`${process.cwd()}/`, '')
+    : frameCandidate;
+
   return {
-    caller: frameCandidate
-      ? frameCandidate.substr(7).replace(`${process.cwd()}/`, '')
-      : frameCandidate,
+    caller,
   };
 }
 
