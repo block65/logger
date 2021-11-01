@@ -31,22 +31,10 @@ export interface CreateLoggerOptions extends Omit<pino.LoggerOptions, 'mixin'> {
   mixins?: (MixinFnWithData | pino.MixinFn | Falsy)[];
 }
 
-const suggestedHostname = hostname();
-
 const defaultLoggerOptions: pino.LoggerOptions = {
   level: 'info',
   serializers: {
     err: serializeError,
-  },
-  base: {
-    pid: process.pid,
-    // in the case we get localhost (gcp cloud run), use random bytes instead
-    // this helps us debug if we need to isolate calls running in a specific
-    // container or instance (one which stays alive between invocations)
-    hostname:
-      suggestedHostname !== 'localhost'
-        ? suggestedHostname
-        : `zz${randomBytes(5).toString('hex')}`, // zz indicates synthetic hostname
   },
 };
 
@@ -114,13 +102,31 @@ function stringifyUndefined(details: unknown | object): object {
   return Object(details);
 }
 
+function detectPlatform(): ComputePlatform | undefined {
+  if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+    return 'aws-lambda';
+  }
+
+  if (
+    'K_CONFIGURATION' in process.env &&
+    'K_SERVICE' in process.env &&
+    'K_REVISION' in process.env
+  ) {
+    return 'gcp-cloudrun';
+  }
+}
+
 function getPlatformLoggerOptions(
-  platform?: ComputePlatform,
+  platform = detectPlatform(),
 ): pino.LoggerOptions {
   switch (platform) {
     // See https://cloud.google.com/error-reporting/docs/formatting-error-messages
     case 'gcp-cloudrun':
       return {
+        // pid is always 1 on Cloud Run, and instance id/resource is part of the
+        // log sent to GCP logging, so hostname is not required
+        base: undefined,
+
         level: 'info',
         messageKey: 'message',
         timestamp: pino.stdTimeFunctions.isoTime,
@@ -142,9 +148,14 @@ function getPlatformLoggerOptions(
           log: (details) => gcpLogs(stringifyUndefined(details)),
         },
       };
-
-    case 'aws':
     case 'aws-lambda':
+      return {
+        base: undefined, // no hostname or pid logging on lambda (no point)
+        formatters: {
+          log: (details) => stringifyUndefined(details),
+        },
+      };
+    case 'aws':
     default:
       return {
         formatters: {
