@@ -4,17 +4,17 @@
     "strict": true,
     "moduleResolution": "node",
     "declaration": true,
-    "target": "es2020",
-    "noUncheckedIndexedAccess": true,
+    "target": "es2021",
     "lib": [
-      "es2020"
+      "es2021"
     ],
-    "module": "es2020",
+    "module": "esnext",
     "inlineSources": false,
     "noEmitOnError": false,
     "removeComments": true,
     "skipLibCheck": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "noUncheckedIndexedAccess": true
   },
   "include": [
     "./lib"
