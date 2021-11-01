@@ -6,8 +6,9 @@ Object {
     "debug": "wooyeah",
     "message": "hallo",
     "stack": "Error: hallo
-    at Object.<anonymous> (/srv/test/__tests__/index.test.ts:12:32)
-    at Promise.then.completed (/srv/test/node_modules/jest-circus/build/utils.js:390:28)",
+    at Object.<anonymous> (/srv/test/__tests__/index.test.ts:13:32)
+    at Promise.then.completed (/srv/test/node_modules/jest-circus/build/utils.js:390:28)
+    at new Promise (<anonymous>)",
     "type": "Error",
   },
   "hostname": "testhost",
@@ -23,8 +24,9 @@ Object {
   "err": Object {
     "message": "hallo",
     "stack": "Error: hallo
-    at Object.<anonymous> (/srv/test/__tests__/index.test.ts:18:17)
-    at Promise.then.completed (/srv/test/node_modules/jest-circus/build/utils.js:390:28)",
+    at Object.<anonymous> (/srv/test/__tests__/index.test.ts:19:17)
+    at Promise.then.completed (/srv/test/node_modules/jest-circus/build/utils.js:390:28)
+    at new Promise (<anonymous>)",
     "type": "Error",
   },
   "hostname": "testhost",

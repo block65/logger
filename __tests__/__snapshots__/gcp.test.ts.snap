@@ -14,8 +14,9 @@ Object {
   "message": "Ded 1",
   "severity": "ERROR",
   "stack_trace": "Error: Ded 1
-    at Object.<anonymous> (/srv/test/__tests__/gcp.test.ts:18:18)
-    at Promise.then.completed (/srv/test/node_modules/jest-circus/build/utils.js:390:28)",
+    at Object.<anonymous> (/srv/test/__tests__/gcp.test.ts:19:18)
+    at Promise.then.completed (/srv/test/node_modules/jest-circus/build/utils.js:390:28)
+    at new Promise (<anonymous>)",
   "time": "2009-02-13T23:31:30.000Z",
 }
 `;
@@ -26,8 +27,9 @@ Object {
   "message": "Ded 2",
   "severity": "CRITICAL",
   "stack_trace": "Error: Ded 2
-    at Object.<anonymous> (/srv/test/__tests__/gcp.test.ts:27:18)
-    at Promise.then.completed (/srv/test/node_modules/jest-circus/build/utils.js:390:28)",
+    at Object.<anonymous> (/srv/test/__tests__/gcp.test.ts:28:18)
+    at Promise.then.completed (/srv/test/node_modules/jest-circus/build/utils.js:390:28)
+    at new Promise (<anonymous>)",
   "time": "2009-02-13T23:31:30.000Z",
 }
 `;

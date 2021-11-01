@@ -6,8 +6,9 @@ Object {
     "message": "Ded 3",
     "name": "Error",
     "stack": "Error: Ded 3
-    at Object.<anonymous> (/srv/test/__tests__/aws.test.ts:32:18)
-    at Promise.then.completed (/srv/test/node_modules/jest-circus/build/utils.js:390:28)",
+    at Object.<anonymous> (/srv/test/__tests__/aws.test.ts:33:18)
+    at Promise.then.completed (/srv/test/node_modules/jest-circus/build/utils.js:390:28)
+    at new Promise (<anonymous>)",
   },
   "hostname": "testhost",
   "level": 50,
@@ -23,8 +24,9 @@ Object {
     "message": "Ded 4",
     "name": "Error",
     "stack": "Error: Ded 4
-    at Object.<anonymous> (/srv/test/__tests__/aws.test.ts:23:18)
-    at Promise.then.completed (/srv/test/node_modules/jest-circus/build/utils.js:390:28)",
+    at Object.<anonymous> (/srv/test/__tests__/aws.test.ts:24:18)
+    at Promise.then.completed (/srv/test/node_modules/jest-circus/build/utils.js:390:28)
+    at new Promise (<anonymous>)",
   },
   "level": 50,
   "msg": "Ded 4",
