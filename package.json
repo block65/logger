@@ -17,7 +17,7 @@
     "LICENSE.md"
   ],
   "scripts": {
-    "test": "jest"
+    "test": "NODE_OPTIONS=\"--stack-trace-limit=3\" jest"
   },
   "dependencies": {
     "@types/cls-hooked": "^4.3.3",
