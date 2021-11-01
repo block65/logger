@@ -26,10 +26,8 @@ Object {
     at Object.<anonymous> (/srv/test/__tests__/aws.test.ts:23:18)
     at Promise.then.completed (/srv/test/node_modules/jest-circus/build/utils.js:390:28)",
   },
-  "hostname": "testhost",
   "level": 50,
   "msg": "Ded 4",
-  "pid": 1337,
   "time": 1234567890000,
 }
 `;

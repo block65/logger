@@ -2,9 +2,7 @@
 
 exports[`GCP Cloud Run 1`] = `
 Object {
-  "hostname": "testhost",
   "message": "hello",
-  "pid": 1337,
   "severity": "WARNING",
   "time": "2009-02-13T23:31:30.000Z",
 }
@@ -13,9 +11,7 @@ Object {
 exports[`GCP Cloud Run Error Object 1`] = `
 Object {
   "@type": "type.googleapis.com/google.devtools.clouderrorreporting.v1beta1.ReportedErrorEvent",
-  "hostname": "testhost",
   "message": "Ded 1",
-  "pid": 1337,
   "severity": "ERROR",
   "stack_trace": "Error: Ded 1
     at Object.<anonymous> (/srv/test/__tests__/gcp.test.ts:18:18)
@@ -27,9 +23,7 @@ Object {
 exports[`GCP Cloud Run Fatal with Error Object 1`] = `
 Object {
   "@type": "type.googleapis.com/google.devtools.clouderrorreporting.v1beta1.ReportedErrorEvent",
-  "hostname": "testhost",
   "message": "Ded 2",
-  "pid": 1337,
   "severity": "CRITICAL",
   "stack_trace": "Error: Ded 2
     at Object.<anonymous> (/srv/test/__tests__/gcp.test.ts:27:18)
