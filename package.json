@@ -17,7 +17,6 @@
     "LICENSE.md"
   ],
   "scripts": {
-    "//test": "NODE_OPTIONS=\"--stack-trace-limit=3\" jest",
     "bazel": "bazel",
     "bazel:buildifier": "bazel run //:buildifier",
     "bazel:format": "find . -type f \\( -name \"*.bzl\" -or -name WORKSPACE -or -name BUILD -or -name BUILD.bazel \\) ! -path \"*/node_modules/*\" | xargs buildifier -v --warnings=attr-cfg,attr-license,attr-non-empty,attr-output-default,attr-single-file,constant-glob,ctx-actions,ctx-args,depset-iteration,depset-union,dict-concatenation,duplicated-name,filetype,git-repository,http-archive,integer-division,load,load-on-top,native-build,native-package,out-of-order-load,output-group,package-name,package-on-top,positional-args,redefined-variable,repository-name,same-origin-load,string-iteration,unsorted-dict-items,unused-variable",
@@ -26,7 +25,8 @@
     "build": "bazel build",
     "build:watch": "ibazel build",
     "build:clean": "bazel clean",
-    "test": "bazel test //..."
+    "test": "bazel test //:unit",
+    "test": "bazel run //:unit.update"
   },
   "dependencies": {
     "@types/cls-hooked": "^4.3.3",
@@ -35,7 +35,8 @@
     "pino": "^7.1.0",
     "pino-abstract-transport": "^0.5.0",
     "pino-pretty": "^7.2.0",
-    "serialize-error": "^8.1.0"
+    "serialize-error": "^8.1.0",
+    "sonic-boom": "^2.3.1"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.16.0",

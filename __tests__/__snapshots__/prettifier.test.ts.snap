@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Prettifier Color 1`] = `
+"[90m1970-01-15T06:56:07.890Z[39m [32mDEBUG[39m  [97mkek[39m
+"
+`;
+
+exports[`Prettifier Color 2`] = `
+"[90m1970-01-15T06:56:07.890Z[39m [32mDEBUG[39m  [97mkek[39m { random: { arr: [ 1, 2, 3 ], bool: true, number: 12, str: 'hello' } }
+"
+`;
+
+exports[`Prettifier With colour 1`] = `
+"[90m1970-01-15T06:56:07.890Z[39m [32mDEBUG[39m  [97mkek[39m
+"
+`;
+
+exports[`Prettifier With colour 2`] = `
+"[90m1970-01-15T06:56:07.890Z[39m [32mDEBUG[39m  [97mkek[39m { random: { arr: [ [33m1[39m, [33m2[39m, [33m3[39m ], bool: [33mtrue[39m, number: [33m12[39m, str: [32m'hello'[39m } }
+"
+`;

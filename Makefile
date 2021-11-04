@@ -15,8 +15,7 @@ TESTCMD = docker run \
 			-u $(USER_ID) \
 			-v $(CURDIR):/srv/test \
 			-w /srv/test \
-			-e SERVICE_IDENTIFIER=test \
-			-e NODE_ENV=production \
+			-e NODE_ENV=development \
 			$(DOCKER_FLAGS) \
 			node:16 \
 			$(CMD)
@@ -39,7 +38,7 @@ test: dist
 	$(TESTCMD) $(ifdef DEBUG, --runInBand)
 
 test-update: dist
-	$(TESTCMD) -u
+	$(TESTCMD)
 
 dev: node_modules
 	$(TESTCMD) --watchAll

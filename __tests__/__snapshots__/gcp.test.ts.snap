@@ -1,35 +1,41 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`GCP Cloud Run 1`] = `
-Object {
-  "message": "hello",
-  "severity": "WARNING",
-  "time": "2009-02-13T23:31:30.000Z",
-}
+Array [
+  Object {
+    "message": "hello",
+    "severity": "WARNING",
+    "time": "2009-02-13T23:31:30.000Z",
+  },
+]
 `;
 
 exports[`GCP Cloud Run Error Object 1`] = `
-Object {
-  "@type": "type.googleapis.com/google.devtools.clouderrorreporting.v1beta1.ReportedErrorEvent",
-  "message": "Ded 1",
-  "severity": "ERROR",
-  "stack_trace": "Error: Ded 1
-    at Object.<anonymous> (/srv/test/__tests__/gcp.test.ts:19:18)
-    at Promise.then.completed (/srv/test/node_modules/jest-circus/build/utils.js:390:28)
+Array [
+  Object {
+    "@type": "type.googleapis.com/google.devtools.clouderrorreporting.v1beta1.ReportedErrorEvent",
+    "message": "Ded 1",
+    "severity": "ERROR",
+    "stack_trace": "Error: Ded 1
+    at Object.<anonymous> (/home/node/.cache/bazel/_bazel_node/1d5e05b0e1664a1bf8b5c2d1124eb6d9/execroot/block65_logger/bazel-out/k8-fastbuild/bin/unit.update.sh.runfiles/block65_logger/__tests__/gcp.test.ts:19:18)
+    at Promise.then.completed (/home/node/.cache/bazel/_bazel_node/1d5e05b0e1664a1bf8b5c2d1124eb6d9/execroot/block65_logger/bazel-out/k8-fastbuild/bin/unit.update.sh.runfiles/block65_logger/node_modules/jest-circus/build/utils.js:390:28)
     at new Promise (<anonymous>)",
-  "time": "2009-02-13T23:31:30.000Z",
-}
+    "time": "2009-02-13T23:31:30.000Z",
+  },
+]
 `;
 
 exports[`GCP Cloud Run Fatal with Error Object 1`] = `
-Object {
-  "@type": "type.googleapis.com/google.devtools.clouderrorreporting.v1beta1.ReportedErrorEvent",
-  "message": "Ded 2",
-  "severity": "CRITICAL",
-  "stack_trace": "Error: Ded 2
-    at Object.<anonymous> (/srv/test/__tests__/gcp.test.ts:28:18)
-    at Promise.then.completed (/srv/test/node_modules/jest-circus/build/utils.js:390:28)
+Array [
+  Object {
+    "@type": "type.googleapis.com/google.devtools.clouderrorreporting.v1beta1.ReportedErrorEvent",
+    "message": "Ded 2",
+    "severity": "CRITICAL",
+    "stack_trace": "Error: Ded 2
+    at Object.<anonymous> (/home/node/.cache/bazel/_bazel_node/1d5e05b0e1664a1bf8b5c2d1124eb6d9/execroot/block65_logger/bazel-out/k8-fastbuild/bin/unit.update.sh.runfiles/block65_logger/__tests__/gcp.test.ts:28:18)
+    at Promise.then.completed (/home/node/.cache/bazel/_bazel_node/1d5e05b0e1664a1bf8b5c2d1124eb6d9/execroot/block65_logger/bazel-out/k8-fastbuild/bin/unit.update.sh.runfiles/block65_logger/node_modules/jest-circus/build/utils.js:390:28)
     at new Promise (<anonymous>)",
-  "time": "2009-02-13T23:31:30.000Z",
-}
+    "time": "2009-02-13T23:31:30.000Z",
+  },
+]
 `;

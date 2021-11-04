@@ -1,5 +1,6 @@
-import { describe, test, expect, jest, beforeEach } from '@jest/globals';
-import { createPrettifier } from '../lib/prettifier.js';
+import { beforeEach, describe, expect, jest, test } from '@jest/globals';
+import { createPrettifier } from '../lib/pretty-transport.js';
+
 process.env.NO_COLOR = 'true';
 
 describe('Prettifier', () => {
@@ -72,21 +73,4 @@ describe('Prettifier', () => {
       }),
     ).toMatchSnapshot();
   });
-
-  // test('via import', async () => {
-  //   // NOTE: All we can do here is make sure this doesn't throw.
-  //   // It's not possible to test via Jest because we can't provide both a
-  //   // transport AND a stream and because transports are just modules, all we
-  //   // can do is mock it, which defeats the purpose of testing it
-  //
-  //   const { createLogger } = await import('../dist/index.js');
-  //
-  //   const logger = createLogger({
-  //     pretty: true,
-  //   });
-  //
-  //   logger.trace({
-  //     test: 123,
-  //   });
-  // });
 });

@@ -2,8 +2,8 @@ import { createNamespace, Namespace } from 'cls-hooked';
 import type { RequestHandler } from 'express';
 import { sep } from 'path';
 import pino from 'pino';
-import PinoPretty from 'pino-pretty';
 import { serializeError } from 'serialize-error';
+import { PrettyTransportOptions } from './pretty-transport.js';
 import { Logger } from './types.js';
 
 type Falsy = false | undefined | null;
@@ -30,7 +30,13 @@ export interface CreateLoggerOptions
   traceCaller?: boolean;
   platform?: ComputePlatform;
   mixins?: (MixinFnWithData | pino.MixinFn | Falsy)[];
-  transports?: pino.TransportMultiOptions;
+  // transports?: pino.TransportMultiOptions;
+}
+
+export interface CreateCliLoggerOptions
+  extends Omit<pino.LoggerOptions, 'mixin' | 'prettyPrint' | 'prettifier'> {
+  traceCaller?: boolean;
+  mixins?: (MixinFnWithData | pino.MixinFn | Falsy)[];
 }
 
 const defaultLoggerOptions: pino.LoggerOptions = {
@@ -227,22 +233,14 @@ export type CreateLoggerOptionsWithoutTransports = Omit<
 >;
 
 export function createLogger(
-  opts: CreateLoggerOptionsWithoutTransports,
-  destination: pino.DestinationStream,
+  opts?: CreateLoggerOptionsWithoutTransports,
+  destination?: pino.DestinationStream,
 ): Logger;
 export function createLogger(opts?: CreateLoggerOptions): Logger;
 export function createLogger(
   opts: CreateLoggerOptions = {},
   destination?: pino.DestinationStream,
 ): Logger {
-  if (destination && opts.transports) {
-    throw new Error('Please provide only one of `destination` or `transports`');
-  }
-
-  if (destination && opts.pretty) {
-    throw new Error('Please provide only one of `destination` or `pretty`');
-  }
-
   const cls = createNamespace(`logger/${counter}`);
   counter += 1;
 
@@ -263,38 +261,59 @@ export function createLogger(
     traceCaller && callerMixin,
   ]);
 
-  const transport =
-    destination ||
-    pino.transport({
-      ...opts.transports,
-      targets: [
-        ...(opts.transports?.targets || []),
-        ...(opts.pretty
-          ? [
-              {
-                target: 'pino-pretty',
-                level: 'info',
-                options: {
-                  ignore: 'pid,hostname',
-                  translateTime: true,
-                  singleLine: true,
-                } as PinoPretty.PrettyOptions,
-              },
-            ]
-          : ([] as any[])),
-      ],
-    });
-
   const pinoInstance = pino(
     {
       ...defaultLoggerOptions,
       ...platformLoggerOptions,
       ...userPinoOpts,
-      // ...transportOptions,
       mixin,
     },
-    transport,
+    destination || process.stdout,
   );
+
+  return Object.create(pinoInstance, {
+    cls: {
+      value: cls,
+      configurable: false,
+    },
+  });
+}
+
+export function createCliLogger(
+  opts: CreateCliLoggerOptions = {},
+  destination: number | string = 1,
+): Logger {
+  const cls = createNamespace(`logger/${counter}`);
+  counter += 1;
+
+  const isDevelopment = process.env.NODE_ENV === 'development';
+
+  const { traceCaller = isDevelopment, mixins = [], ...userPinoOpts } = opts;
+
+  const mixin = composeMixins([
+    ...mixins,
+    createContextMixin(cls),
+    traceCaller && callerMixin,
+  ]);
+
+  const prettyTransportOptions: PrettyTransportOptions = {
+    destination,
+  };
+
+  const pinoInstance = pino({
+    ...defaultLoggerOptions,
+    ...userPinoOpts,
+    mixin,
+    transport: {
+      targets: [
+        {
+          target: './pretty-transport.js',
+          level: 'trace',
+          options: prettyTransportOptions,
+        },
+      ],
+    },
+  });
 
   return Object.create(pinoInstance, {
     cls: {

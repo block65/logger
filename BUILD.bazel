@@ -44,9 +44,14 @@ DEPS = [
     "@npm//@types/express",
     "@npm//@types/cls-hooked",
     "@npm//pino",
+    "@npm//cls-hooked",
     "@npm//colorette",
     "@npm//pino-pretty",
     "@npm//serialize-error",
+]
+
+TEST_DEPS = [
+  "@npm//emittery",
 ]
 
 ts_project(
@@ -60,7 +65,7 @@ jest_test(
     name = "unit",
     srcs = SRCS + TEST_SRCS,
     snapshots = TEST_SNAPSHOT_SRCS,
-    deps = [],
+    deps = DEPS + TEST_DEPS,
 )
 
 #tsc_test(

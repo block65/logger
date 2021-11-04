@@ -9,9 +9,16 @@ import {
   red,
   whiteBright,
 } from 'colorette';
+import { once } from 'events';
+import build from 'pino-abstract-transport';
+import SonicBoom, { SonicBoomOpts } from 'sonic-boom';
 import { isatty } from 'tty';
 import util from 'util';
-import type { LogDescriptor } from './types.js';
+import { LogDescriptor } from './types.js';
+
+export interface PrettyTransportOptions {
+  destination?: number | SonicBoomOpts['dest'];
+}
 
 function formatLevel(level: number): string {
   switch (level) {
@@ -62,4 +69,45 @@ export function createPrettifier(/*options?: unknown*/) {
       ' ',
     )}${formattedName} ${formattedMsg}${formattedRest}\n`;
   };
+}
+
+export default async function (options?: PrettyTransportOptions) {
+  const prettifier = createPrettifier();
+  // SonicBoom is necessary to avoid loops with the main thread.
+  // It is the same of pino.destination().
+  const destination = new SonicBoom({
+    fd:
+      typeof options?.destination === 'number'
+        ? options?.destination
+        : undefined,
+    dest:
+      typeof options?.destination !== 'number'
+        ? options?.destination?.toString()
+        : undefined,
+    sync: true,
+  });
+
+  await once(destination, 'ready');
+
+  return build(
+    async function (source) {
+      for await (let obj of source) {
+        const toDrain = !destination.write(prettifier(obj) + '\n');
+        // This block will handle backpressure
+        if (toDrain) {
+          await once(destination, 'drain');
+        }
+      }
+    },
+    {
+      async close(err?: Error) {
+        if (err) {
+          console.warn(err);
+        }
+        destination.end();
+
+        await once(destination, 'close');
+      },
+    },
+  );
 }

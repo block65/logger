@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Prettifier pretty logger force-color 1`] = `
+Array [
+  Array [
+    "[90m2021-11-04T12:48:14.971Z[39m [31mERROR[39m  [97mhallo[39m { err:
+   { message: [32m'hallo'[39m,
+     name: [32m'Error'[39m,
+     stack:
+      [32m'Error: hallo\\\\n    at Object.<anonymous> (/home/mholman/Projects/block65/colacube/logger/__tests__/cli.test.ts:26:18)\\\\n    at Promise.then.completed (/home/mholman/Projects/block65/colacube/logger/node_modules/jest-circus/build/utils.js:390:28)\\\\n    at new Promise (<anonymous>)'[39m } }
+
+",
+  ],
+]
+`;
+
+exports[`Prettifier pretty logger no-color 1`] = `
+Array [
+  Array [
+    "[90m2021-11-04T12:48:14.810Z[39m [31mERROR[39m  [97mhallo[39m { err:
+   { message: [32m'hallo'[39m,
+     name: [32m'Error'[39m,
+     stack:
+      [32m'Error: hallo\\\\n    at Object.<anonymous> (/home/mholman/Projects/block65/colacube/logger/__tests__/cli.test.ts:15:18)\\\\n    at Promise.then.completed (/home/mholman/Projects/block65/colacube/logger/node_modules/jest-circus/build/utils.js:390:28)\\\\n    at new Promise (<anonymous>)'[39m } }
+
+[90m2021-11-04T12:48:14.842Z[39m [34mINFO[39m  [97mhello[39m { err:
+   { message: [32m'hello'[39m,
+     name: [32m'Error'[39m,
+     stack:
+      [32m'Error: hello\\\\n    at Object.<anonymous> (/home/mholman/Projects/block65/colacube/logger/__tests__/cli.test.ts:16:17)\\\\n    at Promise.then.completed (/home/mholman/Projects/block65/colacube/logger/node_modules/jest-circus/build/utils.js:390:28)\\\\n    at new Promise (<anonymous>)'[39m } }
+
+[90m2021-11-04T12:48:14.842Z[39m [43m[30m[1mWARN[22m[39m[49m  [97mhalo[39m { err:
+   { message: [32m'halo'[39m,
+     name: [32m'Error'[39m,
+     stack:
+      [32m'Error: halo\\\\n    at Object.<anonymous> (/home/mholman/Projects/block65/colacube/logger/__tests__/cli.test.ts:17:17)\\\\n    at Promise.then.completed (/home/mholman/Projects/block65/colacube/logger/node_modules/jest-circus/build/utils.js:390:28)\\\\n    at new Promise (<anonymous>)'[39m } }
+
+",
+  ],
+]
+`;

@@ -1,38 +1,42 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Control Error Object 1`] = `
-Object {
-  "err": Object {
-    "debug": "wooyeah",
-    "message": "hallo",
-    "stack": "Error: hallo
-    at Object.<anonymous> (/srv/test/__tests__/control.test.ts:7:32)
-    at Promise.then.completed (/srv/test/node_modules/jest-circus/build/utils.js:390:28)
+Array [
+  Object {
+    "err": Object {
+      "debug": "wooyeah",
+      "message": "hallo",
+      "stack": "Error: hallo
+    at Object.<anonymous> (/home/node/.cache/bazel/_bazel_node/1d5e05b0e1664a1bf8b5c2d1124eb6d9/execroot/block65_logger/bazel-out/k8-fastbuild/bin/unit.update.sh.runfiles/block65_logger/__tests__/control.test.ts:7:32)
+    at Promise.then.completed (/home/node/.cache/bazel/_bazel_node/1d5e05b0e1664a1bf8b5c2d1124eb6d9/execroot/block65_logger/bazel-out/k8-fastbuild/bin/unit.update.sh.runfiles/block65_logger/node_modules/jest-circus/build/utils.js:390:28)
     at new Promise (<anonymous>)",
-    "type": "Error",
+      "type": "Error",
+    },
+    "hostname": "testhost",
+    "level": 50,
+    "msg": "hallo",
+    "pid": 1337,
+    "time": 1234567890000,
   },
-  "hostname": "testhost",
-  "level": 50,
-  "msg": "hallo",
-  "pid": 1337,
-  "time": 1234567890000,
-}
+]
 `;
 
 exports[`Control Error Object serialized on non-error level 1`] = `
-Object {
-  "err": Object {
-    "message": "hallo",
-    "stack": "Error: hallo
-    at Object.<anonymous> (/srv/test/__tests__/control.test.ts:13:17)
-    at Promise.then.completed (/srv/test/node_modules/jest-circus/build/utils.js:390:28)
+Array [
+  Object {
+    "err": Object {
+      "message": "hallo",
+      "stack": "Error: hallo
+    at Object.<anonymous> (/home/node/.cache/bazel/_bazel_node/1d5e05b0e1664a1bf8b5c2d1124eb6d9/execroot/block65_logger/bazel-out/k8-fastbuild/bin/unit.update.sh.runfiles/block65_logger/__tests__/control.test.ts:13:17)
+    at Promise.then.completed (/home/node/.cache/bazel/_bazel_node/1d5e05b0e1664a1bf8b5c2d1124eb6d9/execroot/block65_logger/bazel-out/k8-fastbuild/bin/unit.update.sh.runfiles/block65_logger/node_modules/jest-circus/build/utils.js:390:28)
     at new Promise (<anonymous>)",
-    "type": "Error",
+      "type": "Error",
+    },
+    "hostname": "testhost",
+    "level": 30,
+    "msg": "hallo",
+    "pid": 1337,
+    "time": 1234567890000,
   },
-  "hostname": "testhost",
-  "level": 30,
-  "msg": "hallo",
-  "pid": 1337,
-  "time": 1234567890000,
-}
+]
 `;
