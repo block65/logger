@@ -4,49 +4,61 @@
   "private": false,
   "license": "MIT",
   "sideEffects": false,
-  "type": "module",
-  "main": "./dist/index.js",
   "exports": {
     "node": "./dist/index.js",
     "pretty": "./dist/pretty.js"
   },
-  "types": "./dist/index.d.ts",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "files": [
-    "dist/*.js",
-    "dist/*.d.ts",
+    "lib/*.js",
+    "lib/*.d.ts",
     "CREDITS",
     "LICENSE.md"
   ],
   "scripts": {
-    "test": "NODE_OPTIONS=\"--stack-trace-limit=3\" jest"
+    "//test": "NODE_OPTIONS=\"--stack-trace-limit=3\" jest",
+    "bazel": "bazel",
+    "bazel:buildifier": "bazel run //:buildifier",
+    "bazel:format": "find . -type f \\( -name \"*.bzl\" -or -name WORKSPACE -or -name BUILD -or -name BUILD.bazel \\) ! -path \"*/node_modules/*\" | xargs buildifier -v --warnings=attr-cfg,attr-license,attr-non-empty,attr-output-default,attr-single-file,constant-glob,ctx-actions,ctx-args,depset-iteration,depset-union,dict-concatenation,duplicated-name,filetype,git-repository,http-archive,integer-division,load,load-on-top,native-build,native-package,out-of-order-load,output-group,package-name,package-on-top,positional-args,redefined-variable,repository-name,same-origin-load,string-iteration,unsorted-dict-items,unused-variable",
+    "bazel:lint": "yarn bazel:format --lint=warn",
+    "bazel:lint-fix": "yarn bazel:format --lint=fix",
+    "build": "bazel build",
+    "build:watch": "ibazel build",
+    "build:clean": "bazel clean",
+    "test": "bazel test //..."
   },
   "dependencies": {
     "@types/cls-hooked": "^4.3.3",
     "cls-hooked": "^4.2.2",
     "colorette": "^2.0.16",
-    "pino": "^7.0.5",
-    "pino-abstract-transport": "^0.4.0",
-    "pino-pretty": "^7.1.0",
+    "pino": "^7.1.0",
+    "pino-abstract-transport": "^0.5.0",
+    "pino-pretty": "^7.2.0",
     "serialize-error": "^8.1.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.16.0",
     "@babel/preset-typescript": "^7.16.0",
-    "@block65/eslint-config": "^6.2.1",
+    "@bazel/bazelisk": "^1.10.1",
+    "@bazel/buildifier": "^4.2.3",
+    "@bazel/ibazel": "^0.15.10",
+    "@bazel/typescript": "^4.4.2",
+    "@block65/eslint-config": "^6.2.2",
     "@jest/globals": "^27.3.1",
     "@types/express": "^4.17.13",
     "@types/node": "^16.11.6",
-    "@typescript-eslint/eslint-plugin": "^5.2.0",
-    "@typescript-eslint/parser": "^5.2.0",
+    "@typescript-eslint/eslint-plugin": "^5.3.0",
+    "@typescript-eslint/parser": "^5.3.0",
     "emittery": "^0.10.0",
     "eslint": "^8.1.0",
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-prettier": "^4.0.0",
+    "jest": "^27.3.1",
     "prettier": "^2.4.1",
     "rimraf": "^3.0.2",
     "ts-jest": "^27.0.7",
-    "jest": "^27.0.7",
-    "typescript": "^4.4.4"
+    "typescript": "^4.5.1-rc"
   },
   "peerDependencies": {
     "@types/express": "^4.17.13"
