@@ -10,6 +10,7 @@ import {
   createCliLogger,
   createLogger,
   CreateLoggerOptionsWithoutTransports,
+  CreateCliLoggerOptions,
   LogDescriptor,
   Logger,
 } from '../lib/index.js';
@@ -74,7 +75,7 @@ export function loggerWithWaitableMock(
 }
 
 export function cliLoggerWithWaitableMockWatchOnce(
-  opts?: CreateLoggerOptionsWithoutTransports,
+  opts?: CreateCliLoggerOptions,
 ): [Logger, WaitableMock<string[]>] {
   const logFile = '/tmp/tmp.' + randomBytes(3).toString('base64url');
   const logger = createCliLogger(opts, logFile);
