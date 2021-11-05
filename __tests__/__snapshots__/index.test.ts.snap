@@ -11,7 +11,6 @@ Array [
         "go": "bang",
       },
     },
-    "caller": "Object.<anonymous> (__tests__/index.test.ts:111:12)",
     "hostname": "testhost",
     "level": 40,
     "logger": Object {
@@ -30,7 +29,6 @@ Array [
 exports[`Basic Mixins property overwrite 1`] = `
 Array [
   Object {
-    "caller": "Object.<anonymous> (__tests__/index.test.ts:130:12)",
     "hostname": "testhost",
     "level": 40,
     "logger": Object {
@@ -130,10 +128,47 @@ Array [
 ]
 `;
 
-exports[`Basic Trace Caller Force (production) 1`] = `
+exports[`Basic Trace Caller Auto (development) 1`] = `
 Array [
   Object {
-    "caller": "Object.<anonymous> (__tests__/index.test.ts:78:12)",
+    "caller": "<empty>",
+    "hostname": "testhost",
+    "level": 40,
+    "msg": "hello",
+    "pid": 1337,
+    "time": 1234567890000,
+  },
+]
+`;
+
+exports[`Basic Trace Caller Auto (production) 1`] = `
+Array [
+  Object {
+    "hostname": "testhost",
+    "level": 40,
+    "msg": "hello",
+    "pid": 1337,
+    "time": 1234567890000,
+  },
+]
+`;
+
+exports[`Basic Trace Caller Force false (development) 1`] = `
+Array [
+  Object {
+    "hostname": "testhost",
+    "level": 40,
+    "msg": "hello",
+    "pid": 1337,
+    "time": 1234567890000,
+  },
+]
+`;
+
+exports[`Basic Trace Caller Force true (production) 1`] = `
+Array [
+  Object {
+    "caller": "Object.<anonymous> (__tests__/index.test.ts:92:12)",
     "hostname": "testhost",
     "level": 40,
     "msg": "hello",
