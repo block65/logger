@@ -4,7 +4,7 @@ import build from 'pino-abstract-transport';
 import SonicBoom, { SonicBoomOpts } from 'sonic-boom';
 import { isatty } from 'tty';
 import util from 'util';
-import { LogDescriptor, LogLevelNumbers } from './types.js';
+import type { LogDescriptor } from './types.js';
 
 export interface PrettyTransportOptions {
   destination: number | SonicBoomOpts['dest'];
@@ -31,21 +31,21 @@ export function createPrettifier(options?: { fd?: number; color?: boolean }) {
     whiteBright,
   } = createColors({ useColor });
 
-  const formatLevel = (level: LogLevelNumbers): string => {
+  const formatLevel = (level: number): string => {
     switch (level) {
-      case LogLevelNumbers.Fatal:
+      case 60: // LogLevelNumbers.Fatal:
         return bgRed(whiteBright(bold('FATAL')));
-      case LogLevelNumbers.Error:
+      case 50: // LogLevelNumbers.Error:
         return red('ERROR');
-      case LogLevelNumbers.Warn:
+      case 40: //LogLevelNumbers.Warn:
         return bgYellow(black(bold('WARN')));
-      case LogLevelNumbers.Info:
+      case 30: // LogLevelNumbers.Info:
         return blue('INFO');
-      case LogLevelNumbers.Debug:
+      case 20: // LogLevelNumbers.Debug:
         return green('DEBUG');
-      case LogLevelNumbers.Trace:
+      case 10: // LogLevelNumbers.Trace:
         return dim('TRACE');
-      case LogLevelNumbers.Silent:
+      case 0: // LogLevelNumbers.Silent:
       default:
         return dim('SILENT');
     }
