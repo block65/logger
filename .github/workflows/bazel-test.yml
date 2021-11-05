@@ -1,9 +1,6 @@
 name: bazel-test
 
-on:
-  push:
-    tags:
-      - v*.*.*
+on: workflow_dispatch
 
 jobs:
   build:
