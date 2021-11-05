@@ -19,7 +19,7 @@ export function callerMixin(): { caller?: string } {
     .lastIndexOf(true);
 
   if (nonModuleFramesIndex === -1) {
-    return {};
+    return { caller: '<empty>' };
   }
 
   const frameCandidate: string | undefined =
