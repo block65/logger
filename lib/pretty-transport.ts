@@ -85,8 +85,8 @@ export default async function (options: PrettyTransportOptions) {
   const destination = new SonicBoom({
     fd,
     dest:
-      typeof options.destination !== 'number'
-        ? options.destination?.toString()
+      typeof options.destination !== 'number' && options.destination
+        ? options.destination
         : undefined,
     sync: false,
   });

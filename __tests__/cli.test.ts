@@ -1,10 +1,10 @@
 import { beforeEach, describe, expect, jest, test } from '@jest/globals';
 
 describe('CLI', () => {
-  const OLD_ENV = process.env;
+  const oldEnv = process.env;
   beforeEach(() => {
     jest.resetModules();
-    process.env = { ...OLD_ENV };
+    process.env = { ...oldEnv };
   });
 
   test('pretty logger no-color', async () => {

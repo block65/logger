@@ -2,10 +2,10 @@ import { beforeEach, describe, expect, jest, test } from '@jest/globals';
 import { createPrettifier } from '../lib/pretty-transport.js';
 
 describe('Prettifier', () => {
-  const OLD_ENV = process.env;
+  const oldEnv = process.env;
   beforeEach(() => {
     jest.resetModules();
-    process.env = { ...OLD_ENV };
+    process.env = { ...oldEnv };
   });
 
   test('No Color', async () => {
