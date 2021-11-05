@@ -8,11 +8,17 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: bazelbuild/setup-bazelisk@v1
-      - name: Mount bazel cache
+
+      - name: mount cache
         uses: actions/cache@v2
         with:
-          path: "~/.cache/bazel"
-          key: bazel
-      - run: bazel build //...
+          path: "~/.cache/bazel-disk-cache" # this should match .bazelrc
+          key: ${{ runner.os }}-bazel-disk-cache
+
+      - name: test
+        run: bazel test //...
+
+      - name: build
+        run: bazel build //...
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
