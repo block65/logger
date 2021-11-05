@@ -26,7 +26,7 @@ export function callerMixin(): { caller?: string } {
     stackParts[nonModuleFramesIndex + 1];
 
   const caller = frameCandidate
-    ? frameCandidate.substr(7).replace(`${process.cwd()}/`, '')
+    ? frameCandidate.slice(7).replace(`${process.cwd()}/`, '')
     : frameCandidate;
 
   return {
