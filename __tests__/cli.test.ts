@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, jest, test } from '@jest/globals';
-import { cliLoggerWithWaitableMockWatchOnce } from './helpers.js';
-jest.useRealTimers();
 
 describe('CLI', () => {
+  jest.useRealTimers();
+
   const OLD_ENV = process.env;
   beforeEach(() => {
     jest.resetModules();
@@ -11,6 +11,8 @@ describe('CLI', () => {
 
   test('pretty logger no-color', async () => {
     process.env.NO_COLOR = 'true';
+    const { cliLoggerWithWaitableMockWatchOnce } = await import('./helpers.js');
+
     const [logger, callback] = cliLoggerWithWaitableMockWatchOnce();
     logger.error(new Error('hallo'));
     logger.info(new Error('hello'));
@@ -20,8 +22,10 @@ describe('CLI', () => {
     await expect(callback.waitUntilCalledTimes(1)).resolves.toMatchSnapshot();
   });
 
-  test('pretty logger force-color', async () => {
+  test.only('pretty logger force-color', async () => {
     process.env.FORCE_COLOR = 'true';
+    const { cliLoggerWithWaitableMockWatchOnce } = await import('./helpers.js');
+
     const [logger, callback] = cliLoggerWithWaitableMockWatchOnce();
     logger.error(new Error('hallo'));
     logger.info(new Error('hello'));
