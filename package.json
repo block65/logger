@@ -25,7 +25,8 @@
     "build:clean": "bazel clean",
     "build:watch": "ibazel build",
     "test": "bazel test //:unit",
-    "test:update": "bazel run //:unit.update"
+    "test:update": "bazel run //:unit.update",
+    "test:watch": "ibazel test //:unit"
   },
   "dependencies": {
     "@types/cls-hooked": "^4.3.3",
