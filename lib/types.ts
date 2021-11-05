@@ -1,5 +1,8 @@
 import type { Namespace } from 'cls-hooked';
 import type pino from 'pino';
+import type { MixinFnWithData } from './mixins.js';
+
+export type Falsy = false | undefined | null;
 
 export enum LogLevelNumbers {
   Fatal = 60,
@@ -27,6 +30,32 @@ export interface LogDescriptor {
 
 export type BaseLogger = pino.BaseLogger & pino.LoggerExtras;
 
-export type Logger = {
+export interface Logger extends BaseLogger {
   cls: Namespace;
-} & BaseLogger;
+}
+
+export interface ClsContext {
+  _contextId: string;
+  _context?: Record<string, unknown>;
+}
+
+export type NamespaceContext = {
+  id?: unknown;
+  _ns_name?: unknown;
+} & Partial<ClsContext>;
+
+export type ComputePlatform = 'gcp-cloudrun' | 'aws-lambda' | 'aws';
+
+export interface CreateLoggerOptions
+  extends Omit<pino.LoggerOptions, 'mixin' | 'prettyPrint' | 'prettifier'> {
+  pretty?: boolean;
+  traceCaller?: boolean;
+  platform?: ComputePlatform;
+  mixins?: (MixinFnWithData | pino.MixinFn | Falsy)[];
+  transports?: pino.TransportMultiOptions;
+}
+
+export type CreateLoggerOptionsWithoutTransports = Omit<
+  CreateLoggerOptions,
+  'pretty' | 'transports'
+>;

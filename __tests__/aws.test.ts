@@ -1,5 +1,5 @@
 import { describe, expect, test } from '@jest/globals';
-import { lambdaLogger } from '../lib/node.js';
+import { lambdaLoggerContextWrapper } from '../lib/index.js';
 import { loggerWithWaitableMock } from './helpers.js';
 
 describe('AWS', () => {
@@ -8,7 +8,9 @@ describe('AWS', () => {
 
     const contextId = 'fake-aws-request-id'; // randomBytes(12).toString('hex');
 
-    const closure = lambdaLogger(logger.cls, contextId, { stuff: true });
+    const closure = lambdaLoggerContextWrapper(logger.cls, contextId, {
+      stuff: true,
+    });
 
     expect.assertions(1);
 

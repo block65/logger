@@ -10,8 +10,9 @@ import {
   createCliLogger,
   createLogger,
   CreateLoggerOptionsWithoutTransports,
-} from '../lib/node.js';
-import type { LogDescriptor, Logger } from '../lib/types.js';
+  LogDescriptor,
+  Logger,
+} from '../lib/index.js';
 
 interface WaitableMock<Y extends unknown[] = unknown[]> extends Mock<void, Y> {
   waitUntilCalled(): Promise<Y[0]>;
