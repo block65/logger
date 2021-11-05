@@ -44,9 +44,10 @@ describe('Prettifier', () => {
 
   test('With colour', async () => {
     const m = await import('../lib/pretty-transport.js');
-    process.env.FORCE_COLOR = 'true';
 
-    const prettifier = m.createPrettifier();
+    const prettifier = m.createPrettifier({
+      color: true,
+    });
 
     await expect(
       prettifier({

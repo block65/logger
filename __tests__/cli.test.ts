@@ -20,11 +20,12 @@ describe('CLI', () => {
     await expect(callback.waitUntilCalledTimes(1)).resolves.toMatchSnapshot();
   });
 
-  test.only('pretty logger force-color', async () => {
-    process.env.FORCE_COLOR = 'true';
+  test('pretty logger force-color', async () => {
     const { cliLoggerWithWaitableMockWatchOnce } = await import('./helpers.js');
 
-    const [logger, callback] = cliLoggerWithWaitableMockWatchOnce();
+    const [logger, callback] = cliLoggerWithWaitableMockWatchOnce({
+      color: true,
+    });
     logger.error(new Error('hallo'));
     logger.info(new Error('hello'));
     logger.warn(new Error('halo'));

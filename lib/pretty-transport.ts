@@ -12,16 +12,11 @@ export interface PrettyTransportOptions {
 
 export function createPrettifier(options?: { fd?: number; color?: boolean }) {
   const forceNoColor: boolean =
-    process.env.TERM === 'dumb' ||
-    'NO_COLOR' in process.env ||
-    options?.color === false;
+    process.env.TERM === 'dumb' || 'NO_COLOR' in process.env;
 
-  const forceColor: boolean =
-    !forceNoColor && (options?.color === true || 'FORCE_COLOR' in process.env);
-
-  const defaultUseColor: boolean = !!options?.fd && isatty(options.fd);
-
-  const useColor = forceColor || defaultUseColor;
+  const useColor = forceNoColor
+    ? false
+    : options?.color === true || (!!options?.fd && isatty(options.fd));
 
   const {
     bgRed,

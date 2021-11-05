@@ -14,6 +14,7 @@ export interface CreateCliLoggerOptions
   extends Omit<pino.LoggerOptions, 'mixin' | 'prettyPrint' | 'prettifier'> {
   traceCaller?: boolean;
   mixins?: (MixinFnWithData | pino.MixinFn | Falsy)[];
+  color?: boolean;
 }
 
 /** @private */
