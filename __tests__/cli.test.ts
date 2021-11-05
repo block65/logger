@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, jest, test } from '@jest/globals';
 import { cliLoggerWithWaitableMockWatchOnce } from './helpers.js';
 jest.useRealTimers();
 
-describe('Prettifier', () => {
+describe.skip('CLI', () => {
   const OLD_ENV = process.env;
   beforeEach(() => {
     jest.resetModules();
