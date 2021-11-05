@@ -7,7 +7,7 @@ Array [
    { message: 'hallo',
      name: 'Error',
      stack:
-      'Error: hallo\\\\n    at Object.<anonymous> (<rootDir>/__tests__/cli.test.ts:30:18)' } }
+      'Error: hallo\\\\n    at Object.<anonymous> (<rootDir>/__tests__/cli.test.ts:29:18)' } }
 
 ",
   ],
