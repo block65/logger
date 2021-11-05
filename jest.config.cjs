@@ -9,4 +9,5 @@ module.exports = {
   verbose: true,
   extensionsToTreatAsEsm: ['.ts'],
   snapshotSerializers: ['<rootDir>/tools/jest-log-serializer.cjs'],
+  modulePathIgnorePatterns: ['<rootDir>/tmp/', '<rootDir>/dist/'],
 };
