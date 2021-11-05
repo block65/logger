@@ -51,7 +51,7 @@ DEPS = [
 ]
 
 TEST_DEPS = [
-  "@npm//emittery",
+    "@npm//emittery",
 ]
 
 ts_project(
