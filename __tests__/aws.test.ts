@@ -6,7 +6,7 @@ describe('AWS', () => {
   test('Lambda Logger + contextId', async () => {
     const [logger, callback] = loggerWithWaitableMock();
 
-    const contextId = 'fake-aws-request-id'; // randomBytes(12).toString('hex');
+    const contextId = 'fake-aws-request-id';
 
     const closure = lambdaLoggerContextWrapper(logger.cls, contextId, {
       stuff: true,
