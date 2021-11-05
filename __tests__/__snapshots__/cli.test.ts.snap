@@ -3,11 +3,11 @@
 exports[`CLI pretty logger force-color 1`] = `
 Array [
   Array [
-    "[90m2021-11-05T11:39:47.627Z[39m [31mERROR[39m  [1mhallo[22m { err:
-   { message: [32m'hallo'[39m,
-     name: [32m'Error'[39m,
+    "2009-02-13T23:31:30.000Z ERROR   hallo { err:
+   { message: 'hallo',
+     name: 'Error',
      stack:
-      [32m'Error: hallo\\\\n    at Object.<anonymous> (<rootDir>/__tests__/cli.test.ts:30:18)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)'[39m } }
+      'Error: hallo\\\\n    at Object.<anonymous> (<rootDir>/__tests__/cli.test.ts:30:18)' } }
 
 ",
   ],
@@ -17,11 +17,11 @@ Array [
 exports[`CLI pretty logger no-color 1`] = `
 Array [
   Array [
-    "2021-11-05T11:33:50.810Z ERROR   hallo { err:
+    "2009-02-13T23:31:30.000Z ERROR   hallo { err:
    { message: 'hallo',
      name: 'Error',
      stack:
-      'Error: hallo\\\\n    at Object.<anonymous> (<rootDir>/__tests__/cli.test.ts:15:18)\\\\n    at Promise.then.completed (<rootDir>/node_modules/jest-circus/build/utils.js:390:28)\\\\n    at new Promise (<anonymous>)' } }
+      'Error: hallo\\\\n    at Object.<anonymous> (<rootDir>/__tests__/cli.test.ts:15:18)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)' } }
 
 ",
   ],
