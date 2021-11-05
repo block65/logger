@@ -8,3 +8,7 @@ dist
 
 # log files
 *.log
+
+
+# general
+tmp
