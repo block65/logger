@@ -27,7 +27,6 @@ SCOPED_PACKAGE_NAME = "@%s/%s" % (PACKAGE_NAMESPACE, PACKAGE_NAME)
 
 SRCS = glob(
     ["lib/*.ts"],
-    # exclude = ["__tests__/**/*"],
 )
 
 TEST_SRCS = glob(
