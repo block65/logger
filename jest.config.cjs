@@ -1,8 +1,7 @@
 module.exports = {
   preset: 'ts-jest/presets/default-esm',
-  setupFiles: ['./jest-setup.cjs'],
+  setupFiles: ['<rootDir>/jest-setup.cjs'],
   testEnvironment: 'node',
-  testPathIgnorePatterns: ['/node_modules/', '<rootDir>/dist/'],
   moduleNameMapper: {
     '^(\\..*)\\.jsx?$': '$1',
   },
