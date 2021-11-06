@@ -5,12 +5,9 @@ import type { Mock } from 'jest-mock';
 import { open, readFile, watch } from 'node:fs/promises';
 import pino from 'pino';
 import { PassThrough } from 'stream';
+import { createCliLogger, createLogger } from '../lib/logger.js';
 import {
-  createCliLogger,
   CreateCliLoggerOptions,
-  createLogger,
-} from '../lib/logger.js';
-import {
   CreateLoggerOptionsWithoutTransports,
   LogDescriptor,
   Logger,
