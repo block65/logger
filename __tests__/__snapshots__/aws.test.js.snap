@@ -7,7 +7,7 @@ Array [
       "message": "Ded 3",
       "name": "Error",
       "stack": "Error: Ded 3
-    at Object.<anonymous> (<rootDir>/__tests__/aws.test.ts:37:18)
+    at Object.<anonymous> (<rootDir>/__tests__/aws.test.js:28:22)
     at Promise.then.completed (<rootDir>/node_modules/jest-circus/build/utils.js:390:28)
     at new Promise (<anonymous>)",
     },
@@ -27,7 +27,7 @@ Array [
       "message": "Ded 4",
       "name": "Error",
       "stack": "Error: Ded 4
-    at Object.<anonymous> (<rootDir>/__tests__/aws.test.ts:28:18)
+    at Object.<anonymous> (<rootDir>/__tests__/aws.test.js:21:22)
     at Promise.then.completed (<rootDir>/node_modules/jest-circus/build/utils.js:390:28)
     at new Promise (<anonymous>)",
     },
