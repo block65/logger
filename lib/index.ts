@@ -5,13 +5,12 @@ export type {
   LogLevelNumbers,
 } from './types.js';
 
-export { createLogger } from './logger.js';
+export { createLogger, createCliLogger } from './logger.js';
 export {
+  CreateCliLoggerOptions,
   CreateLoggerOptions,
   CreateLoggerOptionsWithoutTransports,
 } from './types.js';
-
-export { CreateCliLoggerOptions, createCliLogger } from './cli.js';
 
 export { expressLoggerContextMiddleware } from './express.js';
 

@@ -59,3 +59,8 @@ export type CreateLoggerOptionsWithoutTransports = Omit<
   CreateLoggerOptions,
   'pretty' | 'transports'
 >;
+
+export interface CreateCliLoggerOptions
+  extends Omit<CreateLoggerOptionsWithoutTransports, 'platform'> {
+  color?: boolean;
+}
