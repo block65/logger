@@ -1,6 +1,8 @@
 import { beforeEach, describe, expect, jest, test } from '@jest/globals';
 
 describe('CLI', () => {
+  jest.useRealTimers();
+
   const oldEnv = process.env;
   beforeEach(() => {
     jest.resetModules();

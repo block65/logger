@@ -2,6 +2,8 @@ import { beforeEach, describe, expect, jest, test } from '@jest/globals';
 import { createPrettifier } from '../lib/pretty-transport.js';
 
 describe('Prettifier', () => {
+  jest.useRealTimers();
+
   const oldEnv = process.env;
   beforeEach(() => {
     jest.resetModules();
