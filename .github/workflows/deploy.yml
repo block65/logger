@@ -1,6 +1,9 @@
-name: bazel-test
+name: Deploy
 
-on: workflow_dispatch
+on:
+  workflow_dispatch: {}
+  push:
+    tags: ['v*.*.*']
 
 jobs:
   build:
@@ -17,8 +20,13 @@ jobs:
 
       - name: test
         run: bazel test //...
+        env:
+          CI: true
 
       - name: build
         run: bazel build //...
+
+      - name: publish
+        run: bazel run //:pkg.publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
