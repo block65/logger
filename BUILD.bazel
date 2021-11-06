@@ -1,29 +1,21 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
+load("@build_bazel_rules_nodejs//:index.bzl", "js_library", "pkg_npm")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("//tools:jest.bzl", "jest_test")
-
-#buildifier(
-#    name = "buildifier",
-#)
-
-# Allow any ts_library rules in this workspace to reference the config
-# See https://www.npmjs.com/package/@bazel/typescript#installation
-exports_files(
-    [
-        "jest.config.cjs",
-        "jest-setup.cjs",
-        "tsconfig.json",
-    ],
-    visibility = ["//:__subpackages__"],
-)
 
 PACKAGE_NAMESPACE = "block65"
 
 PACKAGE_NAME = "logger"
 
-SAFE_PACKAGE_NAME = PACKAGE_NAME
-
 SCOPED_PACKAGE_NAME = "@%s/%s" % (PACKAGE_NAMESPACE, PACKAGE_NAME)
+
+# Allow any ts_library rules in this workspace to reference the config
+# See https://www.npmjs.com/package/@bazel/typescript#installation
+exports_files(
+    [
+        "tsconfig.json",
+    ],
+    visibility = ["//:__subpackages__"],
+)
 
 SRCS = glob(
     ["lib/*.ts"],
@@ -31,11 +23,11 @@ SRCS = glob(
 
 TEST_SRCS = glob(
     ["__tests__/**/*"],
-    exclude = ["__tests__/__snapshots__/**/*"],
+    exclude = ["__tests__/__snapshots__/*.snap"],
 )
 
 TEST_SNAPSHOT_SRCS = glob(
-    ["__tests__/__snapshots__/**/*"],
+    ["__tests__/__snapshots__/*.snap"],
 )
 
 DEPS = [
@@ -49,32 +41,41 @@ DEPS = [
     "@npm//serialize-error",
 ]
 
+# deps used just for test srcs (ie dev deps)
 TEST_DEPS = [
+    "@npm//@jest/globals",
     "@npm//emittery",
 ]
 
 ts_project(
-    name = "compile",
-    srcs = SRCS,
+    name = "compiled",
+    srcs = SRCS + TEST_SRCS,
     declaration = True,
-    deps = DEPS,
+    deps = DEPS + TEST_DEPS,
 )
 
 jest_test(
     name = "unit",
-    srcs = SRCS + TEST_SRCS,
+    srcs = [":compiled"] + [],
+    env = {
+        "NODE_OPTIONS": "--stack-trace-limit=3",
+    },
     snapshots = TEST_SNAPSHOT_SRCS,
     deps = DEPS + TEST_DEPS,
 )
 
-#tsc_test(
-#    name = "typecheck_only",
-#    args = ["$(execpath check_me.ts)"],
-#    data = ["test.ts"],
-#)
+js_library(
+    name = "dist",
+    package_name = SCOPED_PACKAGE_NAME,
+    srcs = ["package.json"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":compiled",
+    ],
+)
 
 pkg_npm(
-    name = SAFE_PACKAGE_NAME,
+    name = "pkg",
     package_name = SCOPED_PACKAGE_NAME,
     srcs = [
         "CREDITS",
@@ -82,6 +83,6 @@ pkg_npm(
         "package.json",
     ],
     deps = [
-        ":compile",
+        ":dist",
     ],
 )

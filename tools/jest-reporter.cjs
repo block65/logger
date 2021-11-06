@@ -1,8 +1,5 @@
 class BazelReporter {
   onRunComplete(_, results) {
-
-    console.log(process.env)
-
     if (results.numFailedTests && results.snapshot.failure) {
       console.log(`================================================================================
       

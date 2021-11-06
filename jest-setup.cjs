@@ -15,6 +15,3 @@ jest.mock('os', () => {
     hostname: jest.fn(() => 'testhost'),
   };
 });
-
-Error.stackTraceLimit = 3;
-delete process.env.NODE_ENV;
