@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
       - uses: bazelbuild/setup-bazelisk@v1
 
       - name: mount cache
@@ -25,7 +26,13 @@ jobs:
       - name: build
         run: bazel build //...
 
+      - name: publish-setup
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+          registry-url: https://registry.npmjs.org/
+
       - name: publish
         run: bazel run //:pkg.publish
         env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
