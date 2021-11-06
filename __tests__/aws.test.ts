@@ -1,5 +1,5 @@
 import { describe, expect, test } from '@jest/globals';
-import { lambdaLoggerContextWrapper } from '../lib/index.js';
+import { lambdaLoggerContextWrapper } from '../lib/lambda.js';
 import { loggerWithWaitableMock } from './helpers.js';
 
 describe('AWS', () => {

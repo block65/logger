@@ -1,19 +1,20 @@
 import { jest } from '@jest/globals';
 import { randomBytes } from 'crypto';
 import Emittery from 'emittery';
-import { open, readFile } from 'fs/promises';
 import type { Mock } from 'jest-mock';
-import { watch } from 'node:fs/promises';
+import { open, readFile, watch } from 'node:fs/promises';
 import pino from 'pino';
 import { PassThrough } from 'stream';
 import {
   createCliLogger,
-  createLogger,
-  CreateLoggerOptionsWithoutTransports,
   CreateCliLoggerOptions,
+  createLogger,
+} from '../lib/logger.js';
+import {
+  CreateLoggerOptionsWithoutTransports,
   LogDescriptor,
   Logger,
-} from '../lib/index.js';
+} from '../lib/types.js';
 
 interface WaitableMock<Y extends unknown[] = unknown[]> extends Mock<void, Y> {
   waitUntilCalled(): Promise<Y[0]>;
