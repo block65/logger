@@ -1,3 +1,14 @@
-.idea
+# node
 node_modules
+
+# bazel
+.bazelrc.user
+bazel-out
 dist
+
+# log files
+*.log
+
+
+# general
+tmp

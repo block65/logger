@@ -1,0 +1,88 @@
+load("@build_bazel_rules_nodejs//:index.bzl", "js_library", "pkg_npm")
+load("@npm//@bazel/typescript:index.bzl", "ts_project")
+load("//tools:jest.bzl", "jest_test")
+
+PACKAGE_NAMESPACE = "block65"
+
+PACKAGE_NAME = "logger"
+
+SCOPED_PACKAGE_NAME = "@%s/%s" % (PACKAGE_NAMESPACE, PACKAGE_NAME)
+
+# Allow any ts_library rules in this workspace to reference the config
+# See https://www.npmjs.com/package/@bazel/typescript#installation
+exports_files(
+    [
+        "tsconfig.json",
+    ],
+    visibility = ["//:__subpackages__"],
+)
+
+SRCS = glob(
+    ["lib/*.ts"],
+)
+
+TEST_SRCS = glob(
+    ["__tests__/**/*"],
+    exclude = ["__tests__/__snapshots__/*.snap"],
+)
+
+TEST_SNAPSHOT_SRCS = glob(
+    ["__tests__/__snapshots__/*.snap"],
+)
+
+DEPS = [
+    "@npm//@types/node",
+    "@npm//@types/express",
+    "@npm//@types/cls-hooked",
+    "@npm//pino",
+    "@npm//cls-hooked",
+    "@npm//colorette",
+    "@npm//pino-pretty",
+    "@npm//serialize-error",
+]
+
+# deps used just for test srcs (ie dev deps)
+TEST_DEPS = [
+    "@npm//@jest/globals",
+    "@npm//emittery",
+]
+
+ts_project(
+    name = "compiled",
+    srcs = SRCS + TEST_SRCS,
+    declaration = True,
+    deps = DEPS + TEST_DEPS,
+)
+
+jest_test(
+    name = "unit",
+    srcs = [":compiled"] + [],
+    env = {
+        "NODE_OPTIONS": "--stack-trace-limit=3",
+    },
+    snapshots = TEST_SNAPSHOT_SRCS,
+    deps = DEPS + TEST_DEPS,
+)
+
+js_library(
+    name = "dist",
+    package_name = SCOPED_PACKAGE_NAME,
+    srcs = ["package.json"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":compiled",
+    ],
+)
+
+pkg_npm(
+    name = "pkg",
+    package_name = SCOPED_PACKAGE_NAME,
+    srcs = [
+        "CREDITS",
+        "LICENSE.md",
+        "package.json",
+    ],
+    deps = [
+        ":dist",
+    ],
+)

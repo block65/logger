@@ -1,18 +1,21 @@
-import { describe, test, expect, jest, beforeEach } from '@jest/globals';
-import { createPrettifier } from '../lib/prettifier.js';
-process.env.NO_COLOR = 'true';
+import { beforeEach, describe, expect, jest, test } from '@jest/globals';
+import { createPrettifier } from '../lib/pretty-transport.js';
 
 describe('Prettifier', () => {
-  const OLD_ENV = process.env;
+  jest.useRealTimers();
+
+  const oldEnv = process.env;
   beforeEach(() => {
     jest.resetModules();
-    process.env = { ...OLD_ENV };
+    process.env = { ...oldEnv };
   });
 
-  test('Color', async () => {
+  test('No Color', async () => {
     process.env.NO_COLOR = 'true';
 
-    const prettifier = createPrettifier();
+    const m = await import('../lib/pretty-transport.js');
+
+    const prettifier = m.createPrettifier();
 
     await expect(
       prettifier({
@@ -42,9 +45,11 @@ describe('Prettifier', () => {
   });
 
   test('With colour', async () => {
-    process.env.FORCE_COLOR = 'true';
+    const m = await import('../lib/pretty-transport.js');
 
-    const prettifier = createPrettifier();
+    const prettifier = m.createPrettifier({
+      color: true,
+    });
 
     await expect(
       prettifier({
@@ -73,20 +78,25 @@ describe('Prettifier', () => {
     ).toMatchSnapshot();
   });
 
-  // test('via import', async () => {
-  //   // NOTE: All we can do here is make sure this doesn't throw.
-  //   // It's not possible to test via Jest because we can't provide both a
-  //   // transport AND a stream and because transports are just modules, all we
-  //   // can do is mock it, which defeats the purpose of testing it
-  //
-  //   const { createLogger } = await import('../dist/index.js');
-  //
-  //   const logger = createLogger({
-  //     pretty: true,
-  //   });
-  //
-  //   logger.trace({
-  //     test: 123,
-  //   });
-  // });
+  test('No colour on non tty fd', async () => {
+    const prettifier = createPrettifier({
+      fd: 1337,
+    });
+
+    await expect(
+      prettifier({
+        level: 20,
+        pid: 1,
+        time: 1234567890,
+        hostname: 'test',
+        msg: 'kek',
+        random: {
+          bool: true,
+          str: 'hello',
+          number: 12,
+          arr: [1, 2, 3],
+        },
+      }),
+    ).toMatchSnapshot();
+  });
 });

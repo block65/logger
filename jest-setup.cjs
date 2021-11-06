@@ -1,3 +1,5 @@
+/* eslint-env jest */
+
 Object.defineProperty(process, 'pid', {
   get: () => 1337,
   configurable: false,

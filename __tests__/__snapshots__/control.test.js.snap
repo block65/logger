@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Control Error Object 1`] = `
+Array [
+  Object {
+    "err": Object {
+      "debug": "wooyeah",
+      "message": "hallo",
+      "stack": "Error: hallo
+    at Object.<anonymous> (<rootDir>/__tests__/control.test.js:6:36)
+    at Promise.then.completed (<rootDir>/node_modules/jest-circus/build/utils.js:390:28)
+    at new Promise (<anonymous>)",
+      "type": "Error",
+    },
+    "hostname": "testhost",
+    "level": 50,
+    "msg": "hallo",
+    "pid": 1337,
+    "time": 1234567890000,
+  },
+]
+`;
+
+exports[`Control Error Object serialized on non-error level 1`] = `
+Array [
+  Object {
+    "err": Object {
+      "message": "hallo",
+      "stack": "Error: hallo
+    at Object.<anonymous> (<rootDir>/__tests__/control.test.js:11:21)
+    at Promise.then.completed (<rootDir>/node_modules/jest-circus/build/utils.js:390:28)
+    at new Promise (<anonymous>)",
+      "type": "Error",
+    },
+    "hostname": "testhost",
+    "level": 30,
+    "msg": "hallo",
+    "pid": 1337,
+    "time": 1234567890000,
+  },
+]
+`;
