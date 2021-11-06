@@ -1,4 +1,4 @@
-all:
+all: test
 	yarn build //...
 
 clean:
