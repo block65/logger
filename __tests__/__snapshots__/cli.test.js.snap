@@ -8,7 +8,6 @@ Array [
      name: 'Error',
      stack:
       'Error: hallo\\\\n    at Object.<anonymous> (<rootDir>/__tests__/cli.test.js:25:22)' } }
-
 ",
   ],
 ]
@@ -22,7 +21,6 @@ Array [
      name: 'Error',
      stack:
       'Error: hallo\\\\n    at Object.<anonymous> (<rootDir>/__tests__/cli.test.js:13:22)' } }
-
 ",
   ],
 ]
