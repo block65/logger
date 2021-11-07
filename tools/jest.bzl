@@ -44,12 +44,14 @@ def jest_test(name, srcs, deps, size = "medium", jest_config = "//:jest.config.j
         "//tools:jest-log-serializer.cjs",
     ]
 
+    env_with_defaults = dict_union(env, {
+        "NODE_OPTIONS": "\"%s %s\"" % ("--experimental-vm-modules", env.get("NODE_OPTIONS")),
+    })
+
     _jest_test(
         name = name,
         data = data,
-        env = dict_union(env, {
-            "NODE_OPTIONS": "\"%s %s\"" % ("--experimental-vm-modules", env.get("NODE_OPTIONS")),
-        }),
+        env = env_with_defaults,
         templated_args = templated_args,
         size = size,
         flaky = flaky,
@@ -61,7 +63,7 @@ def jest_test(name, srcs, deps, size = "medium", jest_config = "//:jest.config.j
     jest(
         name = "%s.update" % name,
         data = data,
-        env = env,
+        env = env_with_defaults,
         templated_args = templated_args + ["--updateSnapshot"],
         **kwargs
     )
