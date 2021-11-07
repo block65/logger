@@ -70,7 +70,7 @@ export function createPrettifier(options?: { fd?: number; color?: boolean }) {
     return `${gray(new Date(time).toJSON())} ${formatLevel(level).padEnd(
       6,
       ' ',
-    )}${formattedName} ${formattedMsg}${formattedRest}\n`;
+    )}${formattedName} ${formattedMsg}${formattedRest}`;
   };
 }
 
