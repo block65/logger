@@ -3,9 +3,11 @@ import { sep } from 'path';
 import pino from 'pino';
 import { ClsContext, Falsy, NamespaceContext } from './types.js';
 
+export type MixinFn = NonNullable<pino.LoggerOptions['mixin']>;
+
 export type MixinFnWithData = (
-  data: ReturnType<pino.MixinFn>,
-) => ReturnType<pino.MixinFn>;
+  data: ReturnType<MixinFn>,
+) => ReturnType<MixinFn>;
 
 export function callerMixin(): { caller?: string } {
   const stackParts = new Error().stack?.split('\n') || [];
@@ -35,8 +37,8 @@ export function callerMixin(): { caller?: string } {
 }
 
 export function composeMixins(
-  mixins: (MixinFnWithData | pino.MixinFn | Falsy)[],
-): pino.MixinFn {
+  mixins: (MixinFnWithData | MixinFn | Falsy)[],
+): MixinFn {
   return () =>
     mixins.reduce((accum, mixin) => {
       if (!mixin) {
@@ -49,7 +51,7 @@ export function composeMixins(
     }, {});
 }
 
-export function createContextMixin(cls: Namespace): pino.MixinFn {
+export function createContextMixin(cls: Namespace): MixinFn {
   return (): Partial<ClsContext> => {
     const { active }: { active: NamespaceContext | null } = cls || {};
 

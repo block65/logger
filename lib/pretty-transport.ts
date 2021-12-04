@@ -37,7 +37,7 @@ export function createPrettifier(options?: { fd?: number; color?: boolean }) {
         return bgRed(whiteBright(bold('FATAL')));
       case 50: // LogLevelNumbers.Error:
         return red('ERROR');
-      case 40: //LogLevelNumbers.Warn:
+      case 40: // LogLevelNumbers.Warn:
         return bgYellow(black(bold('WARN')));
       case 30: // LogLevelNumbers.Info:
         return blue('INFO');
@@ -55,16 +55,15 @@ export function createPrettifier(options?: { fd?: number; color?: boolean }) {
     const { level, msg = '', time, name, hostname, pid, ...rest } = log;
 
     const formattedName = name ? `(${name})` : '';
-    const formattedMsg = msg && ' ' + bold(msg);
+    const formattedMsg = msg && ` ${bold(msg)}`;
 
     const formattedRest =
       Object.keys(rest).length > 0
-        ? ' ' +
-          util.inspect(rest, {
+        ? ` ${util.inspect(rest, {
             colors: useColor,
             compact: true,
             sorted: true,
-          })
+          })}`
         : '';
 
     return `${gray(new Date(time).toJSON())} ${formatLevel(level).padEnd(
@@ -95,8 +94,9 @@ export default async function (options: PrettyTransportOptions) {
 
   return build(
     async function (source) {
-      for await (let obj of source) {
-        const toDrain = !destination.write(prettifier(obj) + '\n');
+      // eslint-disable-next-line no-restricted-syntax
+      for await (const obj of source) {
+        const toDrain = !destination.write(`${prettifier(obj)}\n`);
         // This block will handle backpressure
         if (toDrain) {
           await once(destination, 'drain');
