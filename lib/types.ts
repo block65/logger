@@ -1,6 +1,6 @@
 import type { Namespace } from 'cls-hooked';
 import type pino from 'pino';
-import type { MixinFnWithData } from './mixins.js';
+import type { MixinFn, MixinFnWithData } from './mixins.js';
 
 export type Falsy = false | undefined | null;
 
@@ -28,7 +28,13 @@ export interface LogDescriptor {
   [key: string]: unknown;
 }
 
-export type BaseLogger = pino.BaseLogger & pino.LoggerExtras;
+type RemoveIndex<T> = {
+  [K in keyof T as {} extends Record<K, 1> ? never : K]: T[K];
+};
+
+// pino tacks on a nasty `Record<string, any>` to its logger type
+// we try to remove it here
+export type BaseLogger = RemoveIndex<pino.Logger>;
 
 export interface Logger extends BaseLogger {
   cls: Namespace;
@@ -51,7 +57,7 @@ export interface CreateLoggerOptions
   pretty?: boolean;
   traceCaller?: boolean;
   platform?: ComputePlatform;
-  mixins?: (MixinFnWithData | pino.MixinFn | Falsy)[];
+  mixins?: (MixinFnWithData | MixinFn | Falsy)[];
   transports?: pino.TransportMultiOptions;
 }
 
