@@ -144,4 +144,9 @@ describe('Basic', () => {
     logger.warn('hello');
     await expect(callback.waitUntilCalled()).resolves.toMatchSnapshot();
   });
+
+  test('process.namespaces is not enumerable', async () => {
+    const process = await import('node:process');
+    expect(Object.keys(process).includes('namespaces')).toBe(false);
+  });
 });

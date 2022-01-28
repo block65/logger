@@ -10,6 +10,16 @@ import {
   Logger,
 } from './types.js';
 
+// `process.namespaces` is tacked on by cls-hooked (hacky imho)
+// and does not play nice with `jest-resolve` which expects the shape
+// of the process module to match that of node:process *at all times*
+// we force `namespaces` to be not-enumerable here so it is ignored by `jest-resolve`
+// when it attempts to list the keys/entries of the module
+Object.defineProperty(process, 'namespaces', {
+  enumerable: false, // jest-resolve should ignore it
+  writable: true, // cls-hooked writes to it
+});
+
 /** @private */
 let counter = 0;
 
