@@ -7,8 +7,8 @@ Array [
       "debug": "wooyeah",
       "message": "hallo",
       "stack": "Error: hallo
-    at Object.<anonymous> (<rootDir>/__tests__/control.test.js:6:36)
-    at Promise.then.completed (<rootDir>/node_modules/jest-circus/build/utils.js:390:28)
+    at Object.<anonymous> (<rootDir>/block65_logger/__tests__/control.test.js:6:36)
+    at Promise.then.completed (/home/mholman/.cache/bazel/_bazel_mholman/1dfa35029879bd5cb9da0a7a69891045/execroot/block65_logger/bazel-out/k8-fastbuild/bin/external/npm/node_modules/jest-circus/build/utils.js:391:28)
     at new Promise (<anonymous>)",
       "type": "Error",
     },
@@ -27,8 +27,8 @@ Array [
     "err": Object {
       "message": "hallo",
       "stack": "Error: hallo
-    at Object.<anonymous> (<rootDir>/__tests__/control.test.js:11:21)
-    at Promise.then.completed (<rootDir>/node_modules/jest-circus/build/utils.js:390:28)
+    at Object.<anonymous> (<rootDir>/block65_logger/__tests__/control.test.js:11:21)
+    at Promise.then.completed (/home/mholman/.cache/bazel/_bazel_mholman/1dfa35029879bd5cb9da0a7a69891045/execroot/block65_logger/bazel-out/k8-fastbuild/bin/external/npm/node_modules/jest-circus/build/utils.js:391:28)
     at new Promise (<anonymous>)",
       "type": "Error",
     },
