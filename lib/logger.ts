@@ -95,9 +95,11 @@ export function createCliLogger(
   });
 
   return Object.create(pinoInstance, {
-    cls: {
+    als: {
       value: asyncLocalStorage,
       configurable: false,
+      enumerable: false,
+      writable: false,
     },
   });
 }
