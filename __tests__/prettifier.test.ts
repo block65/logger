@@ -17,7 +17,7 @@ describe('Prettifier', () => {
 
     const prettifier = m.createPrettifier();
 
-    await expect(
+    expect(
       prettifier({
         level: 20,
         pid: 1,
@@ -27,7 +27,7 @@ describe('Prettifier', () => {
       }),
     ).toMatchSnapshot();
 
-    await expect(
+    expect(
       prettifier({
         level: 20,
         pid: 1,
@@ -51,7 +51,7 @@ describe('Prettifier', () => {
       color: true,
     });
 
-    await expect(
+    expect(
       prettifier({
         level: 20,
         pid: 1,
@@ -61,7 +61,7 @@ describe('Prettifier', () => {
       }),
     ).toMatchSnapshot();
 
-    await expect(
+    expect(
       prettifier({
         level: 20,
         pid: 1,
@@ -83,7 +83,7 @@ describe('Prettifier', () => {
       fd: 1337,
     });
 
-    await expect(
+    expect(
       prettifier({
         level: 20,
         pid: 1,

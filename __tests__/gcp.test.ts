@@ -1,4 +1,4 @@
-import { describe, expect, test } from '@jest/globals';
+import { describe, expect, test, jest, beforeEach } from '@jest/globals';
 import { loggerWithWaitableMock } from './helpers.js';
 
 describe('GCP', () => {
