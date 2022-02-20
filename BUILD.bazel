@@ -56,6 +56,7 @@ jest_test(
     name = "unit",
     srcs = [":compiled"] + [],
     env = {
+        "NODE_ENV": "test",
         "NODE_OPTIONS": "--stack-trace-limit=3",
     },
     snapshots = TEST_SNAPSHOT_SRCS,
