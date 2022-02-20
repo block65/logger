@@ -1,7 +1,7 @@
-import { Namespace } from 'cls-hooked';
+import { AsyncLocalStorage } from 'async_hooks';
 import { sep } from 'path';
 import pino from 'pino';
-import { ClsContext, Falsy, NamespaceContext } from './types.js';
+import { AlsContext, AlsContextOutput, Falsy } from './types.js';
 
 export type MixinFn = NonNullable<pino.LoggerOptions['mixin']>;
 
@@ -51,12 +51,19 @@ export function composeMixins(
     }, {});
 }
 
-export function createContextMixin(cls: Namespace): MixinFn {
-  return (): Partial<ClsContext> => {
-    const { active }: { active: NamespaceContext | null } = cls || {};
+export function createContextMixin(
+  als: AsyncLocalStorage<AlsContext>,
+): MixinFn {
+  return (): Partial<AlsContextOutput> => {
+    const store = als.getStore();
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    const { id, _ns_name, ...clsContext } = active || {};
-    return clsContext;
+    if (!store) {
+      return {};
+    }
+
+    return {
+      _contextId: store.id,
+      ...(store?.context && { _context: store?.context }),
+    };
   };
 }

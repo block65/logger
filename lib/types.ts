@@ -1,4 +1,4 @@
-import type { Namespace } from 'cls-hooked';
+import { AsyncLocalStorage } from 'async_hooks';
 import type pino from 'pino';
 import type { MixinFn, MixinFnWithData } from './mixins.js';
 
@@ -37,18 +37,18 @@ type RemoveIndex<T> = {
 export type BaseLogger = RemoveIndex<pino.Logger>;
 
 export interface Logger extends BaseLogger {
-  cls: Namespace;
+  als: AsyncLocalStorage<AlsContext>;
 }
 
-export interface ClsContext {
-  _contextId: string;
-  _context?: Record<string, unknown>;
+export interface AlsContext {
+  id: string;
+  context?: Record<string, unknown>;
 }
 
-export type NamespaceContext = {
-  id?: unknown;
-  _ns_name?: unknown;
-} & Partial<ClsContext>;
+export interface AlsContextOutput {
+  _contextId: AlsContext['id'];
+  _context?: AlsContext['context'];
+}
 
 export type ComputePlatform = 'gcp-cloudrun' | 'aws-lambda' | 'aws';
 

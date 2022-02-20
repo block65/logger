@@ -14,10 +14,9 @@ export {
 
 export { expressLoggerContextMiddleware } from './express.js';
 
-export { lambdaLoggerContextWrapper } from './lambda.js';
+export {
+  lambdaLoggerContextWrapper,
+  withLambdaLoggerContextWrapper,
+} from './lambda.js';
 
 export { composeMixins } from './mixins.js';
-
-/** @deprecated */
-export { expressLogger } from './express.js';
-export { lambdaLogger } from './lambda.js';
