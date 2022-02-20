@@ -7,7 +7,7 @@ Array [
    { message: 'hallo',
      name: 'Error',
      stack:
-      'Error: hallo\\\\n    at Object.<anonymous> (<rootDir>/block65_logger/__tests__/cli.test.js:25:22)' } }
+      'Error: hallo\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/cli.test.js:25:22)' } }
 ",
   ],
 ]
@@ -20,7 +20,7 @@ Array [
    { message: 'hallo',
      name: 'Error',
      stack:
-      'Error: hallo\\\\n    at Object.<anonymous> (<rootDir>/block65_logger/__tests__/cli.test.js:13:22)' } }
+      'Error: hallo\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/cli.test.js:13:22)' } }
 ",
   ],
 ]
