@@ -8,7 +8,7 @@ describe('AWS', () => {
 
     const contextId = 'fake-aws-request-id';
 
-    const closure = lambdaLoggerContextWrapper(logger.als, contextId, {
+    const closure = lambdaLoggerContextWrapper(logger, contextId, {
       stuff: true,
     });
 

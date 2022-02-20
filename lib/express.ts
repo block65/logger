@@ -1,16 +1,15 @@
-import { AsyncLocalStorage } from 'async_hooks';
 import type { RequestHandler } from 'express';
-import type { AlsContext } from './types.js';
+import type { AlsContext, Logger } from './types.js';
 
 export function expressLoggerContextMiddleware(
-  als: AsyncLocalStorage<AlsContext>,
+  logger: Logger,
   id: AlsContext['id'],
   context?: AlsContext['context'],
 ): RequestHandler {
   return (req, res, next) => {
     res.set('x-context-id', id);
 
-    als.run({ id, ...(context && { context }) }, () => {
+    logger.als.run({ id, ...(context && { context }) }, () => {
       next();
     });
   };
