@@ -8,15 +8,18 @@ describe('AWS', () => {
 
     const contextId = 'fake-aws-request-id';
 
-    const closure = lambdaLoggerContextWrapper(logger.cls, contextId, {
+    const closure = lambdaLoggerContextWrapper(logger.als, contextId, {
       stuff: true,
     });
 
     expect.assertions(1);
 
-    await closure(async () => {
-      logger.warn('hello');
-      await expect(callback.waitUntilCalled()).resolves.toMatchSnapshot();
+    await new Promise<void>((resolve) => {
+      closure(async () => {
+        logger.warn('hello');
+        await expect(callback.waitUntilCalled()).resolves.toMatchSnapshot();
+        resolve();
+      });
     });
   });
 
