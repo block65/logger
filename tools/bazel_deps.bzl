@@ -11,8 +11,8 @@ def fetch_dependencies():
         name = "build_bazel_rules_nodejs",
         patch_args = ["-p1"],
         patches = ["//tools:build_bazel_rules_nodejs.patch"],
-        sha256 = "3720e99520c0bd31d23bf04cf365db934c5fa77badf68a8aaea523bbd442851a",
-        urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/4.4.3/rules_nodejs-4.4.3.tar.gz"],
+        sha256 = "c077680a307eb88f3e62b0b662c2e9c6315319385bc8c637a861ffdbed8ca247",
+        urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/5.1.0/rules_nodejs-5.1.0.tar.gz"],
     )
 
     # =================================================================
