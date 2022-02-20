@@ -33,9 +33,7 @@ TEST_SNAPSHOT_SRCS = glob(
 DEPS = [
     "@npm//@types/node",
     "@npm//@types/express",
-    "@npm//@types/cls-hooked",
     "@npm//pino",
-    "@npm//cls-hooked",
     "@npm//colorette",
     "@npm//pino-pretty",
     "@npm//serialize-error",
