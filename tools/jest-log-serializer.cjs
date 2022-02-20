@@ -1,4 +1,5 @@
 const { format: prettyFormat } = require('pretty-format');
+const { resolve } = require('path');
 
 module.exports = {
   /**
@@ -8,7 +9,7 @@ module.exports = {
    */
   serialize(val) {
     return prettyFormat(val)
-      .replaceAll(process.cwd(), '<rootDir>')
+      .replaceAll(resolve(process.cwd(), '..'), '<rootDir>')
       .replaceAll(
         /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/g,
         '2009-02-13T23:31:30.000Z',
