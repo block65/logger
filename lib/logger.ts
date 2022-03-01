@@ -2,34 +2,29 @@ import { AsyncLocalStorage } from 'node:async_hooks';
 import pino from 'pino';
 import { callerMixin, composeMixins, createContextMixin } from './mixins.js';
 import { defaultLoggerOptions, getPlatformLoggerOptions } from './options.js';
-import type { PrettyTransportOptions } from './pretty-transport.js';
 import {
   AlsContext,
-  CreateCliLoggerOptions,
   CreateLoggerOptions,
-  CreateLoggerOptionsWithoutTransports,
+  CreateLoggerOptionsWithDestination,
   Logger,
 } from './types.js';
+import { isPlainObject } from './utils.js';
 
 export function createLogger(
-  opts?: CreateLoggerOptionsWithoutTransports,
-  destination?: pino.DestinationStream,
+  opts?: CreateLoggerOptions,
+  destination?: string | number,
 ): Logger;
-export function createLogger(opts?: CreateLoggerOptions): Logger;
 export function createLogger(
-  opts: CreateLoggerOptions = {},
-  destination?: pino.DestinationStream,
+  opts: CreateLoggerOptionsWithDestination,
+  destination: string | number | pino.DestinationStream,
+): Logger;
+export function createLogger(
+  opts: CreateLoggerOptions | CreateLoggerOptionsWithDestination = {},
+  destination?: string | number | pino.DestinationStream,
 ): Logger {
   const asyncLocalStorage = new AsyncLocalStorage<AlsContext>();
 
-  const isDevelopment = process.env.NODE_ENV === 'development';
-
-  const {
-    platform,
-    traceCaller = isDevelopment,
-    mixins = [],
-    ...userPinoOpts
-  } = opts;
+  const { platform, traceCaller = false, mixins = [], ...userPinoOpts } = opts;
 
   const platformLoggerOptions = getPlatformLoggerOptions(platform);
 
@@ -39,60 +34,66 @@ export function createLogger(
     traceCaller && callerMixin,
   ]);
 
-  const pinoInstance = pino(
-    {
-      ...defaultLoggerOptions,
-      ...platformLoggerOptions,
-      ...userPinoOpts,
-      mixin,
-    },
-    destination || process.stdout,
-  );
-
-  return Object.create(pinoInstance, {
-    als: {
-      value: asyncLocalStorage,
-      configurable: false,
-      enumerable: false,
-      writable: false,
-    },
-  });
-}
-
-export function createCliLogger(
-  opts: CreateCliLoggerOptions = {},
-  destination: number | string = 1,
-): Logger {
-  const asyncLocalStorage = new AsyncLocalStorage<AlsContext>();
-
-  const isDevelopment = process.env.NODE_ENV === 'development';
-
-  const { traceCaller = isDevelopment, mixins = [], ...userPinoOpts } = opts;
-
-  const mixin = composeMixins([
-    ...mixins,
-    createContextMixin(asyncLocalStorage),
-    traceCaller && callerMixin,
-  ]);
-
-  const prettyTransportOptions: PrettyTransportOptions = {
-    destination,
+  const resolvedOptions = {
+    ...defaultLoggerOptions,
+    ...platformLoggerOptions,
+    ...userPinoOpts,
   };
 
-  const pinoInstance = pino({
-    ...defaultLoggerOptions,
-    ...userPinoOpts,
+  const hasDestinationStream =
+    typeof destination === 'object' && 'write' in destination;
+
+  const pinoOptions: pino.LoggerOptions = {
+    ...resolvedOptions,
     mixin,
-    transport: {
-      targets: [
-        {
-          target: './pretty-transport.js',
-          level: 'trace',
-          options: prettyTransportOptions,
-        },
-      ],
-    },
-  });
+    ...(!hasDestinationStream && {
+      transport: {
+        targets: [
+          ...('prettyOptions' in resolvedOptions &&
+          resolvedOptions.prettyOptions
+            ? [
+                {
+                  target: './pretty-transport.js',
+                  level: resolvedOptions.level || ('trace' as const),
+                  options: isPlainObject(resolvedOptions.prettyOptions)
+                    ? {
+                        ...resolvedOptions.prettyOptions,
+                        destination,
+                      }
+                    : { destination },
+                },
+              ]
+            : []),
+          ...('sentryTransportOptions' in resolvedOptions &&
+          resolvedOptions.sentryTransportOptions
+            ? [
+                {
+                  target: './sentry-transport.js',
+                  level:
+                    resolvedOptions.sentryTransportOptions.minLogLevel ||
+                    ('error' as const),
+                  options: resolvedOptions.sentryTransportOptions,
+                },
+              ]
+            : []),
+          ...(typeof destination === 'string' || typeof destination === 'number'
+            ? [
+                {
+                  target: 'pino/file',
+                  level: resolvedOptions.level || ('trace' as const),
+                  options: {},
+                },
+              ]
+            : []),
+        ],
+      } as pino.TransportMultiOptions,
+    }),
+  };
+
+  const pinoInstance =
+    typeof destination === 'object' && 'write' in destination
+      ? pino(pinoOptions, destination)
+      : pino(pinoOptions);
 
   return Object.create(pinoInstance, {
     als: {

@@ -5,9 +5,7 @@
     "moduleResolution": "node",
     "declaration": true,
     "target": "es2021",
-    "lib": [
-      "es2021"
-    ],
+    "lib": ["es2021"],
     "module": "esnext",
     "inlineSources": false,
     "noEmitOnError": false,
@@ -16,7 +14,5 @@
     "esModuleInterop": true,
     "noUncheckedIndexedAccess": true
   },
-  "include": [
-    "./lib", "./__tests__"
-  ]
+  "include": ["./lib", "./__tests__"]
 }

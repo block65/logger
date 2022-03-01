@@ -7,9 +7,7 @@ Array [
       "message": "Ded 3",
       "name": "Error",
       "stack": "Error: Ded 3
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/aws.test.js:31:22)
-    at Promise.then.completed (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)
-    at new Promise (<anonymous>)",
+    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/aws.test.js:35:22)",
     },
     "hostname": "testhost",
     "level": 50,
@@ -27,9 +25,7 @@ Array [
       "message": "Ded 4",
       "name": "Error",
       "stack": "Error: Ded 4
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/aws.test.js:24:22)
-    at Promise.then.completed (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)
-    at new Promise (<anonymous>)",
+    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/aws.test.js:28:22)",
     },
     "level": 50,
     "msg": "Ded 4",

@@ -131,7 +131,6 @@ Array [
 exports[`Basic Trace Caller Auto (development) 1`] = `
 Array [
   Object {
-    "caller": "<empty>",
     "hostname": "testhost",
     "level": 40,
     "msg": "hello",

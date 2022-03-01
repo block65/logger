@@ -4,13 +4,15 @@ import build from 'pino-abstract-transport';
 import SonicBoom, { SonicBoomOpts } from 'sonic-boom';
 import { isatty } from 'tty';
 import util from 'util';
-import type { LogDescriptor } from './types.js';
+import { LogDescriptor, LogLevelNumbers } from './types.js';
 
+// must be serialiazable so it can get passed to a worker
 export interface PrettyTransportOptions {
-  destination: number | SonicBoomOpts['dest'];
+  destination?: SonicBoomOpts['dest'];
+  color?: boolean;
 }
 
-export function createPrettifier(options?: { fd?: number; color?: boolean }) {
+function createPrettifier(options?: { fd?: number; color?: boolean }) {
   const forceNoColor: boolean =
     process.env.TERM === 'dumb' || 'NO_COLOR' in process.env;
 
@@ -33,19 +35,19 @@ export function createPrettifier(options?: { fd?: number; color?: boolean }) {
 
   const formatLevel = (level: number): string => {
     switch (level) {
-      case 60: // LogLevelNumbers.Fatal:
+      case LogLevelNumbers.Fatal:
         return bgRed(whiteBright(bold('FATAL')));
-      case 50: // LogLevelNumbers.Error:
+      case LogLevelNumbers.Error:
         return red('ERROR');
-      case 40: // LogLevelNumbers.Warn:
+      case LogLevelNumbers.Warn:
         return bgYellow(black(bold('WARN')));
-      case 30: // LogLevelNumbers.Info:
+      case LogLevelNumbers.Info:
         return blue('INFO');
-      case 20: // LogLevelNumbers.Debug:
+      case LogLevelNumbers.Debug:
         return green('DEBUG');
-      case 10: // LogLevelNumbers.Trace:
+      case LogLevelNumbers.Trace:
         return dim('TRACE');
-      case 0: // LogLevelNumbers.Silent:
+      case LogLevelNumbers.Silent:
       default:
         return dim('SILENT');
     }
@@ -73,7 +75,7 @@ export function createPrettifier(options?: { fd?: number; color?: boolean }) {
   };
 }
 
-export default async function (options: PrettyTransportOptions) {
+export async function prettyTransport(options: PrettyTransportOptions = {}) {
   const fd =
     typeof options.destination === 'number' ? options.destination : undefined;
 
@@ -115,3 +117,5 @@ export default async function (options: PrettyTransportOptions) {
     },
   );
 }
+
+export default prettyTransport;

@@ -32,11 +32,17 @@ TEST_SNAPSHOT_SRCS = glob(
 
 DEPS = [
     "@npm//@types/node",
-    "@npm//@types/express",
     "@npm//pino",
     "@npm//colorette",
     "@npm//pino-pretty",
     "@npm//serialize-error",
+
+    # peer dep
+    "@npm//@types/express",
+
+    # peer deps
+    "@npm//@sentry/node",
+    "@npm//@sentry/integrations",
 ]
 
 # deps used just for test srcs (ie dev deps)

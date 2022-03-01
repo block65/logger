@@ -6,7 +6,7 @@ import {
   jest,
   test,
 } from '@jest/globals';
-import { loggerWithWaitableMock } from './helpers.js';
+import { createLoggerWithWaitableMock } from './helpers.js';
 
 describe('Basic', () => {
   const oldEnv = process.env;
@@ -14,6 +14,8 @@ describe('Basic', () => {
 
   beforeEach(() => {
     jest.resetModules();
+    jest.useFakeTimers('modern');
+    jest.setSystemTime(new Date('2009-02-13T23:31:30.000Z'));
     process.env = { ...oldEnv };
     Error.stackTraceLimit = originalStackTraceLimit;
   });
@@ -24,51 +26,51 @@ describe('Basic', () => {
   });
 
   test('Object', async () => {
-    const [logger, callback] = loggerWithWaitableMock();
+    const [logger, callback] = await createLoggerWithWaitableMock();
     logger.warn({ omg: true });
     await expect(callback.waitUntilCalled()).resolves.toMatchSnapshot();
   });
 
   test('Object with undefined props', async () => {
-    const [logger, callback] = loggerWithWaitableMock();
+    const [logger, callback] = await createLoggerWithWaitableMock();
     logger.warn({ omg: undefined });
     await expect(callback.waitUntilCalled()).resolves.toMatchSnapshot();
   });
 
   test('String, Object', async () => {
-    const [logger, callback] = loggerWithWaitableMock();
+    const [logger, callback] = await createLoggerWithWaitableMock();
     logger.warn('hello', { omg: true });
     await expect(callback.waitUntilCalled()).resolves.toMatchSnapshot();
   });
 
   test('String Format, Object', async () => {
-    const [logger, callback] = loggerWithWaitableMock();
+    const [logger, callback] = await createLoggerWithWaitableMock();
     logger.warn('hello %o', { omg: true });
     await expect(callback.waitUntilCalled()).resolves.toMatchSnapshot();
   });
 
   test('Object, String Format, String', async () => {
-    const [logger, callback] = loggerWithWaitableMock();
+    const [logger, callback] = await createLoggerWithWaitableMock();
     logger.warn({ omg: true }, 'hello %s', 'world');
     await expect(callback.waitUntilCalled()).resolves.toMatchSnapshot();
   });
 
   test('Object, String Format, String', async () => {
-    const [logger, callback] = loggerWithWaitableMock();
+    const [logger, callback] = await createLoggerWithWaitableMock();
 
     logger.warn({ omg: true }, 'hello %s:%s %d', 'world', 'and', 123);
     await expect(callback.waitUntilCalled()).resolves.toMatchSnapshot();
   });
 
   test('Object + String = Format', async () => {
-    const [logger, callback] = loggerWithWaitableMock();
+    const [logger, callback] = await createLoggerWithWaitableMock();
     logger.warn({ omg: true }, 'hello');
     await expect(callback.waitUntilCalled()).resolves.toMatchSnapshot();
   });
 
   test('Trace Caller Auto (development)', async () => {
     process.env.NODE_ENV = 'development';
-    const [logger, callback] = loggerWithWaitableMock();
+    const [logger, callback] = await createLoggerWithWaitableMock();
     logger.warn('hello');
     await expect(callback.waitUntilCalled()).resolves.toMatchSnapshot();
   });
@@ -76,8 +78,7 @@ describe('Basic', () => {
   test('Trace Caller Auto (production)', async () => {
     process.env.NODE_ENV = 'production';
     Error.stackTraceLimit = 10;
-    const helpers = await import('./helpers.js');
-    const [logger, callback] = helpers.loggerWithWaitableMock();
+    const [logger, callback] = await createLoggerWithWaitableMock();
     logger.warn('hello');
     await expect(callback.waitUntilCalled()).resolves.toMatchSnapshot();
   });
@@ -85,8 +86,7 @@ describe('Basic', () => {
   test('Trace Caller Force true (production)', async () => {
     process.env.NODE_ENV = 'production';
     Error.stackTraceLimit = 10;
-    const helpers = await import('./helpers.js');
-    const [logger, callback] = helpers.loggerWithWaitableMock({
+    const [logger, callback] = await createLoggerWithWaitableMock({
       traceCaller: true,
     });
     logger.warn('hello');
@@ -96,8 +96,7 @@ describe('Basic', () => {
   test('Trace Caller Force false (development)', async () => {
     process.env.NODE_ENV = 'development';
     Error.stackTraceLimit = 10;
-    const helpers = await import('./helpers.js');
-    const [logger, callback] = helpers.loggerWithWaitableMock({
+    const [logger, callback] = await createLoggerWithWaitableMock({
       traceCaller: false,
     });
     logger.warn('hello');
@@ -105,7 +104,7 @@ describe('Basic', () => {
   });
 
   test('Mixins basic + accum', async () => {
-    const [logger, callback] = loggerWithWaitableMock({
+    const [logger, callback] = await createLoggerWithWaitableMock({
       mixins: [
         () => ({
           logger: {
@@ -127,7 +126,7 @@ describe('Basic', () => {
   });
 
   test('Mixins property overwrite', async () => {
-    const [logger, callback] = loggerWithWaitableMock({
+    const [logger, callback] = await createLoggerWithWaitableMock({
       mixins: [
         () => ({
           logger: {
@@ -143,10 +142,5 @@ describe('Basic', () => {
     });
     logger.warn('hello');
     await expect(callback.waitUntilCalled()).resolves.toMatchSnapshot();
-  });
-
-  test('process.namespaces is not enumerable', async () => {
-    const process = await import('node:process');
-    expect(Object.keys(process).includes('namespaces')).toBe(false);
   });
 });

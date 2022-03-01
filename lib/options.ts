@@ -1,11 +1,13 @@
 import pino from 'pino';
 import { serializeError } from 'serialize-error';
 import { formatGcpLogObject, gcpLevelToSeverity } from './gcp.js';
-import { ComputePlatform } from './types.js';
+import { ComputePlatform, LogLevelNumbers } from './types.js';
 import { stringifyUndefined } from './utils.js';
 
-export const defaultLoggerOptions: pino.LoggerOptions = {
-  level: 'info',
+export const defaultLoggerOptions: Omit<pino.LoggerOptions, 'level'> & {
+  level?: pino.LevelWithSilent;
+} = {
+  level: 'info' as const,
   serializers: {
     err: serializeError,
   },
@@ -27,7 +29,7 @@ function detectPlatform(): ComputePlatform | undefined {
 
 export function getPlatformLoggerOptions(
   platform = detectPlatform(),
-): pino.LoggerOptions {
+): Omit<pino.LoggerOptions, 'level'> & { level?: pino.LevelWithSilent } {
   switch (platform) {
     // See https://cloud.google.com/error-reporting/docs/formatting-error-messages
     case 'gcp-cloudrun':
@@ -36,14 +38,14 @@ export function getPlatformLoggerOptions(
         // log sent to GCP logging, so hostname is not required
         base: undefined,
 
-        level: 'info',
         messageKey: 'message',
         timestamp: pino.stdTimeFunctions.isoTime,
+
         formatters: {
           level(levelLabel, levelNumber) {
             return {
               severity: gcpLevelToSeverity[levelLabel],
-              ...(levelNumber >= 50 && {
+              ...(levelNumber >= LogLevelNumbers.Error && {
                 '@type':
                   'type.googleapis.com/google.devtools.clouderrorreporting.v1beta1.ReportedErrorEvent',
               }),

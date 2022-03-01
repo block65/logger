@@ -1,10 +1,15 @@
-import { describe, expect, test } from '@jest/globals';
+import { beforeEach, describe, expect, jest, test } from '@jest/globals';
 import { lambdaLoggerContextWrapper } from '../lib/lambda.js';
-import { loggerWithWaitableMock } from './helpers.js';
+import { createLoggerWithWaitableMock } from './helpers.js';
 
 describe('AWS', () => {
+  beforeEach(() => {
+    jest.useFakeTimers('modern');
+    jest.setSystemTime(new Date('2009-02-13T23:31:30.000Z'));
+  });
+
   test('Lambda Logger + contextId', async () => {
-    const [logger, callback] = loggerWithWaitableMock();
+    const [logger, callback] = await createLoggerWithWaitableMock();
 
     const contextId = 'fake-aws-request-id';
 
@@ -24,7 +29,7 @@ describe('AWS', () => {
   });
 
   test('Lambda Error Object', async () => {
-    const [logger, callback] = loggerWithWaitableMock({
+    const [logger, callback] = await createLoggerWithWaitableMock({
       platform: 'aws-lambda',
     });
 
@@ -33,7 +38,7 @@ describe('AWS', () => {
   });
 
   test('Error Object', async () => {
-    const [logger, callback] = loggerWithWaitableMock({
+    const [logger, callback] = await createLoggerWithWaitableMock({
       platform: 'aws',
     });
 

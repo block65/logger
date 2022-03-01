@@ -1,6 +1,8 @@
 import { AsyncLocalStorage } from 'async_hooks';
 import type pino from 'pino';
 import type { MixinFn, MixinFnWithData } from './mixins.js';
+import type { PrettyTransportOptions } from './pretty-transport.js';
+import type { SentryTransportOptions } from './sentry-transport.js';
 
 export type Falsy = false | undefined | null;
 
@@ -11,7 +13,7 @@ export enum LogLevelNumbers {
   Info = 30,
   Debug = 20,
   Trace = 10,
-  Silent = 0,
+  Silent = Infinity,
 }
 
 export interface LogDescriptor {
@@ -53,20 +55,20 @@ export interface AlsContextOutput {
 export type ComputePlatform = 'gcp-cloudrun' | 'aws-lambda' | 'aws';
 
 export interface CreateLoggerOptions
-  extends Omit<pino.LoggerOptions, 'mixin' | 'prettyPrint' | 'prettifier'> {
-  pretty?: boolean;
+  extends Omit<
+    pino.LoggerOptions,
+    'mixin' | 'prettyPrint' | 'prettifier' | 'color' | 'transport' | 'level'
+  > {
+  prettyOptions?: true | PrettyTransportOptions;
   traceCaller?: boolean;
   platform?: ComputePlatform;
   mixins?: (MixinFnWithData | MixinFn | Falsy)[];
-  transports?: pino.TransportMultiOptions;
+  transports?: pino.TransportMultiOptions['targets'];
+  sentryTransportOptions?: SentryTransportOptions;
+  level?: pino.LevelWithSilent;
 }
 
-export type CreateLoggerOptionsWithoutTransports = Omit<
+export type CreateLoggerOptionsWithDestination = Omit<
   CreateLoggerOptions,
-  'pretty' | 'transports'
+  'prettyOptions' | 'sentryTransportOptions'
 >;
-
-export interface CreateCliLoggerOptions
-  extends Omit<CreateLoggerOptionsWithoutTransports, 'platform'> {
-  color?: boolean;
-}

@@ -1,6 +1,7 @@
+import pino from 'pino';
 import { isPlainObject } from './utils.js';
 
-export const gcpLevelToSeverity: Record<string, string> = {
+export const gcpLevelToSeverity: Record<pino.Level | string, string> = {
   trace: 'DEBUG',
   debug: 'DEBUG',
   info: 'INFO',

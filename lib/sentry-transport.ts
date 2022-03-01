@@ -1,0 +1,68 @@
+import { captureException, Severity } from '@sentry/node';
+import type { ScopeContext } from '@sentry/types';
+import pino from 'pino';
+import build from 'pino-abstract-transport';
+import { LogDescriptor, LogLevelNumbers } from './types.js';
+
+export interface SentryTransportOptions {
+  dsn: string;
+  context?: Record<string, string>;
+  minLogLevel?: pino.Level;
+}
+
+interface DirectSentryTransportOptions {
+  dsn: string;
+  context?: Record<string, string>;
+  minLogLevel?: pino.Level;
+}
+
+const sentrySeverityMap = new Map<LogLevelNumbers, Severity>([
+  [LogLevelNumbers.Fatal, Severity.Fatal],
+  [LogLevelNumbers.Error, Severity.Error],
+  [LogLevelNumbers.Warn, Severity.Warning],
+  [LogLevelNumbers.Info, Severity.Info],
+  [LogLevelNumbers.Debug, Severity.Debug],
+  [LogLevelNumbers.Trace, Severity.Debug],
+]);
+
+export function sentryCaptureLog(
+  log: LogDescriptor,
+  options: DirectSentryTransportOptions,
+) {
+  const context: Partial<ScopeContext> = {
+    level: sentrySeverityMap.get(log.level) || Severity.Log,
+    ...options.context,
+  };
+
+  // the err prop exists when something error-ish was detected in the log call
+  if ('err' in log) {
+    captureException(Object.assign(new Error(), log.err), context);
+  } else {
+    captureException(
+      Object.assign(new Error(log.msg), {
+        stack: log.stack,
+      }),
+      context,
+    );
+  }
+}
+
+export default async function sentryTransport(
+  options: DirectSentryTransportOptions,
+) {
+  return build(
+    async (source) => {
+      // eslint-disable-next-line no-restricted-syntax
+      for await (const log of source) {
+        setImmediate(() => sentryCaptureLog(log, options));
+      }
+    },
+    {
+      async close(err?: Error) {
+        if (err) {
+          console.warn(err);
+        }
+      },
+    },
+  );
+}
