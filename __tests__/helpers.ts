@@ -104,7 +104,7 @@ export async function writeLogsToStream(
     transport.end(resolve);
   });
 
-  await new Promise((resolve) => {
-    setImmediate(resolve);
-  });
+  // await new Promise((resolve) => {
+  //   setImmediate(resolve);
+  // });
 }

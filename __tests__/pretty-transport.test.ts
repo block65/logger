@@ -1,9 +1,32 @@
-import { beforeEach, describe, expect, jest, test } from '@jest/globals';
+import {
+  afterAll,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  jest,
+  test,
+} from '@jest/globals';
+import { randomBytes } from 'node:crypto';
+import { FileHandle, open, readFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { PassThrough } from 'node:stream';
+import { pipeline } from 'node:stream/promises';
+import { TextDecoder } from 'node:util';
 import { LogLevelNumbers } from '../lib/types.js';
 import { writeLogsToStream } from './helpers.js';
 
+function createTmpLogfileDest() {
+  return join(
+    tmpdir(),
+    `jest-logger-pretty-${randomBytes(3).toString('base64url')}`,
+  );
+}
+
 describe('Pretty Transport', () => {
   const oldEnv = process.env;
+
   beforeEach(() => {
     jest.resetModules();
     jest.useFakeTimers('modern');
@@ -14,12 +37,11 @@ describe('Pretty Transport', () => {
   test('pretty logger no-color', async () => {
     process.env.NO_COLOR = 'true';
     const { prettyTransport } = await import('../lib/pretty-transport.js');
-    const transport = await prettyTransport();
 
-    const mockFn = jest.fn();
-    transport.on('data', mockFn);
+    const destination = createTmpLogfileDest();
+    const transport = await prettyTransport({ destination });
 
-    writeLogsToStream(transport, {
+    await writeLogsToStream(transport, {
       level: LogLevelNumbers.Info,
       time: Date.now(),
       pid: 1,
@@ -33,27 +55,30 @@ describe('Pretty Transport', () => {
       },
     });
 
-    await expect(mockFn.mock.calls).resolves.toMatchSnapshot();
+    const logs = await readFile(destination);
+
+    expect(new TextDecoder().decode(logs)).toMatchSnapshot();
   });
 
   test('pretty logger force-color', async () => {
-    process.env.NO_COLOR = 'true';
     const { prettyTransport } = await import('../lib/pretty-transport.js');
+
+    const destination = createTmpLogfileDest();
+
     const transport = await prettyTransport({
+      destination,
       color: true,
     });
 
-    const mockFn = jest.fn();
-    transport.on('data', mockFn);
-
-    writeLogsToStream(transport, {
+    await writeLogsToStream(transport, {
       level: LogLevelNumbers.Error,
       err: {
         message: 'Error: hello',
       },
       time: Date.now(),
     });
+    const logs = await readFile(destination);
 
-    await expect(mockFn.mock.calls).resolves.toMatchSnapshot();
+    expect(new TextDecoder().decode(logs)).toMatchSnapshot();
   });
 });

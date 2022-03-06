@@ -12,7 +12,7 @@ export interface SentryTransportOptions {
 
 interface DirectSentryTransportOptions {
   dsn: string;
-  context?: Record<string, string>;
+  context?: Partial<ScopeContext>;
   minLogLevel?: pino.Level;
 }
 
@@ -47,14 +47,13 @@ export function sentryCaptureLog(
   }
 }
 
-export default async function sentryTransport(
-  options: DirectSentryTransportOptions,
-) {
+export default function sentryTransport(options: DirectSentryTransportOptions) {
   return build(
     async (source) => {
       // eslint-disable-next-line no-restricted-syntax
       for await (const log of source) {
-        setImmediate(() => sentryCaptureLog(log, options));
+        sentryCaptureLog(log, options);
+        // setImmediate(() => sentryCaptureLog(log, options));
       }
     },
     {

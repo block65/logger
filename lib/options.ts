@@ -5,7 +5,7 @@ import { ComputePlatform, LogLevelNumbers } from './types.js';
 import { stringifyUndefined } from './utils.js';
 
 export const defaultLoggerOptions: Omit<pino.LoggerOptions, 'level'> & {
-  level?: pino.LevelWithSilent;
+  level: pino.LevelWithSilent;
 } = {
   level: 'info' as const,
   serializers: {

@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Sentry Transport captureException arguments 1`] = `
+Array [
+  Array [
+    [Error: Fake],
+    Object {
+      "level": "fatal",
+      "tags": Object {
+        "admin": true,
+      },
+      "user": Object {
+        "id": "1234",
+      },
+    },
+  ],
+]
+`;

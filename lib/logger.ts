@@ -20,7 +20,7 @@ export function createLogger(
 ): Logger;
 export function createLogger(
   opts: CreateLoggerOptions | CreateLoggerOptionsWithDestination = {},
-  destination?: string | number | pino.DestinationStream,
+  destination: string | number | pino.DestinationStream = process.stdout.fd,
 ): Logger {
   const asyncLocalStorage = new AsyncLocalStorage<AlsContext>();
 
@@ -40,13 +40,13 @@ export function createLogger(
     ...userPinoOpts,
   };
 
-  const hasDestinationStream =
+  const destinationIsStream =
     typeof destination === 'object' && 'write' in destination;
 
   const pinoOptions: pino.LoggerOptions = {
     ...resolvedOptions,
     mixin,
-    ...(!hasDestinationStream && {
+    ...(!destinationIsStream && {
       transport: {
         targets: [
           ...('prettyOptions' in resolvedOptions &&
@@ -54,7 +54,7 @@ export function createLogger(
             ? [
                 {
                   target: './pretty-transport.js',
-                  level: resolvedOptions.level || ('trace' as const),
+                  level: resolvedOptions.level,
                   options: isPlainObject(resolvedOptions.prettyOptions)
                     ? {
                         ...resolvedOptions.prettyOptions,
@@ -80,8 +80,8 @@ export function createLogger(
             ? [
                 {
                   target: 'pino/file',
-                  level: resolvedOptions.level || ('trace' as const),
-                  options: {},
+                  level: resolvedOptions.level,
+                  options: { destination },
                 },
               ]
             : []),
@@ -90,10 +90,9 @@ export function createLogger(
     }),
   };
 
-  const pinoInstance =
-    typeof destination === 'object' && 'write' in destination
-      ? pino(pinoOptions, destination)
-      : pino(pinoOptions);
+  const pinoInstance = destinationIsStream
+    ? pino(pinoOptions, destination)
+    : pino(pinoOptions);
 
   return Object.create(pinoInstance, {
     als: {

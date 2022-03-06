@@ -14,7 +14,9 @@ export interface PrettyTransportOptions {
 
 function createPrettifier(options?: { fd?: number; color?: boolean }) {
   const forceNoColor: boolean =
-    process.env.TERM === 'dumb' || 'NO_COLOR' in process.env;
+    process.env.TERM === 'dumb' ||
+    'NO_COLOR' in process.env ||
+    options?.color === false;
 
   const useColor = forceNoColor
     ? false
@@ -76,10 +78,15 @@ function createPrettifier(options?: { fd?: number; color?: boolean }) {
 }
 
 export async function prettyTransport(options: PrettyTransportOptions = {}) {
-  const fd =
-    typeof options.destination === 'number' ? options.destination : undefined;
+  const dest =
+    typeof options.destination === 'string' ? options.destination : undefined;
 
-  const prettifier = createPrettifier({ fd });
+  const fallbackFd = !dest ? process.stdout.fd : undefined;
+
+  const fd =
+    typeof options.destination === 'number' ? options.destination : fallbackFd;
+
+  const prettifier = createPrettifier({ fd, color: options.color });
 
   // SonicBoom is necessary to avoid loops with the main thread.
   // It is the same of pino.destination().
@@ -92,7 +99,7 @@ export async function prettyTransport(options: PrettyTransportOptions = {}) {
     sync: false,
   });
 
-  await once(destination, 'ready');
+  // await once(destination, 'ready');
 
   return build(
     async (source) => {
