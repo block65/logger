@@ -45,6 +45,8 @@ export function createLogger(
 
   const pinoOptions: pino.LoggerOptions = {
     ...resolvedOptions,
+    // this handles undefined `level` provided by user
+    level: resolvedOptions.level || defaultLoggerOptions.level,
     mixin,
     ...(!destinationIsStream && {
       transport: {

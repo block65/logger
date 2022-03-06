@@ -143,4 +143,10 @@ describe('Basic', () => {
     logger.warn('hello');
     await expect(callback.waitUntilCalled()).resolves.toMatchSnapshot();
   });
+
+  test('allow undefined logger level', async () => {
+    await createLoggerWithWaitableMock({
+      level: undefined,
+    });
+  });
 });
