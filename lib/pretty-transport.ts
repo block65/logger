@@ -95,7 +95,7 @@ export async function prettyTransport(options: PrettyTransportOptions = {}) {
   await once(destination, 'ready');
 
   return build(
-    async function (source) {
+    async (source) => {
       // eslint-disable-next-line no-restricted-syntax
       for await (const obj of source) {
         const toDrain = !destination.write(`${prettifier(obj)}\n`);
