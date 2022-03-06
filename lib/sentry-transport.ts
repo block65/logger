@@ -6,13 +6,15 @@ import { LogDescriptor, LogLevelNumbers } from './types.js';
 
 export interface SentryTransportOptions {
   dsn: string;
-  context?: Partial<ScopeContext>;
+  // extra is deprecated - see https://docs.sentry.io/platforms/javascript/enriching-events/context/#additional-data
+  context?: Partial<Omit<ScopeContext, 'extra'>>;
   minLogLevel?: pino.Level;
 }
 
 interface DirectSentryTransportOptions {
   dsn: string;
-  context?: Partial<ScopeContext>;
+  // extra is deprecated - see https://docs.sentry.io/platforms/javascript/enriching-events/context/#additional-data
+  context?: Partial<Omit<ScopeContext, 'extra'>>; // extra is deprecated
   minLogLevel?: pino.Level;
 }
 
