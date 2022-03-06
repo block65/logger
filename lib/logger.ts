@@ -16,6 +16,10 @@ export function createLogger(
 ): Logger;
 export function createLogger(
   opts: CreateLoggerOptionsWithDestination,
+  destination?: string | number | pino.DestinationStream,
+): Logger;
+export function createLogger(
+  opts: CreateLoggerOptionsWithDestination,
   destination: string | number | pino.DestinationStream,
 ): Logger;
 export function createLogger(
@@ -65,7 +69,18 @@ export function createLogger(
                     : { destination },
                 },
               ]
-            : []),
+            : [
+                ...(typeof destination === 'string' ||
+                typeof destination === 'number'
+                  ? [
+                      {
+                        target: 'pino/file',
+                        level: resolvedOptions.level,
+                        options: { destination },
+                      },
+                    ]
+                  : []),
+              ]),
           ...('sentryTransportOptions' in resolvedOptions &&
           resolvedOptions.sentryTransportOptions
             ? [
@@ -75,15 +90,6 @@ export function createLogger(
                     resolvedOptions.sentryTransportOptions.minLogLevel ||
                     ('error' as const),
                   options: resolvedOptions.sentryTransportOptions,
-                },
-              ]
-            : []),
-          ...(typeof destination === 'string' || typeof destination === 'number'
-            ? [
-                {
-                  target: 'pino/file',
-                  level: resolvedOptions.level,
-                  options: { destination },
                 },
               ]
             : []),
