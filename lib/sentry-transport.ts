@@ -6,7 +6,7 @@ import { LogDescriptor, LogLevelNumbers } from './types.js';
 
 export interface SentryTransportOptions {
   dsn: string;
-  context?: Record<string, string>;
+  context?: Partial<ScopeContext>;
   minLogLevel?: pino.Level;
 }
 
