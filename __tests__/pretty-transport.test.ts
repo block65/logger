@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, jest, test } from '@jest/globals';
 import { LogLevelNumbers } from '../lib/types.js';
 import { writeLogsToStream } from './helpers.js';
 
-describe.skip('Pretty Transport', () => {
+describe('Pretty Transport', () => {
   const oldEnv = process.env;
   beforeEach(() => {
     jest.resetModules();
