@@ -3,6 +3,7 @@ export type {
   BaseLogger,
   LogDescriptor,
   LogLevelNumbers,
+  LevelWithSilent,
 } from './types.js';
 
 export { createLogger } from './logger.js';

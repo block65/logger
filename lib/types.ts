@@ -16,6 +16,8 @@ export enum LogLevelNumbers {
   Silent = Infinity,
 }
 
+export type LevelWithSilent = pino.LevelWithSilent;
+
 export interface LogDescriptor {
   level: LogLevelNumbers;
   time: number;
@@ -59,7 +61,7 @@ export interface CreateLoggerOptions
     pino.LoggerOptions,
     'mixin' | 'prettyPrint' | 'prettifier' | 'color' | 'transport' | 'level'
   > {
-  prettyOptions?: true | PrettyTransportOptions;
+  prettyOptions?: boolean | PrettyTransportOptions;
   traceCaller?: boolean;
   platform?: ComputePlatform;
   mixins?: (MixinFnWithData | MixinFn | Falsy)[];
