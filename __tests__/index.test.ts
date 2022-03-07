@@ -6,7 +6,11 @@ import {
   jest,
   test,
 } from '@jest/globals';
-import { createLoggerWithWaitableMock } from './helpers.js';
+import { createLogger } from '../lib/index.js';
+import {
+  createLoggerWithWaitableMock,
+  createTmpLogfileDest,
+} from './helpers.js';
 
 describe('Basic', () => {
   const oldEnv = process.env;
@@ -145,8 +149,31 @@ describe('Basic', () => {
   });
 
   test('allow undefined logger level', async () => {
-    await createLoggerWithWaitableMock({
-      level: undefined,
+    jest.useRealTimers();
+
+    const [destination, getLogs] = createTmpLogfileDest();
+
+    const logger = createLogger(
+      {
+        level: undefined,
+      },
+      destination,
+    );
+
+    expect(logger.level).toBe('info');
+
+    logger.error(new Error('Fake'));
+
+    // wait for logs to flush
+    await new Promise((resolve) => {
+      setTimeout(resolve, 500);
+    });
+
+    const logs = await getLogs();
+
+    expect(logs).toBeTruthy();
+    expect(JSON.parse(logs)).toMatchSnapshot({
+      time: expect.any(Number),
     });
   });
 });

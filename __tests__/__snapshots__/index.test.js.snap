@@ -167,7 +167,7 @@ Array [
 exports[`Basic Trace Caller Force true (production) 1`] = `
 Array [
   Object {
-    "caller": "Object.<anonymous> (__tests__/index.test.js:71:16)",
+    "caller": "Object.<anonymous> (__tests__/index.test.js:72:16)",
     "hostname": "testhost",
     "level": 40,
     "msg": "hello",
@@ -175,4 +175,26 @@ Array [
     "time": 1234567890000,
   },
 ]
+`;
+
+exports[`Basic allow undefined logger level 1`] = `
+Object {
+  "err": Object {
+    "message": "Fake",
+    "name": "Error",
+    "stack": "Error: Fake
+    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/index.test.js:130:22)
+    at Promise.then.completed (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)
+    at new Promise (<anonymous>)",
+  },
+  "hostname": "testhost",
+  "level": 50,
+  "msg": "Fake",
+  "pid": 1337,
+  "time": Any {
+    "$$typeof": Symbol(jest.asymmetricMatcher),
+    "inverse": false,
+    "sample": [Function Number],
+  },
+}
 `;
