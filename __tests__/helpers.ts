@@ -2,18 +2,14 @@ import { jest } from '@jest/globals';
 import Emittery from 'emittery';
 import type { Mock } from 'jest-mock';
 import { randomBytes } from 'node:crypto';
-import { open, readFile, watch } from 'node:fs/promises';
+import { readFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { PassThrough, Writable } from 'node:stream';
+import { TextDecoder } from 'node:util';
 import pino from 'pino';
 import { createLogger } from '../lib/logger.js';
-import {
-  CreateLoggerOptions,
-  CreateLoggerOptionsWithDestination,
-  LogDescriptor,
-  Logger,
-} from '../lib/types.js';
+import { CreateLoggerOptions, LogDescriptor, Logger } from '../lib/types.js';
 
 interface WaitableMock<Y extends unknown[] = unknown[]> extends Mock<void, Y> {
   waitUntilCalled(): Promise<Y>;
@@ -62,7 +58,7 @@ export function waitableJestFn<
 }
 
 export async function createLoggerWithWaitableMock(
-  opts: CreateLoggerOptionsWithDestination = {},
+  opts: Omit<CreateLoggerOptions, 'prettyOptions'> = {},
 ): Promise<[Logger, WaitableMock<[LogDescriptor]>]> {
   const destination = new PassThrough();
   const writeCallback = waitableJestFn<[LogDescriptor]>();
@@ -107,4 +103,31 @@ export async function writeLogsToStream(
   // await new Promise((resolve) => {
   //   setImmediate(resolve);
   // });
+}
+
+export function createTmpLogfileDest(): [
+  destination: string,
+  logs: () => Promise<string>,
+] {
+  const destination = join(
+    tmpdir(),
+    `jest-logger-pretty-${randomBytes(3).toString('base64url')}`,
+  );
+
+  return [
+    destination,
+    async () => {
+      const logs = await readFile(destination).catch(
+        (err: NodeJS.ErrnoException) => {
+          // allow nonexistant files, as the logger may not have logged anything
+          if (err.code === 'ENOENT') {
+            return new ArrayBuffer(0);
+          }
+          throw err;
+        },
+      );
+
+      return new TextDecoder().decode(logs);
+    },
+  ];
 }

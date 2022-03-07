@@ -15,14 +15,7 @@ import { PassThrough } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
 import { TextDecoder } from 'node:util';
 import { LogLevelNumbers } from '../lib/types.js';
-import { writeLogsToStream } from './helpers.js';
-
-function createTmpLogfileDest() {
-  return join(
-    tmpdir(),
-    `jest-logger-pretty-${randomBytes(3).toString('base64url')}`,
-  );
-}
+import { createTmpLogfileDest, writeLogsToStream } from './helpers.js';
 
 describe('Pretty Transport', () => {
   const oldEnv = process.env;
@@ -38,7 +31,7 @@ describe('Pretty Transport', () => {
     process.env.NO_COLOR = 'true';
     const { prettyTransport } = await import('../lib/pretty-transport.js');
 
-    const destination = createTmpLogfileDest();
+    const [destination, getLogs] = createTmpLogfileDest();
     const transport = await prettyTransport({ destination });
 
     await writeLogsToStream(transport, {
@@ -55,15 +48,15 @@ describe('Pretty Transport', () => {
       },
     });
 
-    const logs = await readFile(destination);
+    const logs = await getLogs();
 
-    expect(new TextDecoder().decode(logs)).toMatchSnapshot();
+    expect(logs).toMatchSnapshot();
   });
 
   test('pretty logger force-color', async () => {
     const { prettyTransport } = await import('../lib/pretty-transport.js');
 
-    const destination = createTmpLogfileDest();
+    const [destination, getLogs] = createTmpLogfileDest();
 
     const transport = await prettyTransport({
       destination,
@@ -77,8 +70,8 @@ describe('Pretty Transport', () => {
       },
       time: Date.now(),
     });
-    const logs = await readFile(destination);
+    const logs = await getLogs();
 
-    expect(new TextDecoder().decode(logs)).toMatchSnapshot();
+    expect(logs).toMatchSnapshot();
   });
 });
