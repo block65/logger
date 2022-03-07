@@ -9,6 +9,7 @@ import {
   Logger,
 } from './types.js';
 import { isPlainObject } from './utils.js';
+import { isPlainObject, stripUndefined } from './utils.js';
 
 export function createLogger(
   opts?: CreateLoggerOptions,
@@ -41,7 +42,7 @@ export function createLogger(
   const resolvedOptions = {
     ...defaultLoggerOptions,
     ...platformLoggerOptions,
-    ...userPinoOpts,
+    ...stripUndefined(userPinoOpts),
   };
 
   const destinationIsStream =
@@ -49,8 +50,6 @@ export function createLogger(
 
   const pinoOptions: pino.LoggerOptions = {
     ...resolvedOptions,
-    // this handles undefined `level` provided by user
-    level: resolvedOptions.level || defaultLoggerOptions.level,
     mixin,
     ...(!destinationIsStream && {
       transport: {
