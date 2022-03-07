@@ -69,8 +69,3 @@ export interface CreateLoggerOptions
   sentryTransportOptions?: SentryTransportOptions;
   level?: pino.LevelWithSilent;
 }
-
-export type CreateLoggerOptionsWithDestination = Omit<
-  CreateLoggerOptions,
-  'prettyOptions' | 'sentryTransportOptions'
->;

@@ -2,29 +2,20 @@ import { AsyncLocalStorage } from 'node:async_hooks';
 import pino from 'pino';
 import { callerMixin, composeMixins, createContextMixin } from './mixins.js';
 import { defaultLoggerOptions, getPlatformLoggerOptions } from './options.js';
-import {
-  AlsContext,
-  CreateLoggerOptions,
-  CreateLoggerOptionsWithDestination,
-  Logger,
-} from './types.js';
-import { isPlainObject } from './utils.js';
+import { AlsContext, CreateLoggerOptions, Logger } from './types.js';
 import { isPlainObject, stripUndefined } from './utils.js';
 
+export function createLogger(): Logger;
 export function createLogger(
-  opts?: CreateLoggerOptions,
+  opts: CreateLoggerOptions,
   destination?: string | number,
 ): Logger;
 export function createLogger(
-  opts: CreateLoggerOptionsWithDestination,
-  destination?: string | number | pino.DestinationStream,
+  opts: Omit<CreateLoggerOptions, 'prettyTransportOptions'>,
+  destination: pino.DestinationStream,
 ): Logger;
 export function createLogger(
-  opts: CreateLoggerOptionsWithDestination,
-  destination: string | number | pino.DestinationStream,
-): Logger;
-export function createLogger(
-  opts: CreateLoggerOptions | CreateLoggerOptionsWithDestination = {},
+  opts: CreateLoggerOptions = {},
   destination: string | number | pino.DestinationStream = process.stdout.fd,
 ): Logger {
   const asyncLocalStorage = new AsyncLocalStorage<AlsContext>();
