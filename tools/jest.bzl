@@ -45,7 +45,7 @@ def jest_test(name, srcs, deps, size = "medium", jest_config = "//:jest.config.j
     ]
 
     env_with_defaults = dict_union(env, {
-        "NODE_OPTIONS": "\"%s %s\"" % ("--experimental-vm-modules", env.get("NODE_OPTIONS")),
+        "NODE_OPTIONS": "\"%s %s\"" % ("--experimental-vm-modules --stack-trace-limit=3", env.get("NODE_OPTIONS")),
     })
 
     _jest_test(
