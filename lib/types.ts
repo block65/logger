@@ -42,6 +42,7 @@ export type BaseLogger = RemoveIndex<pino.Logger>;
 
 export interface Logger extends BaseLogger {
   als: AsyncLocalStorage<AlsContext>;
+  flushTransports: () => Promise<void>;
 }
 
 export interface AlsContext {

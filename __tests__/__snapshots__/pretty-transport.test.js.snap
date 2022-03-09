@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Pretty Transport pretty logger force-color 1`] = `
-"[90m2009-02-13T23:31:30.000Z[39m [31mERROR[39m  { err: { message: [32m'Error: hello'[39m } }
+"[90m2009-02-13T23:31:30.000Z[39m [31mERROR[39m  { err: { message: [32m'hello'[39m } }
 "
 `;
 

@@ -2,7 +2,7 @@ import { jest } from '@jest/globals';
 import Emittery from 'emittery';
 import type { Mock } from 'jest-mock';
 import { randomBytes } from 'node:crypto';
-import { readFile } from 'node:fs/promises';
+import { mkdtemp, readFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { PassThrough, Writable } from 'node:stream';
@@ -105,14 +105,10 @@ export async function writeLogsToStream(
   // });
 }
 
-export function createTmpLogfileDest(): [
-  destination: string,
-  logs: () => Promise<string>,
-] {
-  const destination = join(
-    tmpdir(),
-    `jest-logger-pretty-${randomBytes(3).toString('base64url')}`,
-  );
+export async function createTmpLogfileDest(): Promise<
+  [destination: string, logs: () => Promise<string>]
+> {
+  const destination = join(await mkdtemp('jest-logger-'), 'output.log');
 
   return [
     destination,

@@ -27,6 +27,7 @@ describe('Basic', () => {
   afterAll(() => {
     process.env = oldEnv;
     Error.stackTraceLimit = originalStackTraceLimit;
+    jest.useRealTimers();
   });
 
   test('Object', async () => {
@@ -149,9 +150,9 @@ describe('Basic', () => {
   });
 
   test('allow undefined logger level', async () => {
-    jest.useRealTimers();
+    // jest.useRealTimers();
 
-    const [destination, getLogs] = createTmpLogfileDest();
+    const [destination, getLogs] = await createTmpLogfileDest();
 
     const logger = createLogger(
       {
@@ -162,18 +163,14 @@ describe('Basic', () => {
 
     expect(logger.level).toBe('info');
 
-    logger.error(new Error('Fake'));
+    logger.fatal(new Error('Fake'));
 
     // wait for logs to flush
-    await new Promise((resolve) => {
-      setTimeout(resolve, 500);
-    });
+    await logger.flushTransports();
 
     const logs = await getLogs();
 
     expect(logs).toBeTruthy();
-    expect(JSON.parse(logs)).toMatchSnapshot({
-      time: expect.any(Number),
-    });
+    expect(JSON.parse(logs)).toMatchSnapshot();
   });
 });

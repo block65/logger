@@ -1,10 +1,21 @@
-import { beforeEach, describe, expect, jest, test } from '@jest/globals';
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  jest,
+  test,
+} from '@jest/globals';
 import { createPinoLoggerWithWaitableMock } from './helpers.js';
 
 describe('Control', () => {
   beforeEach(() => {
     jest.useFakeTimers('modern');
     jest.setSystemTime(new Date('2009-02-13T23:31:30.000Z'));
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
   });
 
   test('Error Object', async () => {

@@ -6,7 +6,10 @@
   "sideEffects": false,
   "type": "module",
   "exports": {
-    ".": "./lib/index.js"
+    ".": "./lib/index.js",
+    "./pretty-transport": "./lib/pretty-transport.js",
+    "./sentry-transport": "./lib/sentry-transport.js",
+    "./file-transport": "./lib/file-transport.js"
   },
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",

@@ -1,5 +1,6 @@
 import {
   afterAll,
+  afterEach,
   beforeAll,
   beforeEach,
   describe,
@@ -27,11 +28,15 @@ describe('Pretty Transport', () => {
     process.env = { ...oldEnv };
   });
 
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
   test('pretty logger no-color', async () => {
     process.env.NO_COLOR = 'true';
     const { prettyTransport } = await import('../lib/pretty-transport.js');
 
-    const [destination, getLogs] = createTmpLogfileDest();
+    const [destination, getLogs] = await createTmpLogfileDest();
     const transport = await prettyTransport({ destination });
 
     await writeLogsToStream(transport, {
@@ -56,7 +61,7 @@ describe('Pretty Transport', () => {
   test('pretty logger force-color', async () => {
     const { prettyTransport } = await import('../lib/pretty-transport.js');
 
-    const [destination, getLogs] = createTmpLogfileDest();
+    const [destination, getLogs] = await createTmpLogfileDest();
 
     const transport = await prettyTransport({
       destination,
@@ -66,7 +71,7 @@ describe('Pretty Transport', () => {
     await writeLogsToStream(transport, {
       level: LogLevelNumbers.Error,
       err: {
-        message: 'Error: hello',
+        message: 'hello',
       },
       time: Date.now(),
     });
