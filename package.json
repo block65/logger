@@ -6,10 +6,7 @@
   "sideEffects": false,
   "type": "module",
   "exports": {
-    ".": "./lib/index.js",
-    "./pretty-transport": "./lib/pretty-transport.js",
-    "./sentry-transport": "./lib/sentry-transport.js",
-    "./file-transport": "./lib/file-transport.js"
+    ".": "./lib/index.js"
   },
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -33,13 +30,12 @@
     "test:watch": "ibazel test //:unit"
   },
   "dependencies": {
-    "@types/express": "^4.17.13",
     "colorette": "^2.0.16",
-    "pino": "^7.8.0",
+    "pino": "^7.8.1",
     "pino-abstract-transport": "^0.5.0",
-    "pino-pretty": "^7.5.1",
     "serialize-error": "^9.1.0",
-    "sonic-boom": "^2.6.0"
+    "sonic-boom": "^2.6.0",
+    "type-fest": "^2.12.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.16.11",
@@ -47,15 +43,16 @@
     "@bazel/bazelisk": "^1.11.0",
     "@bazel/buildifier": "^5.0.1",
     "@bazel/ibazel": "^0.15.10",
-    "@bazel/typescript": "^5.1.0",
+    "@bazel/typescript": "^5.2.0",
     "@block65/eslint-config": "^7.0.4",
     "@jest/globals": "^27.5.1",
-    "@sentry/integrations": "^6.18.1",
-    "@sentry/node": "^6.18.1",
+    "@sentry/integrations": "^6.18.2",
+    "@sentry/node": "^6.18.2",
+    "@types/aws-lambda": "^8.10.93",
     "@types/express": "^4.17.13",
     "@types/node": "^17.0.21",
-    "@typescript-eslint/eslint-plugin": "^5.13.0",
-    "@typescript-eslint/parser": "^5.13.0",
+    "@typescript-eslint/eslint-plugin": "^5.14.0",
+    "@typescript-eslint/parser": "^5.14.0",
     "emittery": "^0.10.1",
     "eslint": "^8.10.0",
     "eslint-plugin-import": "^2.25.4",
@@ -67,15 +64,18 @@
     "typescript": "^4.6.2"
   },
   "peerDependencies": {
-    "@sentry/integrations": "^6.18.1",
-    "@sentry/node": "^6.18.1",
+    "@sentry/integrations": "^6.18.2",
+    "@sentry/node": "^6.18.2",
     "@types/express": "^4.17.13"
   },
   "peerDependenciesMeta": {
+    "@sentry/integrations": {
+      "optional": true
+    },
     "@sentry/node": {
       "optional": true
     },
-    "@sentry/integrations": {
+    "@types/aws-lambda": {
       "optional": true
     },
     "@types/express": {

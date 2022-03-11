@@ -1,51 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AWS Error Object 1`] = `
-Array [
-  Object {
-    "err": Object {
-      "message": "Ded 3",
-      "name": "Error",
-      "stack": "Error: Ded 3
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/aws.test.js:38:22)",
-    },
-    "hostname": "testhost",
-    "level": 50,
-    "msg": "Ded 3",
-    "pid": 1337,
-    "time": 1234567890000,
-  },
-]
-`;
+exports[`AWS ECS Error Object 1`] = `"2009-02-13T23:31:30.000Z		ERROR	Ded 3	{\\"pid\\":1337,\\"hostname\\":\\"testhost\\",\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"Ded 3\\",\\"stack\\":\\"Error: Ded 3\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/aws.test.js:45:26)\\"}}"`;
 
-exports[`AWS Lambda Error Object 1`] = `
-Array [
-  Object {
-    "err": Object {
-      "message": "Ded 4",
-      "name": "Error",
-      "stack": "Error: Ded 4
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/aws.test.js:31:22)",
-    },
-    "level": 50,
-    "msg": "Ded 4",
-    "time": 1234567890000,
-  },
-]
-`;
+exports[`AWS Lambda Error Object 1`] = `"2009-02-13T23:31:30.000Z		ERROR	Ded 4	{\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"Ded 4\\",\\"stack\\":\\"Error: Ded 4\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/aws.test.js:34:26)\\"}}"`;
 
 exports[`AWS Lambda Logger + contextId 1`] = `
-Array [
-  Object {
-    "_context": Object {
-      "stuff": true,
-    },
-    "_contextId": "fake-aws-request-id",
-    "hostname": "testhost",
-    "level": 40,
-    "msg": "hello",
-    "pid": 1337,
-    "time": 1234567890000,
-  },
-]
+"2009-02-13T23:31:30.000Z	000fake-0000-000request-000-id	WARN	hello	
+2009-02-13T23:31:30.000Z	000fake-0000-000request-000-id	ERROR	fake	{\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"fake\\",\\"stack\\":\\"Error: fake\\\\n    at fn (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/lib/lambda.js:6:16\\\\n    at AsyncLocalStorage.run (node:async_hooks:320:14)\\"}}"
 `;

@@ -5,6 +5,18 @@ Array [
   Array [
     [Error: Fake],
     Object {
+      "level": "error",
+      "tags": Object {
+        "admin": true,
+      },
+      "user": Object {
+        "id": "1234",
+      },
+    },
+  ],
+  Array [
+    [Error: Fake],
+    Object {
       "level": "fatal",
       "tags": Object {
         "admin": true,

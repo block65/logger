@@ -21,7 +21,7 @@ describe('GCP', () => {
 
   test('Cloud Run', async () => {
     const [logger, callback] = await createLoggerWithWaitableMock({
-      platform: 'gcp-cloudrun',
+      logFormat: 'gcp',
     });
 
     logger.warn(new Error('hello'));
@@ -30,7 +30,7 @@ describe('GCP', () => {
 
   test('Cloud Run Error Object', async () => {
     const [logger, callback] = await createLoggerWithWaitableMock({
-      platform: 'gcp-cloudrun',
+      logFormat: 'gcp',
     });
 
     logger.error(new Error('Ded 1'));
@@ -40,7 +40,7 @@ describe('GCP', () => {
 
   test('Cloud Run Fatal with Error Object', async () => {
     const [logger, callback] = await createLoggerWithWaitableMock({
-      platform: 'gcp-cloudrun',
+      logFormat: 'gcp',
     });
 
     logger.fatal(new Error(`Ded 2`));

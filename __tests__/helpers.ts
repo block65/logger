@@ -1,15 +1,19 @@
 import { jest } from '@jest/globals';
 import Emittery from 'emittery';
 import type { Mock } from 'jest-mock';
-import { randomBytes } from 'node:crypto';
 import { mkdtemp, readFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { join, sep } from 'node:path';
 import { PassThrough, Writable } from 'node:stream';
 import { TextDecoder } from 'node:util';
 import pino from 'pino';
 import { createLogger } from '../lib/logger.js';
-import { CreateLoggerOptions, LogDescriptor, Logger } from '../lib/types.js';
+import {
+  CreateLoggerOptions,
+  LogDescriptor,
+  Logger,
+  PinoLoggerOptions,
+} from '../lib/types.js';
 
 interface WaitableMock<Y extends unknown[] = unknown[]> extends Mock<void, Y> {
   waitUntilCalled(): Promise<Y>;
@@ -57,23 +61,8 @@ export function waitableJestFn<
   });
 }
 
-export async function createLoggerWithWaitableMock(
-  opts: Omit<CreateLoggerOptions, 'prettyOptions'> = {},
-): Promise<[Logger, WaitableMock<[LogDescriptor]>]> {
-  const destination = new PassThrough();
-  const writeCallback = waitableJestFn<[LogDescriptor]>();
-
-  destination.on('data', (buff: Buffer) => {
-    return writeCallback(JSON.parse(buff.toString()));
-  });
-
-  const logger = createLogger(opts, destination);
-
-  return [logger, writeCallback];
-}
-
 export function createPinoLoggerWithWaitableMock(
-  opts?: pino.LoggerOptions,
+  opts?: PinoLoggerOptions,
 ): [pino.Logger, WaitableMock<[LogDescriptor]>] {
   const destination = new PassThrough();
   const writeCallback = waitableJestFn<[LogDescriptor]>();
@@ -105,15 +94,18 @@ export async function writeLogsToStream(
   // });
 }
 
-export async function createTmpLogfileDest(): Promise<
-  [destination: string, logs: () => Promise<string>]
+export async function generateTmpFilenameAndReader(): Promise<
+  [fileName: string, getLogs: () => Promise<string>]
 > {
-  const destination = join(await mkdtemp('jest-logger-'), 'output.log');
+  const fileName = join(
+    await mkdtemp(`${tmpdir()}${sep}jest-logger-`),
+    'output.log',
+  );
 
   return [
-    destination,
+    fileName,
     async () => {
-      const logs = await readFile(destination).catch(
+      const logs = await readFile(fileName).catch(
         (err: NodeJS.ErrnoException) => {
           // allow nonexistant files, as the logger may not have logged anything
           if (err.code === 'ENOENT') {
@@ -123,7 +115,58 @@ export async function createTmpLogfileDest(): Promise<
         },
       );
 
-      return new TextDecoder().decode(logs);
+      return new TextDecoder().decode(logs).trim();
     },
   ];
+}
+
+export async function generateTmpFilenameAndReaderJson(): Promise<
+  [fileName: string, getLogs: () => Promise<LogDescriptor[]>]
+> {
+  const [fileName, getLogs] = await generateTmpFilenameAndReader();
+  return [
+    fileName,
+    () =>
+      getLogs().then((logs) =>
+        logs
+          .trim() // may end with a newline
+          .split('\n')
+          .map((log) => JSON.parse(log)),
+      ),
+  ];
+}
+
+export async function createLoggerWithTmpfileDestination(
+  opts: CreateLoggerOptions = {},
+): Promise<[Logger, () => Promise<string>]> {
+  const [fileName, getLogs] = await generateTmpFilenameAndReader();
+
+  const logger = createLogger(opts, fileName);
+
+  return [logger, getLogs];
+}
+
+export async function createLoggerWithTmpfileDestinationJson(
+  opts: CreateLoggerOptions,
+): Promise<[Logger, () => Promise<LogDescriptor[]>]> {
+  const [fileName, getLogs] = await generateTmpFilenameAndReaderJson();
+  const logger = createLogger(opts, fileName);
+
+  return [logger, getLogs];
+}
+
+/** @deprecated */
+export async function createLoggerWithWaitableMock(
+  opts: CreateLoggerOptions = {},
+): Promise<[Logger, WaitableMock<[LogDescriptor]>]> {
+  const destination = new PassThrough();
+  const writeCallback = waitableJestFn<[LogDescriptor]>();
+
+  destination.on('data', (buff: Buffer) => {
+    return writeCallback(JSON.parse(buff.toString()));
+  });
+
+  const logger = createLogger(opts, destination);
+
+  return [logger, writeCallback];
 }

@@ -1,30 +1,22 @@
+import type { Context } from 'aws-lambda';
+import type { ConditionalPick, Primitive } from 'type-fest';
 import type { AlsContext, Logger } from './types.js';
 
-/** @deprecated */
-type AnyFunction = (...args: any) => any;
-/** @deprecated */
-type Wrapped<T extends AnyFunction> = (next: T) => (fn: T) => ReturnType<T>;
-
-/** @deprecated */
-export function lambdaLoggerContextWrapper<T extends AnyFunction>(
-  logger: Logger,
-  id: AlsContext['id'],
-  context?: AlsContext['context'],
-): Wrapped<T> {
-  return (fn) => {
-    return logger.als.run({ id, ...(context && { context }) }, () => {
-      return fn();
-    });
-  };
-}
+type LambdaContext = AlsContext['context'] &
+  ConditionalPick<Context, Primitive>;
 
 export function withLambdaLoggerContextWrapper<T>(
   logger: Logger,
-  id: AlsContext['id'],
+  context: LambdaContext,
   fn: (...args: any) => Promise<T>,
-  context?: AlsContext['context'],
 ): Promise<T> {
-  return logger.als.run({ id, ...(context && { context }) }, () => {
-    return fn();
-  });
+  return logger.als.run(
+    {
+      id: context.awsRequestId,
+      context: { awsRequestId: context.awsRequestId },
+    },
+    () => {
+      return fn();
+    },
+  );
 }

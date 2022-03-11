@@ -178,17 +178,32 @@ Array [
 `;
 
 exports[`Basic allow undefined logger level 1`] = `
-Object {
-  "err": Object {
-    "message": "Fake",
-    "name": "Error",
-    "stack": "Error: Fake
+Array [
+  Object {
+    "err": Object {
+      "message": "Fake",
+      "name": "Error",
+      "stack": "Error: Fake
     at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/index.test.js:130:22)",
+    },
+    "hostname": "testhost",
+    "level": 60,
+    "msg": "Fake",
+    "pid": 1337,
+    "time": 1234567890000,
   },
-  "hostname": "testhost",
-  "level": 60,
-  "msg": "Fake",
-  "pid": 1337,
-  "time": 1234567890000,
-}
+  Object {
+    "err": Object {
+      "message": "Fake",
+      "name": "Error",
+      "stack": "Error: Fake
+    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/index.test.js:131:22)",
+    },
+    "hostname": "testhost",
+    "level": 60,
+    "msg": "Fake",
+    "pid": 1337,
+    "time": 1234567890000,
+  },
+]
 `;
