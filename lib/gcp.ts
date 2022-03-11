@@ -1,14 +1,19 @@
 import pino from 'pino';
 import { isPlainObject } from './utils.js';
 
-export const gcpLevelToSeverity: Record<pino.Level | string, string> = {
-  trace: 'DEBUG',
-  debug: 'DEBUG',
-  info: 'INFO',
-  warn: 'WARNING',
-  error: 'ERROR',
-  fatal: 'CRITICAL',
-};
+type GcpSeverities = 'DEBUG' | 'INFO' | 'WARNING' | 'ERROR' | 'CRITICAL';
+
+export const logLevelGcpSeverityMap = new Map<
+  pino.Level | string,
+  GcpSeverities
+>([
+  ['trace', 'DEBUG'],
+  ['debug', 'DEBUG'],
+  ['info', 'INFO'],
+  ['warn', 'WARNING'],
+  ['error', 'ERROR'],
+  ['fatal', 'CRITICAL'],
+]);
 
 export function formatGcpLogObject(details: object): object {
   if (isPlainObject(details)) {

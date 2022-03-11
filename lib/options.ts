@@ -1,21 +1,32 @@
+import { isatty } from 'node:tty';
 import pino from 'pino';
 import { serializeError } from 'serialize-error';
-import { formatGcpLogObject, gcpLevelToSeverity } from './gcp.js';
-import { ComputePlatform, LogLevelNumbers } from './types.js';
+import { formatGcpLogObject, logLevelGcpSeverityMap } from './gcp.js';
+import {
+  LogFormat,
+  LogLevelNumbers,
+  PinoLoggerOptions,
+  PinoLoggerOptionsWithLevel,
+  Platform,
+} from './types.js';
 import { stringifyUndefined } from './utils.js';
 
-export const defaultLoggerOptions: Omit<pino.LoggerOptions, 'level'> & {
-  level: pino.LevelWithSilent;
-} = {
+export const defaultLoggerOptions: PinoLoggerOptionsWithLevel = {
   level: 'info' as const,
   serializers: {
     err: serializeError,
   },
 };
 
-function detectPlatform(): ComputePlatform | undefined {
+function detectPlatform(): Platform {
+  // Lambda
   if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
     return 'aws-lambda';
+  }
+
+  // ECS
+  if (process.env.ECS_AVAILABLE_LOGGING_DRIVERS?.includes('aws-logs')) {
+    return 'aws-ecs';
   }
 
   if (
@@ -25,14 +36,38 @@ function detectPlatform(): ComputePlatform | undefined {
   ) {
     return 'gcp-cloudrun';
   }
+
+  return 'unknown';
 }
 
-export function getPlatformLoggerOptions(
-  platform = detectPlatform(),
-): Omit<pino.LoggerOptions, 'level'> & { level?: pino.LevelWithSilent } {
+function detectLogFormat(
+  destination: string | number | pino.DestinationStream,
+  platform: Platform,
+): LogFormat {
   switch (platform) {
-    // See https://cloud.google.com/error-reporting/docs/formatting-error-messages
+    case 'aws-ecs':
+    case 'aws-lambda':
+      return 'aws-cloudwatch';
     case 'gcp-cloudrun':
+      return 'gcp';
+    case 'unknown':
+    default:
+      if (typeof destination === 'number' && isatty(destination)) {
+        return 'cli';
+      }
+
+      return 'json';
+  }
+}
+
+function internalGetLogFormatOptions(
+  destination: string | number | pino.DestinationStream,
+  platform: Platform,
+  logFormat: LogFormat,
+): Omit<PinoLoggerOptions, 'transport'> {
+  switch (logFormat) {
+    // See https://cloud.google.com/error-reporting/docs/formatting-error-messages
+    case 'gcp':
       return {
         // pid is always 1 on Cloud Run, and instance id/resource is part of the
         // log sent to GCP logging, so hostname is not required
@@ -43,12 +78,14 @@ export function getPlatformLoggerOptions(
 
         formatters: {
           level(levelLabel, levelNumber) {
+            // @see https://cloud.google.com/error-reporting/docs/formatting-error-messages
             return {
-              severity: gcpLevelToSeverity[levelLabel],
+              severity: logLevelGcpSeverityMap.get(levelLabel),
               ...(levelNumber >= LogLevelNumbers.Error && {
                 '@type':
                   'type.googleapis.com/google.devtools.clouderrorreporting.v1beta1.ReportedErrorEvent',
               }),
+
               // serviceContext: process.env.SERVICE_IDENTIFIER,
               // appContext: {
               //   env: process.env.NODE_ENV,
@@ -59,14 +96,20 @@ export function getPlatformLoggerOptions(
           log: (details) => formatGcpLogObject(stringifyUndefined(details)),
         },
       };
-    case 'aws-lambda':
+
+    case 'aws-cloudwatch':
       return {
-        base: undefined, // no hostname or pid logging on lambda (no point)
-        formatters: {
-          log: (details) => stringifyUndefined(details),
-        },
+        // no hostname or pid logging on lambda (no point)
+        ...(platform === 'aws-lambda' && { base: undefined }),
+
+        // formatters: {
+        //   log: (details) => stringifyUndefined(details),
+        // },
       };
-    case 'aws':
+
+    case 'cli':
+      return {};
+
     default:
       return {
         formatters: {
@@ -74,4 +117,20 @@ export function getPlatformLoggerOptions(
         },
       };
   }
+}
+
+export function getLogFormatOptions(
+  destination: string | number | pino.DestinationStream,
+  platform: Platform = detectPlatform(),
+  logFormat: LogFormat = detectLogFormat(destination, platform),
+): [
+  platform: Platform,
+  logFormat: LogFormat,
+  options: Omit<PinoLoggerOptions, 'transport'>,
+] {
+  return [
+    platform,
+    logFormat,
+    internalGetLogFormatOptions(destination, platform, logFormat),
+  ];
 }

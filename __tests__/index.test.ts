@@ -9,7 +9,8 @@ import {
 import { createLogger } from '../lib/index.js';
 import {
   createLoggerWithWaitableMock,
-  createTmpLogfileDest,
+  generateTmpFilenameAndReader,
+  generateTmpFilenameAndReaderJson,
 } from './helpers.js';
 
 describe('Basic', () => {
@@ -152,7 +153,7 @@ describe('Basic', () => {
   test('allow undefined logger level', async () => {
     // jest.useRealTimers();
 
-    const [destination, getLogs] = await createTmpLogfileDest();
+    const [destination, getLogs] = await generateTmpFilenameAndReaderJson();
 
     const logger = createLogger(
       {
@@ -164,13 +165,15 @@ describe('Basic', () => {
     expect(logger.level).toBe('info');
 
     logger.fatal(new Error('Fake'));
+    logger.fatal(new Error('Fake'));
 
     // wait for logs to flush
-    await logger.flushTransports();
+    // await logger.flushTransports();
 
     const logs = await getLogs();
 
     expect(logs).toBeTruthy();
-    expect(JSON.parse(logs)).toMatchSnapshot();
+    expect(logs).toHaveLength(2);
+    expect(logs).toMatchSnapshot();
   });
 });

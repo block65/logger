@@ -1,0 +1,6 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Pretty Transport cli logger force-color 1`] = `
+"2009-02-13T23:31:30.000Z INFO    kek { random: { arr: [ 1, 2, 3 ], bool: true, number: 12, str: 'hello' } }
+2009-02-13T23:31:30.000Z ERROR   Kaboom { stack: [ 'stuff', 'code' ] }"
+`;

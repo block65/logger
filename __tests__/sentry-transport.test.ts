@@ -37,13 +37,10 @@ describe('Sentry Transport', () => {
   });
 
   test('captureException arguments', async () => {
-    const { default: sentryTransport } = await import(
-      '../lib/sentry-transport.js'
-    );
+    const { sentryTransport } = await import('../lib/transports/sentry.js');
     const { writeLogsToStream } = await import('./helpers.js');
 
     const transport = sentryTransport({
-      dsn: 'welp',
       context: {
         user: {
           id: '1234',
@@ -54,23 +51,31 @@ describe('Sentry Transport', () => {
       },
     });
 
-    const mockFn = jest.fn();
-    transport.on('data', mockFn);
-
     const fakeError = new Error('Fake');
 
-    await writeLogsToStream(transport, {
-      level: LogLevelNumbers.Fatal,
-      time: Date.now(),
-      err: {
-        message: fakeError.message,
-        stack: fakeError.stack,
+    await writeLogsToStream(
+      transport,
+      {
+        level: LogLevelNumbers.Error,
+        time: Date.now(),
+        err: {
+          message: fakeError.message,
+          stack: fakeError.stack,
+        },
       },
-    });
+      {
+        level: LogLevelNumbers.Fatal,
+        time: Date.now(),
+        err: {
+          message: fakeError.message,
+          stack: fakeError.stack,
+        },
+      },
+    );
 
     // await new Promise(setImmediate);
 
-    expect(captureException).toBeCalledTimes(1);
+    expect(captureException).toBeCalledTimes(2);
 
     expect(captureException.mock.calls).toMatchSnapshot();
   });

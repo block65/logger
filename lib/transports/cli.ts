@@ -4,15 +4,37 @@ import build from 'pino-abstract-transport';
 import SonicBoom, { SonicBoomOpts } from 'sonic-boom';
 import { isatty } from 'tty';
 import util from 'util';
-import { LogDescriptor, LogLevelNumbers } from './types.js';
+import { LogDescriptor, LogLevelNumbers } from '../types.js';
 
 // must be serialiazable so it can get passed to a worker
-export interface PrettyTransportOptions {
-  destination?: SonicBoomOpts['dest'];
+export interface CliTransportOptions extends SonicBoomOpts {
   color?: boolean;
 }
 
-function createPrettifier(options?: { fd?: number; color?: boolean }) {
+export function levelNumberToCliStringMap(level: LogLevelNumbers): string {
+  switch (level) {
+    case LogLevelNumbers.Fatal:
+      return 'FATAL';
+    case LogLevelNumbers.Error:
+      return 'ERROR';
+    case LogLevelNumbers.Warn:
+      return 'WARN';
+    case LogLevelNumbers.Info:
+      return 'INFO';
+    case LogLevelNumbers.Debug:
+      return 'DEBUG';
+    case LogLevelNumbers.Trace:
+      return 'TRACE';
+    case LogLevelNumbers.Silent:
+    default:
+      return 'SILENT';
+  }
+}
+
+function createTransformer(options?: {
+  fd?: number;
+  color?: boolean;
+}): (log: LogDescriptor) => string {
   const forceNoColor: boolean =
     process.env.TERM === 'dumb' ||
     'NO_COLOR' in process.env ||
@@ -35,27 +57,27 @@ function createPrettifier(options?: { fd?: number; color?: boolean }) {
     whiteBright,
   } = createColors({ useColor });
 
-  const formatLevel = (level: number): string => {
+  const formatLevel = (level: LogLevelNumbers): string => {
+    const levelName = levelNumberToCliStringMap(level);
     switch (level) {
       case LogLevelNumbers.Fatal:
-        return bgRed(whiteBright(bold('FATAL')));
+        return bgRed(whiteBright(bold(levelName)));
       case LogLevelNumbers.Error:
-        return red('ERROR');
+        return red(levelName);
       case LogLevelNumbers.Warn:
-        return bgYellow(black(bold('WARN')));
+        return bgYellow(black(bold(levelName)));
       case LogLevelNumbers.Info:
-        return blue('INFO');
+        return blue(levelName);
       case LogLevelNumbers.Debug:
-        return green('DEBUG');
+        return green(levelName);
       case LogLevelNumbers.Trace:
-        return dim('TRACE');
       case LogLevelNumbers.Silent:
       default:
-        return dim('SILENT');
+        return dim(levelName);
     }
   };
 
-  return (log: LogDescriptor): string => {
+  return (log) => {
     const { level, msg = '', time, name, hostname, pid, ...rest } = log;
 
     const formattedName = name ? `(${name})` : '';
@@ -77,35 +99,31 @@ function createPrettifier(options?: { fd?: number; color?: boolean }) {
   };
 }
 
-export async function prettyTransport(options: PrettyTransportOptions = {}) {
+export async function cliTransport({
+  color,
+  ...sonicBoomOpts
+}: CliTransportOptions) {
   const dest =
-    typeof options.destination === 'string' ? options.destination : undefined;
+    typeof sonicBoomOpts.dest === 'string' ? sonicBoomOpts.dest : undefined;
 
   const fallbackFd = !dest ? process.stdout.fd : undefined;
 
   const fd =
-    typeof options.destination === 'number' ? options.destination : fallbackFd;
+    typeof sonicBoomOpts.dest === 'number' ? sonicBoomOpts.dest : fallbackFd;
 
-  const prettifier = createPrettifier({ fd, color: options.color });
+  const transformer = createTransformer({ fd, color });
 
   // SonicBoom is necessary to avoid loops with the main thread.
   // It is the same of pino.destination().
-  const destination = new SonicBoom({
-    fd,
-    dest:
-      typeof options.destination !== 'number' && options.destination
-        ? options.destination
-        : undefined,
-    sync: false,
-  });
+  const destination = new SonicBoom(sonicBoomOpts);
 
-  // await once(destination, 'ready');
+  await once(destination, 'ready');
 
   return build(
     async (source) => {
       // eslint-disable-next-line no-restricted-syntax
       for await (const obj of source) {
-        const toDrain = !destination.write(`${prettifier(obj)}\n`);
+        const toDrain = !destination.write(`${transformer(obj)}\n`);
         // This block will handle backpressure
         if (toDrain) {
           await once(destination, 'drain');
@@ -125,4 +143,4 @@ export async function prettyTransport(options: PrettyTransportOptions = {}) {
   );
 }
 
-export default prettyTransport;
+export default cliTransport;

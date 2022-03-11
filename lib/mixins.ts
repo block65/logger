@@ -1,9 +1,13 @@
 import { AsyncLocalStorage } from 'async_hooks';
 import { sep } from 'path';
-import pino from 'pino';
-import { AlsContext, AlsContextOutput, Falsy } from './types.js';
+import {
+  AlsContext,
+  AlsContextOutput,
+  Falsy,
+  PinoLoggerOptions,
+} from './types.js';
 
-export type MixinFn = NonNullable<pino.LoggerOptions['mixin']>;
+export type MixinFn = NonNullable<PinoLoggerOptions['mixin']>;
 
 export type MixinFnWithData = (
   data: ReturnType<MixinFn>,

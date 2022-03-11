@@ -11,9 +11,6 @@ export { CreateLoggerOptions } from './types.js';
 
 export { expressLoggerContextMiddleware } from './express.js';
 
-export {
-  lambdaLoggerContextWrapper,
-  withLambdaLoggerContextWrapper,
-} from './lambda.js';
+export { withLambdaLoggerContextWrapper } from './lambda.js';
 
 export { composeMixins } from './mixins.js';

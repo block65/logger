@@ -1,21 +1,12 @@
 import { captureException, Severity } from '@sentry/node';
 import type { ScopeContext } from '@sentry/types';
-import pino from 'pino';
 import build from 'pino-abstract-transport';
-import { LogDescriptor, LogLevelNumbers } from './types.js';
+import { LevelWithSilent, LogDescriptor, LogLevelNumbers } from '../types.js';
 
 export interface SentryTransportOptions {
-  dsn: string;
   // extra is deprecated - see https://docs.sentry.io/platforms/javascript/enriching-events/context/#additional-data
   context?: Partial<Omit<ScopeContext, 'extra'>>;
-  minLogLevel?: pino.Level;
-}
-
-interface DirectSentryTransportOptions {
-  dsn: string;
-  // extra is deprecated - see https://docs.sentry.io/platforms/javascript/enriching-events/context/#additional-data
-  context?: Partial<Omit<ScopeContext, 'extra'>>; // extra is deprecated
-  minLogLevel?: pino.Level;
+  minLogLevel?: LevelWithSilent;
 }
 
 const sentrySeverityMap = new Map<LogLevelNumbers, Severity>([
@@ -29,7 +20,7 @@ const sentrySeverityMap = new Map<LogLevelNumbers, Severity>([
 
 export function sentryCaptureLog(
   log: LogDescriptor,
-  options: DirectSentryTransportOptions,
+  options: SentryTransportOptions,
 ) {
   const context: Partial<ScopeContext> = {
     level: sentrySeverityMap.get(log.level) || Severity.Log,
@@ -49,7 +40,7 @@ export function sentryCaptureLog(
   }
 }
 
-export default function sentryTransport(options: DirectSentryTransportOptions) {
+export function sentryTransport(options: SentryTransportOptions) {
   return build(
     async (source) => {
       // eslint-disable-next-line no-restricted-syntax
@@ -67,3 +58,5 @@ export default function sentryTransport(options: DirectSentryTransportOptions) {
     },
   );
 }
+
+export default sentryTransport;

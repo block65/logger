@@ -1,8 +1,42 @@
 import { AsyncLocalStorage } from 'async_hooks';
+import { Worker } from 'node:worker_threads';
 import type pino from 'pino';
+import type { SetRequired, JsonObject } from 'type-fest';
 import type { MixinFn, MixinFnWithData } from './mixins.js';
-import type { PrettyTransportOptions } from './pretty-transport.js';
-import type { SentryTransportOptions } from './sentry-transport.js';
+import type { SentryTransportOptions } from './transports/sentry.js';
+
+type VoidFunction = () => void | Promise<void>;
+
+// awaiting https://github.com/pinojs/thread-stream/issues/24
+export interface ThreadStream {
+  worker: Worker;
+  write(data: any): boolean;
+  end(): void;
+  flush(cb: VoidFunction): void;
+  flushSync(): void;
+  unref(): void;
+  ref(): void;
+  get ready(): any;
+  get destroyed(): any;
+  get closed(): any;
+  get writable(): boolean;
+  get writableEnded(): any;
+  get writableFinished(): any;
+  get writableNeedDrain(): any;
+  get writableObjectMode(): boolean;
+  get writableErrored(): any;
+}
+
+// pino.LoggerOptions but with all the bad stuff removed
+export type PinoLoggerOptions = Omit<
+  pino.LoggerOptions,
+  'prettyPrint' | 'prettifier' | 'color' | 'browser'
+> & {
+  level?: pino.LevelWithSilent;
+};
+
+export type PinoLoggerOptionsWithLevel = PinoLoggerOptions &
+  SetRequired<PinoLoggerOptions, 'level'>;
 
 export type Falsy = false | undefined | null;
 
@@ -18,7 +52,7 @@ export enum LogLevelNumbers {
 
 export type LevelWithSilent = pino.LevelWithSilent;
 
-export interface LogDescriptor {
+export interface LogDescriptor extends Partial<AlsContextOutput> {
   level: LogLevelNumbers;
   time: number;
 
@@ -37,17 +71,18 @@ type RemoveIndex<T> = {
 };
 
 // pino tacks on a nasty `Record<string, any>` to its logger type
-// we try to remove it here
+// preumably for custom error levels, we try to remove it here
 export type BaseLogger = RemoveIndex<pino.Logger>;
 
 export interface Logger extends BaseLogger {
   als: AsyncLocalStorage<AlsContext>;
   flushTransports: () => Promise<void>;
+  // end: () => void;
 }
 
 export interface AlsContext {
   id: string;
-  context?: Record<string, unknown>;
+  context?: JsonObject;
 }
 
 export interface AlsContextOutput {
@@ -55,18 +90,15 @@ export interface AlsContextOutput {
   _context?: AlsContext['context'];
 }
 
-export type ComputePlatform = 'gcp-cloudrun' | 'aws-lambda' | 'aws';
+export type LogFormat = 'gcp' | 'aws-cloudwatch' | 'cli' | 'json';
+export type Platform = 'gcp-cloudrun' | 'aws-lambda' | 'aws-ecs' | 'unknown';
 
 export interface CreateLoggerOptions
-  extends Omit<
-    pino.LoggerOptions,
-    'mixin' | 'prettyPrint' | 'prettifier' | 'color' | 'transport' | 'level'
-  > {
-  prettyOptions?: boolean | PrettyTransportOptions;
+  extends Omit<PinoLoggerOptions, 'mixin' | 'transport' | 'level'> {
   traceCaller?: boolean;
-  platform?: ComputePlatform;
   mixins?: (MixinFnWithData | MixinFn | Falsy)[];
-  transports?: pino.TransportMultiOptions['targets'];
+  logFormat?: LogFormat;
+  platform?: Platform;
   sentryTransportOptions?: SentryTransportOptions;
   level?: pino.LevelWithSilent;
 }

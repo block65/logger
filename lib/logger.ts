@@ -1,31 +1,24 @@
 import { AsyncLocalStorage } from 'node:async_hooks';
 import type { Worker } from 'node:worker_threads';
-import pino from 'pino';
+import pino, { TransportTargetOptions } from 'pino';
 import { callerMixin, composeMixins, createContextMixin } from './mixins.js';
-import { defaultLoggerOptions, getPlatformLoggerOptions } from './options.js';
-import { AlsContext, CreateLoggerOptions, Logger } from './types.js';
-import { isPlainObject, stripUndefined } from './utils.js';
+import { defaultLoggerOptions, getLogFormatOptions } from './options.js';
+import {
+  AlsContext,
+  CreateLoggerOptions,
+  LogFormat,
+  Logger,
+  PinoLoggerOptions,
+  PinoLoggerOptionsWithLevel,
+} from './types.js';
+import { stripUndefined } from './utils.js';
 
-type VoidFunction = () => void | Promise<void>;
-
-// awaiting https://github.com/pinojs/thread-stream/issues/24
-interface ThreadStream {
-  worker: Worker;
-  write(data: any): boolean;
-  end(): void;
-  flush(cb: VoidFunction): void;
-  flushSync(): void;
-  unref(): void;
-  ref(): void;
-  get ready(): any;
-  get destroyed(): any;
-  get closed(): any;
-  get writable(): boolean;
-  get writableEnded(): any;
-  get writableFinished(): any;
-  get writableNeedDrain(): any;
-  get writableObjectMode(): boolean;
-  get writableErrored(): any;
+function disallowStream(logFormat: LogFormat, destinationIsStream: boolean) {
+  if (destinationIsStream) {
+    throw new Error(
+      `Stream destination is not available with logFormat ${logFormat}`,
+    );
+  }
 }
 
 export function createLogger(): Logger;
@@ -34,18 +27,28 @@ export function createLogger(
   destination?: string | number,
 ): Logger;
 export function createLogger(
-  opts: Omit<CreateLoggerOptions, 'prettyTransportOptions'>,
+  opts: CreateLoggerOptions,
   destination: pino.DestinationStream,
 ): Logger;
 export function createLogger(
   opts: CreateLoggerOptions = {},
-  destination: string | number | pino.DestinationStream = process.stdout.fd,
+  dest: string | number | pino.DestinationStream = process.stdout.fd,
 ): Logger {
   const asyncLocalStorage = new AsyncLocalStorage<AlsContext>();
 
-  const { platform, traceCaller = false, mixins = [], ...userPinoOpts } = opts;
+  const {
+    logFormat: forceLogFormat,
+    platform: forcePlatform,
+    traceCaller = false,
+    mixins = [],
+    ...userPinoOpts
+  } = opts;
 
-  const platformLoggerOptions = getPlatformLoggerOptions(platform);
+  const [platform, logFormat, logFormatOptions] = getLogFormatOptions(
+    dest,
+    forcePlatform,
+    forceLogFormat,
+  );
 
   const mixin = composeMixins([
     ...mixins,
@@ -53,75 +56,102 @@ export function createLogger(
     traceCaller && callerMixin,
   ]);
 
-  const resolvedOptions = {
+  const resolvedOptions: PinoLoggerOptionsWithLevel = {
     ...defaultLoggerOptions,
-    ...platformLoggerOptions,
+    ...logFormatOptions,
     ...stripUndefined(userPinoOpts),
   };
 
-  const destinationIsStream =
-    typeof destination === 'object' && 'write' in destination;
+  const destinationIsStream = typeof dest === 'object' && 'write' in dest;
 
-  const transport: ThreadStream = pino.transport({
-    targets: [
-      ...('prettyOptions' in resolvedOptions && resolvedOptions.prettyOptions
-        ? [
-            {
-              target: './pretty-transport.js',
-              level: resolvedOptions.level,
-              options: isPlainObject(resolvedOptions.prettyOptions)
-                ? {
-                    ...resolvedOptions.prettyOptions,
-                    destination,
-                  }
-                : { destination },
-            },
-          ]
-        : [
-            ...(typeof destination === 'string' ||
-            typeof destination === 'number'
-              ? [
-                  {
-                    target: 'pino/file',
-                    level: resolvedOptions.level,
-                    options: { destination },
-                  },
-                ]
-              : []),
-          ]),
-      ...('sentryTransportOptions' in resolvedOptions &&
-      resolvedOptions.sentryTransportOptions
-        ? [
-            {
-              target: './sentry-transport.js',
-              level:
-                resolvedOptions.sentryTransportOptions.minLogLevel ||
-                ('error' as const),
-              options: resolvedOptions.sentryTransportOptions,
-            },
-          ]
-        : []),
-    ],
-  } as pino.TransportMultiOptions);
+  const transportTargets = new Set<TransportTargetOptions>();
 
-  const pinoOptions: pino.LoggerOptions = {
+  if (logFormat === 'aws-cloudwatch') {
+    disallowStream(logFormat, destinationIsStream);
+
+    transportTargets.add({
+      target: './transports/aws-cloudwatch.js',
+      level: resolvedOptions.level,
+      options: {
+        dest,
+        // sync on lambda because beforeExit and exit handlers dont get called
+        // so it doesn't flush on its own
+        sync: platform === 'aws-lambda',
+      },
+    });
+  }
+
+  if (!destinationIsStream && logFormat === 'cli') {
+    disallowStream(logFormat, destinationIsStream);
+
+    transportTargets.add({
+      target: './transports/cli.js',
+      level: resolvedOptions.level,
+      options: { dest },
+    });
+  }
+
+  if (!destinationIsStream && logFormat === 'gcp') {
+    disallowStream(logFormat, destinationIsStream);
+
+    transportTargets.add({
+      target: './transports/file.js',
+      level: resolvedOptions.level,
+      options: { dest },
+    });
+  }
+
+  if (userPinoOpts.sentryTransportOptions) {
+    transportTargets.add({
+      target: './transports/sentry.js',
+      level:
+        userPinoOpts.sentryTransportOptions.minLogLevel || ('error' as const),
+      options: userPinoOpts.sentryTransportOptions,
+    });
+  }
+
+  const targets = [...transportTargets];
+
+  const hasTargetWithDestination = targets.some(
+    (target) => 'dest' in target.options,
+  );
+
+  const transportStream =
+    targets.length > 0
+      ? pino.transport({
+          targets,
+        })
+      : dest;
+
+  const pinoOptions: PinoLoggerOptions = {
     ...resolvedOptions,
     mixin,
   };
 
-  const pinoInstance = destinationIsStream
-    ? pino(pinoOptions, destination)
-    : pino(pinoOptions, transport);
+  const destinationAsStream = destinationIsStream
+    ? dest
+    : pino.destination(dest);
+
+  const pinoDestination =
+    destinationIsStream || !hasTargetWithDestination
+      ? destinationAsStream
+      : transportStream;
+
+  const pinoInstance = pino(pinoOptions, pinoDestination);
 
   return Object.create(pinoInstance, {
     flushTransports: {
       value: () =>
         new Promise<void>((resolve) => {
-          // TODO: this needs to be checked to make sure it's not jest being odd
-          // the flush callback never gets fired,
-          // transport.flush(() => resolve());
-          transport.flushSync();
-          resolve();
+          // this only works some of the time
+          // pinoDestination.flushSync();
+
+          // this always works
+          pinoDestination.end();
+
+          // this never works and fails with fake timers too
+          pinoDestination.flush(() => resolve());
+          // resolve();
         }),
       configurable: false,
       enumerable: false,
