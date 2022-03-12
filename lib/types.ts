@@ -59,9 +59,11 @@ export interface LogDescriptor extends Partial<AlsContextOutput> {
   msg?: string;
   name?: string | undefined;
 
-  // maye not be available depending on platform/cli
+  // may not be available depending on platform and logFormat
   pid?: number;
   hostname?: string;
+
+  ctx?: { [key: string]: unknown };
 
   [key: string]: unknown;
 }

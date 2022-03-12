@@ -29,8 +29,6 @@ describe('AWS Cloudwatch', () => {
       {
         level: LogLevelNumbers.Trace,
         time: Date.now(),
-        pid: 1,
-        hostname: 'test',
         msg: 'trace',
         random: {
           bool: true,
@@ -58,13 +56,17 @@ describe('AWS Cloudwatch', () => {
         level: LogLevelNumbers.Error,
         time: Date.now(),
         msg: 'Error',
-        stack: ['stuff', 'code'],
+        err: {
+          stack: ['stuff', 'code'],
+        },
       },
       {
         level: LogLevelNumbers.Fatal,
         time: Date.now(),
         msg: 'Fatal',
-        stack: ['stuff', 'code'],
+        err: {
+          stack: ['stuff', 'code'],
+        },
       },
     );
 

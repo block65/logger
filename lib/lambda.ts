@@ -1,9 +1,7 @@
 import type { Context } from 'aws-lambda';
-import type { ConditionalPick, Primitive } from 'type-fest';
-import type { AlsContext, Logger } from './types.js';
+import type { Logger } from './types.js';
 
-type LambdaContext = AlsContext['context'] &
-  ConditionalPick<Context, Primitive>;
+type LambdaContext = Partial<Context> & Required<Pick<Context, 'awsRequestId'>>;
 
 export function withLambdaLoggerContextWrapper<T>(
   logger: Logger,
@@ -13,7 +11,12 @@ export function withLambdaLoggerContextWrapper<T>(
   return logger.als.run(
     {
       id: context.awsRequestId,
-      context: { awsRequestId: context.awsRequestId },
+      context: {
+        // functionName: context.functionName,
+        // ...(context.functionVersion !== '$LATEST' && {
+        //   functionVersion: context.functionVersion,
+        // }),
+      },
     },
     () => {
       return fn();

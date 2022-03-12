@@ -26,7 +26,6 @@ const levelNumberToCloudwatchStringMap = new Map<
 function createCloudwatchTransformer() {
   return (log: LogDescriptor): string => {
     const {
-      level,
       msg,
       // eslint-disable-next-line @typescript-eslint/naming-convention
       _contextId,
@@ -38,13 +37,13 @@ function createCloudwatchTransformer() {
 
     const restStr =
       Object.keys(rest).length > 0
-        ? JSON.stringify(stringifyUndefined(rest))
+        ? JSON.stringify({ ...stringifyUndefined(rest), ctx: _context })
         : '';
 
     return [
       new Date(time).toISOString(),
       _contextId || '',
-      levelNumberToCloudwatchStringMap.get(level),
+      levelNumberToCloudwatchStringMap.get(log.level),
       msg || '',
       restStr,
     ].join('\t');
