@@ -37,7 +37,11 @@ function createCloudwatchTransformer() {
 
     const restStr =
       Object.keys(rest).length > 0
-        ? JSON.stringify({ ...stringifyUndefined(rest), ctx: _context })
+        ? JSON.stringify({
+            ...stringifyUndefined(rest),
+            ...(_context &&
+              Object.keys(_context).length > 0 && { ctx: _context }),
+          })
         : '';
 
     return [
