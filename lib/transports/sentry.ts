@@ -48,12 +48,17 @@ export function sentryTransport(options: SentryTransportOptions) {
         sentryCaptureLog(log, options);
         // setImmediate(() => sentryCaptureLog(log, options));
       }
+
+      // await flush(1000).catch(console.warn);
     },
     {
       async close(err?: Error) {
         if (err) {
           console.warn(err);
         }
+        // destination.end();
+        // await once(destination, 'close');
+        // await flush(1000).catch(console.warn);
       },
     },
   );

@@ -51,16 +51,14 @@ function createCloudwatchTransformer() {
   };
 }
 
-export async function cloudwatchTransport(
-  options: CloudwatchTransportOptions = {},
-) {
+export function cloudwatchTransport(options: CloudwatchTransportOptions = {}) {
   const transformer = createCloudwatchTransformer();
 
   // SonicBoom is necessary to avoid loops with the main thread.
   // It is the same of pino.destination().
   const destination = new SonicBoom(options);
 
-  await once(destination, 'ready');
+  // await once(destination, 'ready');
 
   return build(
     async (source) => {

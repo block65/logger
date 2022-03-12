@@ -167,10 +167,67 @@ Array [
 exports[`Basic Trace Caller Force true (production) 1`] = `
 Array [
   Object {
-    "caller": "Object.<anonymous> (__tests__/index.test.js:73:16)",
+    "caller": "Object.<anonymous> (__tests__/index.test.js:80:16)",
     "hostname": "testhost",
     "level": 40,
     "msg": "hello",
+    "pid": 1337,
+    "time": 1234567890000,
+  },
+]
+`;
+
+exports[`Basic allow flush and reuse 1`] = `
+Array [
+  Object {
+    "err": Object {
+      "message": "Before 1",
+      "name": "Error",
+      "stack": "Error: Before 1
+    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/index.test.js:152:22)",
+    },
+    "hostname": "testhost",
+    "level": 60,
+    "msg": "Before 1",
+    "pid": 1337,
+    "time": 1234567890000,
+  },
+  Object {
+    "err": Object {
+      "message": "Before 2",
+      "name": "Error",
+      "stack": "Error: Before 2
+    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/index.test.js:153:22)",
+    },
+    "hostname": "testhost",
+    "level": 60,
+    "msg": "Before 2",
+    "pid": 1337,
+    "time": 1234567890000,
+  },
+  Object {
+    "err": Object {
+      "message": "After 1",
+      "name": "Error",
+      "stack": "Error: After 1
+    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/index.test.js:155:22)",
+    },
+    "hostname": "testhost",
+    "level": 60,
+    "msg": "After 1",
+    "pid": 1337,
+    "time": 1234567890000,
+  },
+  Object {
+    "err": Object {
+      "message": "After 2",
+      "name": "Error",
+      "stack": "Error: After 2
+    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/index.test.js:156:22)",
+    },
+    "hostname": "testhost",
+    "level": 60,
+    "msg": "After 2",
     "pid": 1337,
     "time": 1234567890000,
   },
@@ -184,7 +241,7 @@ Array [
       "message": "Fake",
       "name": "Error",
       "stack": "Error: Fake
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/index.test.js:130:22)",
+    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/index.test.js:141:22)",
     },
     "hostname": "testhost",
     "level": 60,
@@ -197,7 +254,7 @@ Array [
       "message": "Fake",
       "name": "Error",
       "stack": "Error: Fake
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/index.test.js:131:22)",
+    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/index.test.js:142:22)",
     },
     "hostname": "testhost",
     "level": 60,

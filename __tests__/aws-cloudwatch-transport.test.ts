@@ -1,23 +1,30 @@
-import { describe, expect, test } from '@jest/globals';
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  jest,
+  test,
+} from '@jest/globals';
 import { cloudwatchTransport } from '../lib/transports/aws-cloudwatch.js';
 import { LogLevelNumbers } from '../lib/types.js';
 import { generateTmpFilenameAndReader, writeLogsToStream } from './helpers.js';
 
-describe('AWS Lambda Transport', () => {
-  // beforeEach(() => {
-  //   jest.useFakeTimers('modern');
-  //   jest.setSystemTime(new Date('2009-02-13T23:31:30.000Z'));
-  // });
+describe('AWS Cloudwatch', () => {
+  beforeEach(() => {
+    jest.useFakeTimers('modern');
+    jest.setSystemTime(new Date('2009-02-13T23:31:30.000Z'));
+  });
 
-  // afterEach(() => {
-  //   jest.useRealTimers();
-  // });
+  afterEach(() => {
+    jest.useRealTimers();
+  });
 
-  test('Basic', async () => {
+  test('Transport', async () => {
     const [dest, getLogs] = await generateTmpFilenameAndReader();
     const transport = await cloudwatchTransport({ dest });
 
-    await writeLogsToStream(
+    writeLogsToStream(
       transport,
       {
         level: LogLevelNumbers.Trace,

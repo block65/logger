@@ -1,6 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Pretty Transport cli logger force-color 1`] = `
+exports[`CLI logger force no-color 1`] = `
+"2009-02-13T23:31:30.000Z INFO    kek { random: { arr: [ 1, 2, 3 ], bool: true, number: 12, str: 'hello' } }
+2009-02-13T23:31:30.000Z ERROR   Kaboom { stack: [ 'stuff', 'code' ] }"
+`;
+
+exports[`CLI logger force-color 1`] = `
+"[90m2009-02-13T23:31:30.000Z[39m [34mINFO[39m  [1mkek[22m { random: { arr: [ [33m1[39m, [33m2[39m, [33m3[39m ], bool: [33mtrue[39m, number: [33m12[39m, str: [32m'hello'[39m } }
+[90m2009-02-13T23:31:30.000Z[39m [31mERROR[39m  [1mKaboom[22m { stack: [ [32m'stuff'[39m, [32m'code'[39m ] }"
+`;
+
+exports[`CLI transport 1`] = `
 "2009-02-13T23:31:30.000Z INFO    kek { random: { arr: [ 1, 2, 3 ], bool: true, number: 12, str: 'hello' } }
 2009-02-13T23:31:30.000Z ERROR   Kaboom { stack: [ 'stuff', 'code' ] }"
 `;

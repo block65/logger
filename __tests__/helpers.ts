@@ -75,19 +75,15 @@ export function createPinoLoggerWithWaitableMock(
   return [logger, writeCallback];
 }
 
-function prepLogForStream(logs: LogDescriptor[]): string {
-  return logs.map((l) => JSON.stringify(l)).join('\n');
-}
-
-export async function writeLogsToStream(
+export function writeLogsToStream(
   transport: Writable,
   ...logs: LogDescriptor[]
 ) {
-  transport.write(prepLogForStream(logs));
+  logs.map((log) => transport.write(`${JSON.stringify(log)}\n`));
 
-  await new Promise<void>((resolve) => {
-    transport.end(resolve);
-  });
+  // await new Promise<void>((resolve) => {
+  //   transport.end(resolve);
+  // });
 
   // await new Promise((resolve) => {
   //   setImmediate(resolve);
@@ -131,7 +127,14 @@ export async function generateTmpFilenameAndReaderJson(): Promise<
         logs
           .trim() // may end with a newline
           .split('\n')
-          .map((log) => JSON.parse(log)),
+          .map((log) => {
+            try {
+              return JSON.parse(log);
+            } catch (err) {
+              console.error({ log });
+              throw err;
+            }
+          }),
       ),
   ];
 }
@@ -147,7 +150,7 @@ export async function createLoggerWithTmpfileDestination(
 }
 
 export async function createLoggerWithTmpfileDestinationJson(
-  opts: CreateLoggerOptions,
+  opts: CreateLoggerOptions = {},
 ): Promise<[Logger, () => Promise<LogDescriptor[]>]> {
   const [fileName, getLogs] = await generateTmpFilenameAndReaderJson();
   const logger = createLogger(opts, fileName);
@@ -155,18 +158,8 @@ export async function createLoggerWithTmpfileDestinationJson(
   return [logger, getLogs];
 }
 
-/** @deprecated */
-export async function createLoggerWithWaitableMock(
-  opts: CreateLoggerOptions = {},
-): Promise<[Logger, WaitableMock<[LogDescriptor]>]> {
-  const destination = new PassThrough();
-  const writeCallback = waitableJestFn<[LogDescriptor]>();
-
-  destination.on('data', (buff: Buffer) => {
-    return writeCallback(JSON.parse(buff.toString()));
+export function promiseWait(ms: number): Promise<void> {
+  return new Promise<void>((resolve) => {
+    setTimeout(resolve, ms);
   });
-
-  const logger = createLogger(opts, destination);
-
-  return [logger, writeCallback];
 }

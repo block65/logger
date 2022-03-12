@@ -32,8 +32,8 @@ def jest_test(name, srcs, deps, size = "medium", jest_config = "//:jest.config.j
         "--runInBand",
         "--verbose",
 
-        '--detectOpenHandles',
-        '--forceExit',
+        # '--detectOpenHandles',
+        # '--forceExit',
 
         # bazel support
         "--no-watchman",

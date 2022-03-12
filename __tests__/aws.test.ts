@@ -1,18 +1,25 @@
-import { describe, expect, test } from '@jest/globals';
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  jest,
+  test,
+} from '@jest/globals';
 import { withLambdaLoggerContextWrapper } from '../lib/lambda.js';
 import { createLoggerWithTmpfileDestination } from './helpers.js';
 
 describe('AWS', () => {
-  // beforeEach(() => {
-  //   jest.useFakeTimers('modern');
-  //   jest.setSystemTime(new Date('2009-02-13T23:31:30.000Z'));
-  // });
+  beforeEach(() => {
+    jest.useFakeTimers('modern');
+    jest.setSystemTime(new Date('2009-02-13T23:31:30.000Z'));
+  });
 
-  // afterEach(() => {
-  //   jest.useRealTimers();
-  // });
+  afterEach(() => {
+    jest.useRealTimers();
+  });
 
-  describe('Lambda', () => {
+  describe('Lambda Logger', () => {
     test('Logger + contextId', async () => {
       const [logger, callback] = await createLoggerWithTmpfileDestination({
         platform: 'aws-lambda',
@@ -59,7 +66,7 @@ describe('AWS', () => {
     });
   });
 
-  describe('ECS', () => {
+  describe('ECS Logger', () => {
     test('Error Object', async () => {
       const [logger, callback] = await createLoggerWithTmpfileDestination({
         platform: 'aws-ecs',

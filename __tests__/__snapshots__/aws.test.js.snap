@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AWS ECS Error Object 1`] = `"2009-02-13T23:31:30.000Z		ERROR	Ded 3	{\\"pid\\":1337,\\"hostname\\":\\"testhost\\",\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"Ded 3\\",\\"stack\\":\\"Error: Ded 3\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/aws.test.js:45:26)\\"}}"`;
+exports[`AWS ECS Logger Error Object 1`] = `"2009-02-13T23:31:30.000Z		ERROR	Ded 3	{\\"pid\\":1337,\\"hostname\\":\\"testhost\\",\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"Ded 3\\",\\"stack\\":\\"Error: Ded 3\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/aws.test.js:52:26)\\"}}"`;
 
-exports[`AWS Lambda Error Object 1`] = `"2009-02-13T23:31:30.000Z		ERROR	Ded 4	{\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"Ded 4\\",\\"stack\\":\\"Error: Ded 4\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/aws.test.js:34:26)\\"}}"`;
+exports[`AWS Lambda Logger Error Object 1`] = `"2009-02-13T23:31:30.000Z		ERROR	Ded 4	{\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"Ded 4\\",\\"stack\\":\\"Error: Ded 4\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/aws.test.js:41:26)\\"}}"`;
 
-exports[`AWS Lambda Logger + contextId 1`] = `
+exports[`AWS Lambda Logger Logger + contextId 1`] = `
 "2009-02-13T23:31:30.000Z	000fake-0000-000request-000-id	WARN	hello	
 2009-02-13T23:31:30.000Z	000fake-0000-000request-000-id	ERROR	fake	{\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"fake\\",\\"stack\\":\\"Error: fake\\\\n    at fn (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/lib/lambda.js:6:16\\\\n    at AsyncLocalStorage.run (node:async_hooks:320:14)\\"}}"
 `;

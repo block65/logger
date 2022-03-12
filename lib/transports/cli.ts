@@ -99,10 +99,7 @@ function createTransformer(options?: {
   };
 }
 
-export async function cliTransport({
-  color,
-  ...sonicBoomOpts
-}: CliTransportOptions) {
+export function cliTransport({ color, ...sonicBoomOpts }: CliTransportOptions) {
   const dest =
     typeof sonicBoomOpts.dest === 'string' ? sonicBoomOpts.dest : undefined;
 
@@ -117,7 +114,7 @@ export async function cliTransport({
   // It is the same of pino.destination().
   const destination = new SonicBoom(sonicBoomOpts);
 
-  await once(destination, 'ready');
+  // await once(destination, 'ready');
 
   return build(
     async (source) => {

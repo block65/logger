@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AWS Lambda Transport Basic 1`] = `
+exports[`AWS Cloudwatch Transport 1`] = `
 "2009-02-13T23:31:30.000Z		TRACE	trace	{\\"pid\\":1,\\"hostname\\":\\"test\\",\\"random\\":{\\"bool\\":true,\\"str\\":\\"hello\\",\\"number\\":12,\\"arr\\":[1,2,3]}}
 2009-02-13T23:31:30.000Z		DEBUG	Debug	
 2009-02-13T23:31:30.000Z		INFO	Info	

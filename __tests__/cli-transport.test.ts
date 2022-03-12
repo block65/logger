@@ -9,21 +9,21 @@ import {
 import { LogLevelNumbers } from '../lib/types.js';
 import { generateTmpFilenameAndReader, writeLogsToStream } from './helpers.js';
 
-describe('Pretty Transport', () => {
+describe('CLI', () => {
   const oldEnv = process.env;
 
   beforeEach(() => {
-    jest.resetModules();
+    // jest.resetModules();
     jest.useFakeTimers('modern');
     jest.setSystemTime(new Date('2009-02-13T23:31:30.000Z'));
-    process.env = { ...oldEnv };
   });
 
   afterEach(() => {
+    process.env = { ...oldEnv };
     jest.useRealTimers();
   });
 
-  test('cli logger', async () => {
+  test('transport', async () => {
     const { cliTransport } = await import('../lib/transports/cli.js');
 
     const [dest, getLogs] = await generateTmpFilenameAndReader();
@@ -51,10 +51,10 @@ describe('Pretty Transport', () => {
         stack: ['stuff', 'code'],
       },
     );
-
-    expect(getLogs()).resolves.toMatchSnapshot();
+    await expect(getLogs()).resolves.toMatchSnapshot();
   });
-  test('cli logger force no-color', async () => {
+
+  test('logger force no-color', async () => {
     process.env.NO_COLOR = 'true';
     const { cliTransport } = await import('../lib/transports/cli.js');
 
@@ -84,10 +84,10 @@ describe('Pretty Transport', () => {
       },
     );
 
-    expect(getLogs()).resolves.toMatchSnapshot();
+    await expect(getLogs()).resolves.toMatchSnapshot();
   });
 
-  test('cli logger force-color', async () => {
+  test('logger force-color', async () => {
     const { cliTransport } = await import('../lib/transports/cli.js');
 
     const [dest, getLogs] = await generateTmpFilenameAndReader();
@@ -120,6 +120,6 @@ describe('Pretty Transport', () => {
       },
     );
 
-    expect(getLogs()).resolves.toMatchSnapshot();
+    await expect(getLogs()).resolves.toMatchSnapshot();
   });
 });

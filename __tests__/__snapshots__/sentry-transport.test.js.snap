@@ -1,5 +1,199 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Sentry  Logger 1`] = `
+Array [
+  Object {
+    "err": Object {
+      "message": "fake",
+      "name": "Error",
+      "stack": "Error: fake
+    at Object.<anonymous> (/home/mholman/Projects/block65/colacube/logger/__tests__/sentry-transport.test.js:72:22)",
+    },
+    "hostname": "testhost",
+    "level": 50,
+    "msg": "fake",
+    "pid": 1337,
+    "time": 1234567890000,
+  },
+  Object {
+    "err": Object {
+      "message": "fake",
+      "name": "Error",
+      "stack": "Error: fake
+    at Object.<anonymous> (/home/mholman/Projects/block65/colacube/logger/__tests__/sentry-transport.test.js:73:22)",
+    },
+    "hostname": "testhost",
+    "level": 50,
+    "msg": "fake",
+    "pid": 1337,
+    "time": 1234567890000,
+  },
+  Object {
+    "err": Object {
+      "message": "fake",
+      "name": "Error",
+      "stack": "Error: fake
+    at Object.<anonymous> (/home/mholman/Projects/block65/colacube/logger/__tests__/sentry-transport.test.js:74:22)",
+    },
+    "hostname": "testhost",
+    "level": 50,
+    "msg": "fake",
+    "pid": 1337,
+    "time": 1234567890000,
+  },
+  Object {
+    "err": Object {
+      "message": "fake",
+      "name": "Error",
+      "stack": "Error: fake
+    at Object.<anonymous> (/home/mholman/Projects/block65/colacube/logger/__tests__/sentry-transport.test.js:75:22)",
+    },
+    "hostname": "testhost",
+    "level": 50,
+    "msg": "fake",
+    "pid": 1337,
+    "time": 1234567890000,
+  },
+  Object {
+    "err": Object {
+      "message": "fake",
+      "name": "Error",
+      "stack": "Error: fake
+    at Object.<anonymous> (/home/mholman/Projects/block65/colacube/logger/__tests__/sentry-transport.test.js:76:22)",
+    },
+    "hostname": "testhost",
+    "level": 50,
+    "msg": "fake",
+    "pid": 1337,
+    "time": 1234567890000,
+  },
+  Object {
+    "hostname": "testhost",
+    "level": 40,
+    "omg": true,
+    "pid": 1337,
+    "time": 1234567890000,
+  },
+  Object {
+    "err": Object {
+      "message": "fake",
+      "name": "Error",
+      "stack": "Error: fake
+    at Object.<anonymous> (/home/mholman/Projects/block65/colacube/logger/__tests__/sentry-transport.test.js:78:22)",
+    },
+    "hostname": "testhost",
+    "level": 50,
+    "msg": "fake",
+    "pid": 1337,
+    "time": 1234567890000,
+  },
+  Object {
+    "err": Object {
+      "message": "fake",
+      "name": "Error",
+      "stack": "Error: fake
+    at Object.<anonymous> (/home/mholman/Projects/block65/colacube/logger/__tests__/sentry-transport.test.js:79:22)",
+    },
+    "hostname": "testhost",
+    "level": 50,
+    "msg": "fake",
+    "pid": 1337,
+    "time": 1234567890000,
+  },
+  Object {
+    "err": Object {
+      "message": "fake",
+      "name": "Error",
+      "stack": "Error: fake
+    at Object.<anonymous> (/home/mholman/Projects/block65/colacube/logger/__tests__/sentry-transport.test.js:80:22)",
+    },
+    "hostname": "testhost",
+    "level": 50,
+    "msg": "fake",
+    "pid": 1337,
+    "time": 1234567890000,
+  },
+  Object {
+    "err": Object {
+      "message": "fake",
+      "name": "Error",
+      "stack": "Error: fake
+    at Object.<anonymous> (/home/mholman/Projects/block65/colacube/logger/__tests__/sentry-transport.test.js:84:22)",
+    },
+    "hostname": "testhost",
+    "level": 50,
+    "msg": "fake",
+    "pid": 1337,
+    "time": 1234567890000,
+  },
+  Object {
+    "err": Object {
+      "message": "fake",
+      "name": "Error",
+      "stack": "Error: fake
+    at Object.<anonymous> (/home/mholman/Projects/block65/colacube/logger/__tests__/sentry-transport.test.js:85:22)",
+    },
+    "hostname": "testhost",
+    "level": 50,
+    "msg": "fake",
+    "pid": 1337,
+    "time": 1234567890000,
+  },
+  Object {
+    "err": Object {
+      "message": "fake",
+      "name": "Error",
+      "stack": "Error: fake
+    at Object.<anonymous> (/home/mholman/Projects/block65/colacube/logger/__tests__/sentry-transport.test.js:86:22)",
+    },
+    "hostname": "testhost",
+    "level": 50,
+    "msg": "fake",
+    "pid": 1337,
+    "time": 1234567890000,
+  },
+  Object {
+    "err": Object {
+      "message": "fake",
+      "name": "Error",
+      "stack": "Error: fake
+    at Object.<anonymous> (/home/mholman/Projects/block65/colacube/logger/__tests__/sentry-transport.test.js:87:22)",
+    },
+    "hostname": "testhost",
+    "level": 50,
+    "msg": "fake",
+    "pid": 1337,
+    "time": 1234567890000,
+  },
+  Object {
+    "err": Object {
+      "message": "fake",
+      "name": "Error",
+      "stack": "Error: fake
+    at Object.<anonymous> (/home/mholman/Projects/block65/colacube/logger/__tests__/sentry-transport.test.js:88:22)",
+    },
+    "hostname": "testhost",
+    "level": 50,
+    "msg": "fake",
+    "pid": 1337,
+    "time": 1234567890000,
+  },
+  Object {
+    "err": Object {
+      "message": "fake",
+      "name": "Error",
+      "stack": "Error: fake
+    at Object.<anonymous> (/home/mholman/Projects/block65/colacube/logger/__tests__/sentry-transport.test.js:89:22)",
+    },
+    "hostname": "testhost",
+    "level": 50,
+    "msg": "fake",
+    "pid": 1337,
+    "time": 1234567890000,
+  },
+]
+`;
+
 exports[`Sentry Transport captureException arguments 1`] = `
 Array [
   Array [

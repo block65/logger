@@ -27,7 +27,9 @@
     "build:watch": "ibazel build",
     "test": "bazel test //:unit",
     "test:update": "bazel run //:unit.update",
-    "test:watch": "ibazel test //:unit"
+    "test:watch": "ibazel test //:unit",
+    "test:dev": "TEST_TARGET=DONOTUSE NODE_OPTIONS=--experimental-vm-modules jest --watchAll --runInBand",
+    "test:dev:update": "TEST_TARGET=DONOTUSE NODE_OPTIONS=--experimental-vm-modules jest --runInBand --updateSnapshot"
   },
   "dependencies": {
     "colorette": "^2.0.16",
@@ -38,8 +40,6 @@
     "type-fest": "^2.12.0"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.16.11",
-    "@babel/preset-typescript": "^7.16.7",
     "@bazel/bazelisk": "^1.11.0",
     "@bazel/buildifier": "^5.0.1",
     "@bazel/ibazel": "^0.15.10",
