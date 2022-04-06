@@ -2,178 +2,245 @@
 
 exports[`Basic Mixins basic + accum 1`] = `
 Array [
-  Object {
-    "accum": Object {
-      "logger": Object {
-        "go": "log",
+  Array [
+    Object {
+      "ctx": Object {
+        "hostname": "ws7",
+        "pid": 1337,
       },
-      "luger": Object {
-        "go": "bang",
+      "data": Object {
+        "accum": Object {
+          "logger": Object {
+            "go": "log",
+          },
+          "luger": Object {
+            "go": "bang",
+          },
+        },
+        "logger": Object {
+          "go": "log",
+        },
+        "luger": Object {
+          "go": "bang",
+        },
       },
+      "level": 40,
+      "msg": "hello",
+      "time": 2009-02-13T23:31:30.000Z,
     },
-    "hostname": "testhost",
-    "level": 40,
-    "logger": Object {
-      "go": "log",
-    },
-    "luger": Object {
-      "go": "bang",
-    },
-    "msg": "hello",
-    "pid": 1337,
-    "time": 1234567890000,
-  },
+  ],
 ]
 `;
 
 exports[`Basic Mixins property overwrite 1`] = `
 Array [
-  Object {
-    "hostname": "testhost",
-    "level": 40,
-    "logger": Object {
-      "go": "brrr",
+  Array [
+    Object {
+      "ctx": Object {
+        "hostname": "ws7",
+        "pid": 1337,
+      },
+      "data": Object {
+        "logger": Object {
+          "go": "brrr",
+        },
+      },
+      "level": 40,
+      "msg": "hello",
+      "time": 2009-02-13T23:31:30.000Z,
     },
-    "msg": "hello",
-    "pid": 1337,
-    "time": 1234567890000,
-  },
+  ],
 ]
 `;
 
 exports[`Basic Object + String = Format 1`] = `
 Array [
-  Object {
-    "hostname": "testhost",
-    "level": 40,
-    "msg": "hello",
-    "omg": true,
-    "pid": 1337,
-    "time": 1234567890000,
-  },
+  Array [
+    Object {
+      "ctx": Object {
+        "hostname": "ws7",
+        "pid": 1337,
+      },
+      "data": Object {
+        "omg": true,
+      },
+      "level": 40,
+      "msg": "hello",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
 ]
 `;
 
 exports[`Basic Object 1`] = `
 Array [
-  Object {
-    "hostname": "testhost",
-    "level": 40,
-    "omg": true,
-    "pid": 1337,
-    "time": 1234567890000,
-  },
+  Array [
+    Object {
+      "ctx": Object {
+        "hostname": "ws7",
+        "pid": 1337,
+      },
+      "data": Object {
+        "omg": true,
+      },
+      "level": 40,
+      "msg": undefined,
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
 ]
 `;
 
 exports[`Basic Object with undefined props 1`] = `
 Array [
-  Object {
-    "hostname": "testhost",
-    "level": 40,
-    "omg": "_(undefined)",
-    "pid": 1337,
-    "time": 1234567890000,
-  },
+  Array [
+    Object {
+      "ctx": Object {
+        "hostname": "ws7",
+        "pid": 1337,
+      },
+      "data": Object {
+        "omg": undefined,
+      },
+      "level": 40,
+      "msg": undefined,
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
 ]
 `;
 
 exports[`Basic Object, String Format, String 1`] = `
 Array [
-  Object {
-    "hostname": "testhost",
-    "level": 40,
-    "msg": "hello world",
-    "omg": true,
-    "pid": 1337,
-    "time": 1234567890000,
-  },
+  Array [
+    Object {
+      "ctx": Object {
+        "hostname": "ws7",
+        "pid": 1337,
+      },
+      "data": Object {
+        "omg": true,
+      },
+      "level": 40,
+      "msg": "hello world",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
 ]
 `;
 
 exports[`Basic Object, String Format, String 2`] = `
 Array [
-  Object {
-    "hostname": "testhost",
-    "level": 40,
-    "msg": "hello world:and 123",
-    "omg": true,
-    "pid": 1337,
-    "time": 1234567890000,
-  },
+  Array [
+    Object {
+      "ctx": Object {
+        "hostname": "ws7",
+        "pid": 1337,
+      },
+      "data": Object {
+        "omg": true,
+      },
+      "level": 40,
+      "msg": "hello world:and 123",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
 ]
 `;
 
 exports[`Basic String Format, Object 1`] = `
 Array [
-  Object {
-    "hostname": "testhost",
-    "level": 40,
-    "msg": "hello {\\"omg\\":true}",
-    "pid": 1337,
-    "time": 1234567890000,
-  },
+  Array [
+    Object {
+      "ctx": Object {
+        "hostname": "ws7",
+        "pid": 1337,
+      },
+      "level": 40,
+      "msg": "hello { omg: true }",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
 ]
 `;
 
 exports[`Basic String, Object 1`] = `
 Array [
-  Object {
-    "hostname": "testhost",
-    "level": 40,
-    "msg": "hello",
-    "pid": 1337,
-    "time": 1234567890000,
-  },
+  Array [
+    Object {
+      "ctx": Object {
+        "hostname": "ws7",
+        "pid": 1337,
+      },
+      "level": 40,
+      "msg": "hello { omg: true }",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
 ]
 `;
 
 exports[`Basic Trace Caller Auto (development) 1`] = `
 Array [
-  Object {
-    "hostname": "testhost",
-    "level": 40,
-    "msg": "hello",
-    "pid": 1337,
-    "time": 1234567890000,
-  },
+  Array [
+    Object {
+      "ctx": Object {
+        "hostname": "ws7",
+        "pid": 1337,
+      },
+      "level": 40,
+      "msg": "hello",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
 ]
 `;
 
 exports[`Basic Trace Caller Auto (production) 1`] = `
 Array [
-  Object {
-    "hostname": "testhost",
-    "level": 40,
-    "msg": "hello",
-    "pid": 1337,
-    "time": 1234567890000,
-  },
+  Array [
+    Object {
+      "ctx": Object {
+        "hostname": "ws7",
+        "pid": 1337,
+      },
+      "level": 40,
+      "msg": "hello",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
 ]
 `;
 
 exports[`Basic Trace Caller Force false (development) 1`] = `
 Array [
-  Object {
-    "hostname": "testhost",
-    "level": 40,
-    "msg": "hello",
-    "pid": 1337,
-    "time": 1234567890000,
-  },
+  Array [
+    Object {
+      "ctx": Object {
+        "hostname": "ws7",
+        "pid": 1337,
+      },
+      "level": 40,
+      "msg": "hello",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
 ]
 `;
 
 exports[`Basic Trace Caller Force true (production) 1`] = `
 Array [
-  Object {
-    "caller": "Object.<anonymous> (__tests__/index.test.js:80:16)",
-    "hostname": "testhost",
-    "level": 40,
-    "msg": "hello",
-    "pid": 1337,
-    "time": 1234567890000,
-  },
+  Array [
+    Object {
+      "ctx": Object {
+        "hostname": "ws7",
+        "pid": 1337,
+      },
+      "level": 40,
+      "msg": "hello",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
 ]
 `;
 

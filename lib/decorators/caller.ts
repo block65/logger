@@ -5,15 +5,15 @@ export const callerDecorator: Decorator = (log) => {
   const stackParts = new Error().stack?.split('\n') || [];
 
   const nonModuleFramesIndex = stackParts
-    .map((s) => s.includes(`block65${sep}logger`))
+    .map((s) => !s.startsWith('node:') || s.includes(`block65${sep}logger`))
     .lastIndexOf(true);
 
   if (nonModuleFramesIndex === -1) {
     return {
       ...log,
-      data: {
-        ...log.data,
-        caller: '<empty',
+      ctx: {
+        ...log.ctx,
+        caller: '<empty>',
       },
     };
   }
@@ -27,9 +27,11 @@ export const callerDecorator: Decorator = (log) => {
 
   return {
     ...log,
-    data: {
-      ...log.data,
-      ...(caller && { caller }),
-    },
+    ...(caller && {
+      ctx: {
+        ...log.ctx,
+        caller,
+      },
+    }),
   };
 };

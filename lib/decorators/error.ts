@@ -6,15 +6,22 @@ export const errorDecorator: Decorator = (log) => {
     if (log.data instanceof Error) {
       return {
         ...log,
-        data: serializeError(log.data),
+        msg: log.msg || log.data.message,
+        data: {
+          err: serializeError(log.data),
+        },
       };
     }
-    if ('err' in log.data && log.data.err instanceof Error) {
+
+    const { err, ...rest } = log.data;
+
+    if (err instanceof Error) {
       return {
         ...log,
+        msg: log.msg || err.message,
         data: {
-          ...log.data,
-          err: serializeError(log.data),
+          ...rest,
+          err: serializeError(err),
         },
       };
     }

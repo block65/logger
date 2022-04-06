@@ -50,13 +50,14 @@ export function createCliTransformer(options?: CliOptions): Transformer {
     const { name } = ctx;
 
     const formattedName = name ? `(${name})` : '';
-    const formattedMsg = msg && ` ${bold(msg)}`;
+    const formattedMsg = msg ? ` ${bold(msg)}` : '';
 
     const formattedData =
       data && Object.keys(data).length > 0
         ? ` ${util.inspect(data, {
             colors: useColor,
             compact: true,
+            breakLength: Infinity,
             sorted: true,
             depth: 6,
           })}`

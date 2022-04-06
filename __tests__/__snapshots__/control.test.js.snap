@@ -3,20 +3,31 @@
 exports[`Control Error Object 1`] = `
 Array [
   Object {
-    "err": Object {
-      "debug": "wooyeah",
-      "message": "hallo",
-      "stack": "Error: hallo
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/control.test.js:13:36)
-    at Promise.then.completed (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)
-    at new Promise (<anonymous>)",
-      "type": "Error",
+    "ctx": Object {
+      "hostname": "ws7",
+      "pid": 1337,
     },
-    "hostname": "testhost",
+    "data": Object {
+      "err": Object {
+        "debug": "wooyeah",
+        "message": "hallo",
+        "name": "Error",
+        "stack": "Error: hallo
+    at Object.<anonymous> (/home/mholman/Projects/block65/logger/__tests__/control.test.ts:23:32)
+    at Promise.then.completed (/home/mholman/Projects/block65/logger/node_modules/jest-circus/build/utils.js:391:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (/home/mholman/Projects/block65/logger/node_modules/jest-circus/build/utils.js:316:10)
+    at _callCircusTest (/home/mholman/Projects/block65/logger/node_modules/jest-circus/build/run.js:218:40)
+    at _runTest (/home/mholman/Projects/block65/logger/node_modules/jest-circus/build/run.js:155:3)
+    at _runTestsForDescribeBlock (/home/mholman/Projects/block65/logger/node_modules/jest-circus/build/run.js:66:9)
+    at _runTestsForDescribeBlock (/home/mholman/Projects/block65/logger/node_modules/jest-circus/build/run.js:60:9)
+    at run (/home/mholman/Projects/block65/logger/node_modules/jest-circus/build/run.js:25:3)
+    at runAndTransformResultsToJestFormat (/home/mholman/Projects/block65/logger/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:170:21)",
+      },
+    },
     "level": 50,
     "msg": "hallo",
-    "pid": 1337,
-    "time": 1234567890000,
+    "time": 2009-02-13T23:31:30.000Z,
   },
 ]
 `;
@@ -24,19 +35,30 @@ Array [
 exports[`Control Error Object serialized on non-error level 1`] = `
 Array [
   Object {
-    "err": Object {
-      "message": "hallo",
-      "stack": "Error: hallo
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/control.test.js:18:21)
-    at Promise.then.completed (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)
-    at new Promise (<anonymous>)",
-      "type": "Error",
+    "ctx": Object {
+      "hostname": "ws7",
+      "pid": 1337,
     },
-    "hostname": "testhost",
+    "data": Object {
+      "err": Object {
+        "message": "hallo",
+        "name": "Error",
+        "stack": "Error: hallo
+    at Object.<anonymous> (/home/mholman/Projects/block65/logger/__tests__/control.test.ts:29:17)
+    at Promise.then.completed (/home/mholman/Projects/block65/logger/node_modules/jest-circus/build/utils.js:391:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (/home/mholman/Projects/block65/logger/node_modules/jest-circus/build/utils.js:316:10)
+    at _callCircusTest (/home/mholman/Projects/block65/logger/node_modules/jest-circus/build/run.js:218:40)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at _runTest (/home/mholman/Projects/block65/logger/node_modules/jest-circus/build/run.js:155:3)
+    at _runTestsForDescribeBlock (/home/mholman/Projects/block65/logger/node_modules/jest-circus/build/run.js:66:9)
+    at _runTestsForDescribeBlock (/home/mholman/Projects/block65/logger/node_modules/jest-circus/build/run.js:60:9)",
+      },
+    },
     "level": 30,
     "msg": "hallo",
-    "pid": 1337,
-    "time": 1234567890000,
+    "time": 2009-02-13T23:31:30.000Z,
   },
 ]
 `;

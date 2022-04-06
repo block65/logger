@@ -2,38 +2,103 @@
 
 exports[`GCP Cloud Run 1`] = `
 Array [
-  Object {
-    "message": "hello",
-    "severity": "WARNING",
-    "stack_trace": "Error: hello
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/gcp.test.js:15:21)",
-    "time": "2009-02-13T23:31:30.000Z",
-  },
+  Array [
+    Object {
+      "ctx": Object {
+        "hostname": "ws7",
+        "pid": 1337,
+      },
+      "data": Object {
+        "@type": "type.googleapis.com/google.devtools.clouderrorreporting.v1beta1.ReportedErrorEvent",
+        "message": "hello",
+        "meta": Object {
+          "name": "Error",
+        },
+        "stack_trace": "Error: hello
+    at Object.<anonymous> (/home/mholman/Projects/block65/logger/__tests__/gcp.test.ts:31:17)",
+      },
+      "level": 40,
+      "msg": "hello",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
 ]
 `;
 
 exports[`GCP Cloud Run Error Object 1`] = `
 Array [
-  Object {
-    "@type": "type.googleapis.com/google.devtools.clouderrorreporting.v1beta1.ReportedErrorEvent",
-    "message": "Ded 1",
-    "severity": "ERROR",
-    "stack_trace": "Error: Ded 1
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/gcp.test.js:23:22)",
-    "time": "2009-02-13T23:31:30.000Z",
-  },
+  Array [
+    Object {
+      "ctx": Object {
+        "hostname": "ws7",
+        "pid": 1337,
+      },
+      "data": Object {
+        "err": Object {
+          "message": "Ded 1",
+          "name": "Error",
+          "stack": "Error: Ded 1
+    at Object.<anonymous> (/home/mholman/Projects/block65/logger/__tests__/gcp.test.ts:52:18)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)",
+        },
+      },
+      "level": 50,
+      "msg": "Ded 1",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
 ]
 `;
 
 exports[`GCP Cloud Run Fatal with Error Object 1`] = `
 Array [
-  Object {
-    "@type": "type.googleapis.com/google.devtools.clouderrorreporting.v1beta1.ReportedErrorEvent",
-    "message": "Ded 2",
-    "severity": "CRITICAL",
-    "stack_trace": "Error: Ded 2
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/gcp.test.js:31:22)",
-    "time": "2009-02-13T23:31:30.000Z",
-  },
+  Array [
+    Object {
+      "ctx": Object {
+        "hostname": "ws7",
+        "pid": 1337,
+      },
+      "data": Object {
+        "err": Object {
+          "message": "Ded 2",
+          "name": "Error",
+          "stack": "Error: Ded 2
+    at Object.<anonymous> (/home/mholman/Projects/block65/logger/__tests__/gcp.test.ts:63:18)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)",
+        },
+      },
+      "level": 60,
+      "msg": "Ded 2",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+]
+`;
+
+exports[`GCP Cloud Run variant 1`] = `
+Array [
+  Array [
+    Object {
+      "ctx": Object {
+        "hostname": "ws7",
+        "pid": 1337,
+      },
+      "data": Object {
+        "err": Object {
+          "message": "hello",
+          "name": "Error",
+          "stack": "Error: hello
+    at Object.<anonymous> (/home/mholman/Projects/block65/logger/__tests__/gcp.test.ts:42:17)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)",
+        },
+      },
+      "level": 40,
+      "msg": "hello",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
 ]
 `;
