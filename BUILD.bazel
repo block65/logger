@@ -32,7 +32,8 @@ TEST_SNAPSHOT_SRCS = glob(
 
 DEPS = [
     "@npm//@types/node",
-    "@npm//pino",
+    "@npm//emittery",
+    "@npm//stream-chain",
     "@npm//colorette",
     "@npm//serialize-error",
 
@@ -48,7 +49,7 @@ DEPS = [
 # deps used just for test srcs (ie dev deps)
 TEST_DEPS = [
     "@npm//@jest/globals",
-    "@npm//emittery",
+    "@npm//@types/stream-chain",
 ]
 
 ts_project(

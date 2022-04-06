@@ -7,9 +7,8 @@ import {
   test,
 } from '@jest/globals';
 import * as sentryModule from '@sentry/node';
-import { Writable } from 'node:stream';
-import { LogLevelNumbers } from '../lib/types.js';
-import { createLoggerWithTmpfileDestinationJson } from './helpers.js';
+import { Level } from '../lib/logger.js';
+import { createLoggerWithWaitableMock } from './helpers.js';
 
 const captureException = jest.fn((exception, captureContext) => {
   return 'yes';
@@ -32,17 +31,6 @@ jest.unstable_mockModule('@sentry/node', () => {
   };
 });
 
-const streamWaiter = (stream: Writable) => {
-  const waiter = new Promise((resolve, reject) => {
-    stream.on('end', resolve).on('error', reject);
-  });
-
-  return async () => {
-    stream.end();
-    await waiter;
-  };
-};
-
 describe('Sentry ', () => {
   beforeEach(() => {
     // jest.resetModules();
@@ -54,11 +42,10 @@ describe('Sentry ', () => {
     jest.useRealTimers();
   });
 
-  test('Transport', async () => {
-    const { sentryTransport } = await import('../lib/transports/sentry.js');
-    const { writeLogsToStream } = await import('./helpers.js');
+  test('Decorator', async () => {
+    const { sentryDecorator } = await import('../lib/decorators/sentry.js');
 
-    const transport = sentryTransport({
+    const decorator = sentryDecorator({
       context: {
         user: {
           id: '1234',
@@ -69,18 +56,17 @@ describe('Sentry ', () => {
       },
     });
 
-    const streamEnder = streamWaiter(transport);
-
-    writeLogsToStream(transport, {
-      level: LogLevelNumbers.Error,
-      time: Date.now(),
-      err: {
-        message: 'Oh its a fake error',
-        stack: new Error('Fake').stack,
+    await decorator({
+      level: Level.Error,
+      time: new Date(),
+      data: {
+        err: {
+          message: 'Oh its a fake error',
+          type: 'Error',
+          stack: new Error('Oh its a fake error').stack,
+        },
       },
     });
-
-    await streamEnder();
 
     expect(captureException).toBeCalledTimes(1);
     // expect(flush).toBeCalledTimes(1);
@@ -89,29 +75,27 @@ describe('Sentry ', () => {
   });
 
   test('Logger', async () => {
-    const [logger, getLogs] = await createLoggerWithTmpfileDestinationJson({
-      sentryTransportOptions: {
-        minLogLevel: 'error',
-      },
+    const [logger, getLogs] = await createLoggerWithWaitableMock({
+      // sentryTransportOptions: {
+      //   minLogLevel: 'error',
+      // },
     });
 
     logger.error(new Error('fake'));
     logger.error(new Error('fake'));
     logger.error(new Error('fake'));
 
-    await logger.flushTransports();
+    await logger.end();
 
-    const before = await getLogs();
-    expect(before).toHaveLength(3);
+    expect(getLogs.mock.calls).toHaveLength(3);
 
     logger.error(new Error('fake'));
     logger.error(new Error('fake'));
     logger.error(new Error('fake'));
 
-    await logger.flushTransports();
+    await logger.end();
 
-    const after = await getLogs();
-    expect(after).toHaveLength(6);
-    expect(after).toMatchSnapshot();
+    expect(getLogs.mock.calls).toHaveLength(6);
+    expect(getLogs.mock.calls).toMatchSnapshot();
   });
 });

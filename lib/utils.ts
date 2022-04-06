@@ -38,3 +38,7 @@ export function stripUndefined<T extends Record<string, any>>(obj: T): T {
     withNullProto({} as T),
   );
 }
+
+export function isEmptyObject(obj: object): boolean {
+  return Object.keys(obj).length === 0;
+}
