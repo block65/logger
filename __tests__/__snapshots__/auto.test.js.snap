@@ -6,13 +6,13 @@ Array [
     "2009-02-13T23:31:30.000Z		INFO	woo yeah!!!	{\\"level\\":30}",
   ],
   Array [
-    "2009-02-13T23:31:30.000Z		ERROR	bad stuff	{\\"level\\":50,\\"data\\":{\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"bad stuff\\",\\"stack\\":\\"Error: bad stuff\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)\\\\n    at new Promise (<anonymous>)\\"}}}",
+    "2009-02-13T23:31:30.000Z		ERROR	bad stuff	{\\"level\\":50,\\"data\\":{\\"name\\":\\"Error\\",\\"message\\":\\"bad stuff\\",\\"stack\\":\\"Error: bad stuff\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)\\\\n    at new Promise (<anonymous>)\\"}}",
   ],
   Array [
-    "2009-02-13T23:31:30.000Z		WARN	bad stuff	{\\"level\\":40,\\"data\\":{\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"bad stuff\\",\\"stack\\":\\"Error: bad stuff\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)\\\\n    at new Promise (<anonymous>)\\"}}}",
+    "2009-02-13T23:31:30.000Z		WARN	bad stuff	{\\"level\\":40,\\"data\\":{\\"name\\":\\"Error\\",\\"message\\":\\"bad stuff\\",\\"stack\\":\\"Error: bad stuff\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)\\\\n    at new Promise (<anonymous>)\\"}}",
   ],
   Array [
-    "2009-02-13T23:31:30.000Z		WARN	bad stuff	{\\"level\\":40,\\"data\\":{\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"bad stuff\\",\\"stack\\":\\"Error: bad stuff\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)\\\\n    at new Promise (<anonymous>)\\"}}}",
+    "2009-02-13T23:31:30.000Z		WARN	bad stuff	{\\"level\\":40,\\"data\\":{\\"name\\":\\"Error\\",\\"message\\":\\"bad stuff\\",\\"stack\\":\\"Error: bad stuff\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)\\\\n    at new Promise (<anonymous>)\\"}}",
   ],
 ]
 `;
@@ -23,13 +23,13 @@ Array [
     "2009-02-13T23:31:30.000Z		INFO	woo yeah!!!	{\\"level\\":30}",
   ],
   Array [
-    "2009-02-13T23:31:30.000Z		ERROR	bad stuff	{\\"level\\":50,\\"data\\":{\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"bad stuff\\",\\"stack\\":\\"Error: bad stuff\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)\\\\n    at new Promise (<anonymous>)\\"}}}",
+    "2009-02-13T23:31:30.000Z		ERROR	bad stuff	{\\"level\\":50,\\"data\\":{\\"name\\":\\"Error\\",\\"message\\":\\"bad stuff\\",\\"stack\\":\\"Error: bad stuff\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)\\\\n    at new Promise (<anonymous>)\\"}}",
   ],
   Array [
-    "2009-02-13T23:31:30.000Z		WARN	bad stuff	{\\"level\\":40,\\"data\\":{\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"bad stuff\\",\\"stack\\":\\"Error: bad stuff\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)\\\\n    at new Promise (<anonymous>)\\"}}}",
+    "2009-02-13T23:31:30.000Z		WARN	bad stuff	{\\"level\\":40,\\"data\\":{\\"name\\":\\"Error\\",\\"message\\":\\"bad stuff\\",\\"stack\\":\\"Error: bad stuff\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)\\\\n    at new Promise (<anonymous>)\\"}}",
   ],
   Array [
-    "2009-02-13T23:31:30.000Z		WARN	bad stuff	{\\"level\\":40,\\"data\\":{\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"bad stuff\\",\\"stack\\":\\"Error: bad stuff\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)\\\\n    at new Promise (<anonymous>)\\"}}}",
+    "2009-02-13T23:31:30.000Z		WARN	bad stuff	{\\"level\\":40,\\"data\\":{\\"name\\":\\"Error\\",\\"message\\":\\"bad stuff\\",\\"stack\\":\\"Error: bad stuff\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)\\\\n    at new Promise (<anonymous>)\\"}}",
   ],
 ]
 `;
@@ -37,16 +37,16 @@ Array [
 exports[`Auto Logger GCP 1`] = `
 Array [
   Array [
-    "{\\"level\\":30,\\"time\\":\\"2009-02-13T23:31:30.000Z\\",\\"msg\\":\\"woo yeah!!!\\"}",
+    "{\\"severity\\":\\"INFO\\",\\"time\\":\\"2009-02-13T23:31:30.000Z\\",\\"message\\":\\"woo yeah!!!\\"}",
   ],
   Array [
-    "{\\"level\\":50,\\"time\\":\\"2009-02-13T23:31:30.000Z\\",\\"msg\\":\\"Unknown SmallInt\\",\\"@type\\":\\"type.googleapis.com~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)\\\\n    at new Promise (<anonymous>)\\",\\"message\\":\\"Unknown SmallInt\\"}",
+    "{\\"severity\\":\\"ERROR\\",\\"time\\":\\"2009-02-13T23:31:30.000Z\\",\\"message\\":\\"Unknown SmallInt\\",\\"@type\\":\\"type.googleapis.com~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)\\\\n    at new Promise (<anonymous>)\\",\\"meta\\":{\\"name\\":\\"TypeError\\"}}",
   ],
   Array [
-    "{\\"level\\":40,\\"time\\":\\"2009-02-13T23:31:30.000Z\\",\\"msg\\":\\"this code stinks\\",\\"@type\\":\\"type.googleapis.com~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)\\\\n    at new Promise (<anonymous>)\\",\\"message\\":\\"this code stinks\\"}",
+    "{\\"severity\\":\\"WARNING\\",\\"time\\":\\"2009-02-13T23:31:30.000Z\\",\\"message\\":\\"this code stinks\\",\\"@type\\":\\"type.googleapis.com~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)\\\\n    at new Promise (<anonymous>)\\",\\"meta\\":{\\"name\\":\\"SyntaxError\\"}}",
   ],
   Array [
-    "{\\"level\\":40,\\"time\\":\\"2009-02-13T23:31:30.000Z\\",\\"msg\\":\\"Connection refused\\",\\"@type\\":\\"type.googleapis.com~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)\\\\n    at new Promise (<anonymous>)\\",\\"message\\":\\"Connection refused\\"}",
+    "{\\"severity\\":\\"WARNING\\",\\"time\\":\\"2009-02-13T23:31:30.000Z\\",\\"message\\":\\"Connection refused\\",\\"@type\\":\\"type.googleapis.com~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)\\\\n    at new Promise (<anonymous>)\\",\\"meta\\":{\\"name\\":\\"Error\\"}}",
   ],
 ]
 `;

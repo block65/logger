@@ -1,5 +1,5 @@
 import type { JsonObject } from 'type-fest';
-import { LogDescriptor } from '../logger.js';
+import { LogData, LogDescriptor } from '../logger.js';
 import { withNullProto } from '../utils.js';
 
 // const levelToStringMap = new Map<Level, string>([
@@ -11,11 +11,11 @@ import { withNullProto } from '../utils.js';
 //   [Level.Fatal, 'fatal'],
 // ]);
 
-export interface JsonLogFormat extends JsonObject {
+export interface JsonLogFormat {
   level: number;
   time: string;
   msg?: string;
-  ctx?: JsonObject;
+  ctx?: LogData;
 }
 
 export const jsonTransformer = (log: LogDescriptor): string => {

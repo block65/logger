@@ -3,10 +3,11 @@ import { AsyncLocalStorage } from 'node:async_hooks';
 import { PassThrough, Writable } from 'node:stream';
 import { finished } from 'node:stream/promises';
 import { format } from 'node:util';
+import { ErrorObject, serializeError } from 'serialize-error';
 import Chain from 'stream-chain';
 import type { JsonObject, JsonPrimitive, JsonValue } from 'type-fest';
+import { asyncLocalContextProcessor } from './processors/als.js';
 import { callerProcessor } from './processors/caller.js';
-import { errorProcessor } from './processors/error.js';
 import { jsonTransformer } from './transformers/json.js';
 import { isPlainObject } from './utils.js';
 
@@ -44,30 +45,30 @@ export enum Level {
   Fatal = 60,
 }
 
-type LogValue = JsonValue | undefined | Error;
-type LogData = { [Key in string]?: LogValue } | Error;
+// export type LogDataWithoutError = { [Key in string]?: JsonValue | undefined };
+export type LogData = { [key in string]?: JsonValue | undefined | unknown };
+
+export type JsonObjectWithError = JsonObject & {
+  err?: Error | ErrorObject | undefined;
+};
 
 export interface LogDescriptor {
   time: Date;
   level: Level;
   msg?: string;
-  ctx?: JsonObject;
-  data?: LogData | Error;
+  ctx?: LogData;
+  data?: LogData;
+  err?: ErrorObject | undefined;
 }
 
 export interface LogMethod {
+  (err: Error, str?: string | number, ...args: JsonValue[]): void;
   (
-    err: Error | NodeJS.ErrnoException,
+    data: LogData & { err?: Error },
     str?: string | number,
     ...args: JsonValue[]
   ): void;
-  (data: JsonValue, str?: string | number, ...args: JsonValue[]): void;
   (str: string | number): void;
-  (
-    dataOrStr: JsonValue | string | number | Error | NodeJS.ErrnoException,
-    strOrArg1?: string | number,
-    ...args: JsonValue[]
-  ): void;
 }
 
 export interface LogMethods {
@@ -90,13 +91,60 @@ function withNullProto<T extends Record<string, any>>(obj: T): T {
 
 function isPrimitive(value: unknown): value is JsonPrimitive {
   return (
-    (typeof value !== 'object' && typeof value !== 'function') || value === null
+    (typeof value !== 'undefined' &&
+      typeof value !== 'object' &&
+      typeof value !== 'function') ||
+    value === null
   );
 }
 
 function isLogDescriptor(log: LogDescriptor | Symbol): log is LogDescriptor {
   // console.log('%o is %s', log, isPlainObject(log));
   return isPlainObject(log);
+}
+
+function toLogDescriptor(
+  level: Level,
+  arg1: Error | JsonObjectWithError | JsonPrimitive,
+  arg2?: JsonPrimitive,
+  ...args: JsonPrimitive[]
+): LogDescriptor {
+  const time = new Date();
+
+  if (arg1 instanceof Error) {
+    return {
+      time,
+      level,
+      msg: arg2 ? arg2.toLocaleString() : arg1.message,
+      err: serializeError(arg1),
+    };
+  }
+
+  if (isPrimitive(arg1)) {
+    return {
+      time,
+      level,
+      msg: format(arg1, ...(arg2 ? [arg2, ...args] : args)),
+    };
+  }
+
+  const { err, ...rest } = arg1;
+
+  return {
+    time,
+    level,
+
+    ...(err instanceof Error
+      ? {
+          msg: err.message,
+          err: serializeError(err),
+          data: withNullProto(rest),
+        }
+      : {
+          msg: typeof arg2 !== 'undefined' ? format(arg2, ...args) : arg2,
+          data: arg1,
+        }),
+  };
 }
 
 const chokeProbe = Symbol('choke-probe');
@@ -143,10 +191,12 @@ export class Logger implements LogMethods {
       processor: Processor<LogDescriptor | Symbol> | Transformer,
     ): Processor<LogDescriptor | Symbol> | Transformer {
       if (typeof processor === 'function') {
-        return async function wrappedProcessor(log: LogDescriptor | Symbol) {
+        return async function chokePointFilter(log: LogDescriptor | Symbol) {
+          // run the processor on all log descriptors
           if (isLogDescriptor(log)) {
             return processor(log);
           }
+          // pass the choke point symbol straight through
           return log;
         };
       }
@@ -156,12 +206,12 @@ export class Logger implements LogMethods {
 
     this.#processorChain = Chain.chain([
       ...[
-        // pidProcessor,
-        errorProcessor,
+        asyncLocalContextProcessor,
+        // errorProcessor,
         callerProcessor,
         ...decorators,
         ...(transformer ? [transformer] : []),
-      ].map((processor) => processorWrapper(processor)),
+      ].map((processor) => processorWrapper(processor.bind(this))),
     ]);
 
     this.#destination = destination;
@@ -193,30 +243,11 @@ export class Logger implements LogMethods {
 
   #log(
     level: Level,
-    strOrData: Error | JsonObject | string | number,
-    strOrArg1?: string | number,
-    ...args: JsonValue[]
+    arg1: Error | (JsonObject & { err?: Error | undefined }) | JsonPrimitive,
+    arg2?: JsonPrimitive,
+    ...args: JsonPrimitive[]
   ): void {
-    const log: LogDescriptor = withNullProto(
-      isPrimitive(strOrData)
-        ? {
-            time: new Date(),
-            level,
-            msg: format(
-              strOrData,
-              ...(strOrArg1 ? [strOrArg1, ...args] : args),
-            ),
-          }
-        : {
-            time: new Date(),
-            level,
-            msg:
-              typeof strOrArg1 !== 'undefined'
-                ? format(strOrArg1, ...args)
-                : strOrArg1,
-            data: strOrData,
-          },
-    );
+    const log = toLogDescriptor(level, arg1, arg2, ...args);
 
     // no await
     this.#emitter

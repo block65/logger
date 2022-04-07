@@ -2,7 +2,7 @@ import { hostname } from 'node:os';
 import { CreateLoggerOptions, Logger } from './logger.js';
 import { lambdaProcessor } from './processors/lambda.js';
 import { createCloudwatchTransformer } from './transformers/cloudwatch.js';
-import { gcpTransformer } from './transformers/gcp.js';
+import { gcpProcessor, gcpTransformer } from './transformers/gcp.js';
 
 export { expressLoggerContextMiddleware } from './express.js';
 export { withLambdaLoggerContextWrapper } from './lambda.js';
@@ -52,7 +52,7 @@ export function createAutoConfiguredLogger(
   ) {
     return new Logger({
       destination: process.stdout,
-      // processors: [gcpProcessor],
+      processors: [gcpProcessor],
       transformer: gcpTransformer,
       context: {
         ...options.context,

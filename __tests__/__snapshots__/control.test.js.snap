@@ -3,16 +3,14 @@
 exports[`Control Error Object 1`] = `
 Array [
   Object {
-    "data": Object {
-      "err": Object {
-        "debug": "wooyeah",
-        "message": "hallo",
-        "name": "Error",
-        "stack": "Error: hallo
+    "err": Object {
+      "debug": "wooyeah",
+      "message": "hallo",
+      "name": "Error",
+      "stack": "Error: hallo
     at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/control.test.js:13:36)
     at Promise.then.completed (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)
     at new Promise (<anonymous>)",
-      },
     },
     "level": 50,
     "msg": "hallo",
@@ -24,15 +22,13 @@ Array [
 exports[`Control Error Object serialized on non-error level 1`] = `
 Array [
   Object {
-    "data": Object {
-      "err": Object {
-        "message": "hallo",
-        "name": "Error",
-        "stack": "Error: hallo
+    "err": Object {
+      "message": "hallo",
+      "name": "Error",
+      "stack": "Error: hallo
     at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/control.test.js:18:21)
     at Promise.then.completed (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)
     at new Promise (<anonymous>)",
-      },
     },
     "level": 30,
     "msg": "hallo",

@@ -7,7 +7,18 @@ Array [
       "data": Object {
         "@type": "type.googleapis.com/google.devtools.clouderrorreporting.v1beta1.ReportedErrorEvent",
         "message": "hello",
+        "meta": Object {
+          "name": "Error",
+        },
         "stack_trace": "Error: hello
+    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/gcp.test.js:18:21)
+    at Promise.then.completed (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)
+    at new Promise (<anonymous>)",
+      },
+      "err": Object {
+        "message": "hello",
+        "name": "Error",
+        "stack": "Error: hello
     at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/gcp.test.js:18:21)
     at Promise.then.completed (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)
     at new Promise (<anonymous>)",
@@ -24,15 +35,13 @@ exports[`GCP Cloud Run Error Object 1`] = `
 Array [
   Array [
     Object {
-      "data": Object {
-        "err": Object {
-          "message": "Ded 1",
-          "name": "Error",
-          "stack": "Error: Ded 1
+      "err": Object {
+        "message": "Ded 1",
+        "name": "Error",
+        "stack": "Error: Ded 1
     at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/gcp.test.js:31:22)
     at Promise.then.completed (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)
     at new Promise (<anonymous>)",
-        },
       },
       "level": 50,
       "msg": "Ded 1",
@@ -46,15 +55,13 @@ exports[`GCP Cloud Run Fatal with Error Object 1`] = `
 Array [
   Array [
     Object {
-      "data": Object {
-        "err": Object {
-          "message": "Ded 2",
-          "name": "Error",
-          "stack": "Error: Ded 2
+      "err": Object {
+        "message": "Ded 2",
+        "name": "Error",
+        "stack": "Error: Ded 2
     at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/gcp.test.js:37:22)
     at Promise.then.completed (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)
     at new Promise (<anonymous>)",
-        },
       },
       "level": 60,
       "msg": "Ded 2",
@@ -68,15 +75,13 @@ exports[`GCP Cloud Run variant 1`] = `
 Array [
   Array [
     Object {
-      "data": Object {
-        "err": Object {
-          "message": "hello",
-          "name": "Error",
-          "stack": "Error: hello
+      "err": Object {
+        "message": "hello",
+        "name": "Error",
+        "stack": "Error: hello
     at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/gcp.test.js:25:21)
     at Promise.then.completed (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)
     at new Promise (<anonymous>)",
-        },
       },
       "level": 40,
       "msg": "hello",

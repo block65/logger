@@ -15,11 +15,11 @@ const levelNumberToCloudwatchStringMap = new Map<Level, AwsLevelNames>([
 ]);
 
 const cloudwatchTransformer: Transformer = (log) => {
-  const { level, msg, ctx, time, data } = log;
+  const { level, msg, ctx, time, data, err } = log;
 
   const { id: contextId, ...contextRest } = ctx || {};
 
-  const rest = { level, ...(data && { data }) };
+  const rest = { level, ...((data || err) && { data: { ...data, ...err } }) };
 
   const restStr = JSON.stringify({
     ...stringifyUndefined(rest),

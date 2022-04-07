@@ -63,7 +63,11 @@ describe('Sentry processor', () => {
     await processor({
       level: Level.Error,
       time: new Date(),
-      data: new Error('Oh its a fake error'),
+      err: {
+        name: 'FakeError',
+        message: 'Oh its a fake error',
+        code: 'FAKE',
+      },
     });
 
     expect(captureException).toBeCalledTimes(1);
