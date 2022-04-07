@@ -30,7 +30,7 @@ describe('Control', () => {
     await expect(callback.waitUntilCalled()).resolves.toMatchSnapshot();
   });
 
-  test.skip('high velocity doesnt crash', async () => {
+  test('high velocity doesnt crash', async () => {
     const [logger, callback] = createLoggerWithWaitableMock();
 
     const arr = Array.from(Array(100000), (_, idx) => idx);

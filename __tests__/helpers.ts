@@ -1,19 +1,14 @@
 import { jest } from '@jest/globals';
 import Emittery from 'emittery';
 import type { Mock } from 'jest-mock';
-import { mkdtemp, readFile } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
-import { join, sep } from 'node:path';
-import { PassThrough, Writable } from 'node:stream';
-import { TextDecoder } from 'node:util';
-import pino from 'pino';
-import { createLogger } from '../lib/logger.js';
+import { PassThrough } from 'node:stream';
+import { createAutoConfiguredLogger } from '../lib/index.js';
 import {
   CreateLoggerOptions,
   LogDescriptor,
+  Level,
   Logger,
-  PinoLoggerOptions,
-} from '../lib/types.js';
+} from '../lib/logger.js';
 
 interface WaitableMock<Y extends unknown[] = unknown[]> extends Mock<void, Y> {
   waitUntilCalled(): Promise<Y>;
@@ -60,106 +55,52 @@ export function waitableJestFn<
     waitUntilCalled,
   });
 }
-
-export function createPinoLoggerWithWaitableMock(
-  opts?: PinoLoggerOptions,
-): [pino.Logger, WaitableMock<[LogDescriptor]>] {
-  const destination = new PassThrough();
-  const writeCallback = waitableJestFn<[LogDescriptor]>();
-
-  destination.on('data', (buff: Buffer) => {
-    return writeCallback(JSON.parse(buff.toString()));
-  });
-
-  const logger = pino(opts || {}, destination);
-  return [logger, writeCallback];
-}
-
-export function writeLogsToStream(
-  transport: Writable,
-  ...logs: LogDescriptor[]
-) {
-  logs.map((log) => transport.write(`${JSON.stringify(log)}\n`));
-
-  // await new Promise<void>((resolve) => {
-  //   transport.end(resolve);
-  // });
-
-  // await new Promise((resolve) => {
-  //   setImmediate(resolve);
-  // });
-}
-
-export async function generateTmpFilenameAndReader(): Promise<
-  [fileName: string, getLogs: () => Promise<string>]
-> {
-  const fileName = join(
-    await mkdtemp(`${tmpdir()}${sep}jest-logger-`),
-    'output.log',
-  );
-
-  return [
-    fileName,
-    async () => {
-      const logs = await readFile(fileName).catch(
-        (err: NodeJS.ErrnoException) => {
-          // allow nonexistant files, as the logger may not have logged anything
-          if (err.code === 'ENOENT') {
-            return new ArrayBuffer(0);
-          }
-          throw err;
-        },
-      );
-
-      return new TextDecoder().decode(logs).trim();
-    },
-  ];
-}
-
-export async function generateTmpFilenameAndReaderJson(): Promise<
-  [fileName: string, getLogs: () => Promise<LogDescriptor[]>]
-> {
-  const [fileName, getLogs] = await generateTmpFilenameAndReader();
-  return [
-    fileName,
-    () =>
-      getLogs().then((logs) =>
-        logs
-          .trim() // may end with a newline
-          .split('\n')
-          .map((log) => {
-            try {
-              return JSON.parse(log);
-            } catch (err) {
-              console.error({ log });
-              throw err;
-            }
-          }),
-      ),
-  ];
-}
-
-export async function createLoggerWithTmpfileDestination(
-  opts: CreateLoggerOptions = {},
-): Promise<[Logger, () => Promise<string>]> {
-  const [fileName, getLogs] = await generateTmpFilenameAndReader();
-
-  const logger = createLogger(opts, fileName);
-
-  return [logger, getLogs];
-}
-
-export async function createLoggerWithTmpfileDestinationJson(
-  opts: CreateLoggerOptions = {},
-): Promise<[Logger, () => Promise<LogDescriptor[]>]> {
-  const [fileName, getLogs] = await generateTmpFilenameAndReaderJson();
-  const logger = createLogger(opts, fileName);
-
-  return [logger, getLogs];
-}
-
 export function promiseWait(ms: number): Promise<void> {
   return new Promise<void>((resolve) => {
     setTimeout(resolve, ms);
   });
+}
+
+export function createLoggerWithWaitableMock(
+  options: Omit<CreateLoggerOptions, 'destination'> = {},
+): [Logger, WaitableMock<[LogDescriptor]>, Mock<void>] {
+  const destination = new PassThrough({ objectMode: true });
+  const writeCallback = waitableJestFn<[LogDescriptor]>();
+  const errBack = jest.fn((err) => {
+    console.trace({ err });
+  });
+
+  destination.on('data', (val: LogDescriptor) => writeCallback(val));
+
+  const logger = new Logger({
+    destination,
+    level: Level.Trace,
+    ...options,
+  });
+
+  logger.on('error', errBack);
+
+  return [logger, writeCallback, errBack];
+}
+
+export function createAutoConfiguredLoggerWithWaitableMock(
+  options: Omit<CreateLoggerOptions, 'destination'> = {},
+): [Logger, WaitableMock<[string]>, Mock<void>] {
+  const destination = new PassThrough({ objectMode: true });
+  const writeCallback = waitableJestFn<[string]>();
+  const errBack = jest.fn((err) => {
+    console.trace({ err });
+  });
+
+  destination.on('data', (val: string) => writeCallback(val));
+
+  const logger = createAutoConfiguredLogger({
+    destination,
+    level: Level.Trace,
+    ...options,
+  });
+
+  logger.on('error', errBack);
+
+  return [logger, writeCallback, errBack];
 }

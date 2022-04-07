@@ -1,5 +1,4 @@
-import { LogDescriptor, Level, Transformer, Decorator } from '../logger.js';
-import { isEmptyObject, isPlainObject } from '../utils.js';
+import { Level, LogDescriptor, Processor, Transformer } from '../logger.js';
 import { jsonTransformer } from './json.js';
 
 export type GcpSeverities = 'DEBUG' | 'INFO' | 'WARNING' | 'ERROR' | 'CRITICAL';
@@ -13,14 +12,15 @@ export const logLevelGcpSeverityMap = new Map<Level, GcpSeverities>([
   [Level.Fatal, 'CRITICAL'],
 ]);
 
-export const gcpDecorator: Decorator = (log: LogDescriptor): LogDescriptor => {
+export const gcpProcessor: Processor = (log: LogDescriptor): LogDescriptor => {
   if (log.level < Level.Warn) {
     return log;
   }
 
-  const { err, ...restData } = log.data || {};
+  const { err, ...restData } =
+    log.data instanceof Error ? { err: log.data } : log.data || {};
 
-  if (!isPlainObject(err)) {
+  if (!err || typeof err !== 'object' || Array.isArray(err)) {
     return log;
   }
 
@@ -34,13 +34,13 @@ export const gcpDecorator: Decorator = (log: LogDescriptor): LogDescriptor => {
         'type.googleapis.com/google.devtools.clouderrorreporting.v1beta1.ReportedErrorEvent',
       stack_trace: stack,
       message,
-      ...(!isEmptyObject(restErr) && {
-        meta: restErr,
-      }),
+      // ...(!isEmptyObject(restErr) && {
+      //   meta: restErr,
+      // }),
     },
   };
 };
 
 export const gcpTransformer: Transformer = (log: LogDescriptor): string => {
-  return jsonTransformer(gcpDecorator(log));
+  return jsonTransformer(gcpProcessor(log));
 };

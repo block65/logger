@@ -1,12 +1,11 @@
-import { captureException, Severity } from '@sentry/node';
+import { captureException, flush, Severity } from '@sentry/node';
 import type { ScopeContext } from '@sentry/types';
-import { Decorator, InternalLogRepresentation, Level } from '../logger2.js';
-import { LevelWithSilent } from '../types.js';
+import { Processor, LogDescriptor, Level, Logger } from '../logger.js';
 
 export interface SentryTransportOptions {
   // extra is deprecated - see https://docs.sentry.io/platforms/javascript/enriching-events/context/#additional-data
   context?: Partial<Omit<ScopeContext, 'extra'>>;
-  minLogLevel?: LevelWithSilent;
+  minLogLevel?: any;
 }
 
 const sentrySeverityMap = new Map<Level, Severity>([
@@ -19,7 +18,7 @@ const sentrySeverityMap = new Map<Level, Severity>([
 ]);
 
 export function sentryCaptureLog(
-  log: InternalLogRepresentation,
+  log: LogDescriptor,
   options: SentryTransportOptions,
 ) {
   const context: Partial<ScopeContext> = {
@@ -33,21 +32,29 @@ export function sentryCaptureLog(
   } else {
     captureException(
       Object.assign(new Error(log.msg), {
-        stack: log.data?.err?.stack,
+        // stack: log.data?.err?.stack,
       }),
       context,
     );
   }
 }
 
-export function sentryDecorator(options: SentryTransportOptions): Decorator {
-  return function* (log: InternalLogRepresentation) {
+export function createSentryProcessor(
+  options: SentryTransportOptions = {},
+): Processor {
+  return (log) => {
     sentryCaptureLog(log, options);
-    if (log) {
-      yield log;
-    }
     return log;
   };
 }
 
-export default sentryDecorator;
+export function attachSentryProcessor(
+  logger: Logger,
+  options: SentryTransportOptions = {},
+): Logger {
+  logger.on('log', (log) => sentryCaptureLog(log, options));
+  logger.on('flush', async () => {
+    await flush(1000);
+  });
+  return logger;
+}

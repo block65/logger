@@ -1,7 +1,7 @@
 import { serializeError } from 'serialize-error';
-import { Decorator } from '../logger.js';
+import { Processor } from '../logger.js';
 
-export const errorDecorator: Decorator = (log) => {
+export const errorProcessor: Processor = (log) => {
   if (log.data && typeof log.data === 'object') {
     if (log.data instanceof Error) {
       return {

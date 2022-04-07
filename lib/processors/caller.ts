@@ -1,7 +1,7 @@
 import { sep } from 'node:path';
-import { Decorator } from '../logger.js';
+import { Processor } from '../logger.js';
 
-export const callerDecorator: Decorator = (log) => {
+export const callerProcessor: Processor = (log) => {
   const stackParts = new Error().stack?.split('\n') || [];
 
   const nonModuleFramesIndex = stackParts
