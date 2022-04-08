@@ -3,19 +3,19 @@
 exports[`CLI force-color 1`] = `
 Array [
   Array [
-    "[90m2009-02-13T23:31:30.000Z[39m [31mERROR[39m  [1mhallo[22m { err: { message: [32m'hallo'[39m, name: [32m'Error'[39m, stack: [32m'Error: hallo\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/cli.test.js:33:22)\\\\n    at runMicrotasks (<anonymous>)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)'[39m } }",
+    "[90m2009-02-13T23:31:30.000Z[39m [31mERROR[39m  [1mhallo[22m { err: { message: [32m'hallo'[39m, name: [32m'Error'[39m, stack: [32m'Error: hallo\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/cli.test.js:33:22)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)'[39m } }",
   ],
   Array [
-    "[90m2009-02-13T23:31:30.000Z[39m [34mINFO[39m  [1mhello[22m { err: { message: [32m'hello'[39m, name: [32m'Error'[39m, stack: [32m'Error: hello\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/cli.test.js:34:21)\\\\n    at runMicrotasks (<anonymous>)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)'[39m } }",
+    "[90m2009-02-13T23:31:30.000Z[39m [34mINFO[39m  [1mhello[22m { err: { message: [32m'hello'[39m, name: [32m'Error'[39m, stack: [32m'Error: hello\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/cli.test.js:34:21)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)'[39m } }",
   ],
   Array [
-    "[90m2009-02-13T23:31:30.000Z[39m [43m[30m[1mWARN[22m[39m[49m  [1mhalo[22m { err: { message: [32m'halo'[39m, name: [32m'Error'[39m, stack: [32m'Error: halo\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/cli.test.js:35:21)\\\\n    at runMicrotasks (<anonymous>)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)'[39m } }",
+    "[90m2009-02-13T23:31:30.000Z[39m [43m[30m[1mWARN[22m[39m[49m  [1mhalo[22m { err: { message: [32m'halo'[39m, name: [32m'Error'[39m, stack: [32m'Error: halo\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/cli.test.js:35:21)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)'[39m } }",
   ],
   Array [
-    "[90m2009-02-13T23:31:30.000Z[39m [32mDEBUG[39m  [1mgday[22m { err: { message: [32m'gday'[39m, name: [32m'Error'[39m, stack: [32m'Error: gday\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/cli.test.js:36:22)\\\\n    at runMicrotasks (<anonymous>)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)'[39m } }",
+    "[90m2009-02-13T23:31:30.000Z[39m [32mDEBUG[39m  [1mgday[22m { err: { message: [32m'gday'[39m, name: [32m'Error'[39m, stack: [32m'Error: gday\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/cli.test.js:36:22)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)'[39m } }",
   ],
   Array [
-    "[90m2009-02-13T23:31:30.000Z[39m [41m[97m[1mFATAL[22m[39m[49m  [1mnihao3[22m { err: { message: [32m'nihao3'[39m, name: [32m'Error'[39m, stack: [32m'Error: nihao3\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/cli.test.js:37:22)\\\\n    at runMicrotasks (<anonymous>)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)'[39m } }",
+    "[90m2009-02-13T23:31:30.000Z[39m [41m[97m[1mFATAL[22m[39m[49m  [1mnihao3[22m { err: { message: [32m'nihao3'[39m, name: [32m'Error'[39m, stack: [32m'Error: nihao3\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/cli.test.js:37:22)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)'[39m } }",
   ],
 ]
 `;

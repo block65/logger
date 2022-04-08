@@ -26,7 +26,7 @@ def jest_test(name, srcs, deps, size = "medium", jest_config = "//:jest.config.j
     templated_args = [
         "--config=%s" % "$(rootpath %s)" % jest_config,
 
-        # "--no-cache",
+        "--no-cache",
         "--ci",
         "--colors",
         "--runInBand",
