@@ -138,16 +138,6 @@ function toLogDescriptor(
   }
 
   if (isPrimitive(arg1)) {
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    arg1 &&
-      console.log([
-        arg1,
-        [arg2, ...args],
-        {
-          stringify: safeStringify,
-        },
-      ]);
-
     return {
       time,
       level,

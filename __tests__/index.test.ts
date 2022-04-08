@@ -45,7 +45,7 @@ describe('Basic', () => {
     expect(callback.mock.calls).toMatchSnapshot();
   });
 
-  test.only('String Format, Object', async () => {
+  test('String Format, Object', async () => {
     const [logger, callback] = createLoggerWithWaitableMock();
     logger.warn('hello %j spleen!', { omg: true });
     await logger.end();

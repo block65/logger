@@ -8,8 +8,6 @@ import {
 } from '@jest/globals';
 import * as sentryModule from '@sentry/node';
 import { PassThrough } from 'stream';
-import { Level, Logger } from '../lib/logger.js';
-import { createLoggerWithWaitableMock } from './helpers.js';
 
 const captureException = jest.fn((/* exception, captureContext */) => {
   return 'yes';
@@ -45,6 +43,8 @@ describe('Sentry processor', () => {
   });
 
   test('module', async () => {
+    const { Level } = await import('../lib/logger.js');
+
     const { createSentryProcessor } = await import(
       '../lib/processors/sentry.js'
     );
@@ -63,11 +63,7 @@ describe('Sentry processor', () => {
     await processor({
       level: Level.Error,
       time: new Date(),
-      err: {
-        name: 'FakeError',
-        message: 'Oh its a fake error',
-        code: 'FAKE',
-      },
+      err: new Error('Oh its a fake error'),
     });
 
     expect(captureException).toBeCalledTimes(1);
@@ -77,6 +73,7 @@ describe('Sentry processor', () => {
   });
 
   test('integrated', async () => {
+    const { Level, Logger } = await import('../lib/logger.js');
     const { createSentryProcessor } = await import(
       '../lib/processors/sentry.js'
     );
@@ -102,6 +99,7 @@ describe('Sentry processor', () => {
     const { createSentryProcessor } = await import(
       '../lib/processors/sentry.js'
     );
+    const { createLoggerWithWaitableMock } = await import('./helpers.js');
 
     const [logger, getLogs] = createLoggerWithWaitableMock({
       // sentryTransportOptions: {

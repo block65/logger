@@ -37,6 +37,7 @@ DEPS = [
     "@npm//colorette",
     "@npm//serialize-error",
     "@npm//quick-format-unescaped",
+    "@npm//fast-redact",
 
     # peer dep
     "@npm//@types/express",
@@ -52,6 +53,7 @@ TEST_DEPS = [
     "@npm//@jest/globals",
     "@npm//@types/stream-chain",
     "@npm//@types/quick-format-unescaped",
+    "@npm//@types/fast-redact",
 ]
 
 ts_project(
