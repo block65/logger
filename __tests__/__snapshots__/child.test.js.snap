@@ -1,0 +1,96 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Child Logger Basic 1`] = `
+Array [
+  Array [
+    Object {
+      "data": Object {
+        "err": Object {
+          "message": "hallo",
+          "name": "Error",
+          "stack": "Error: hallo
+    at Object.<anonymous> (/home/mholman/Projects/block65/logger/__tests__/child.test.js:15:27)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)",
+        },
+        "helloChildLogger": "hello!",
+      },
+      "err": [Error: hallo],
+      "level": 50,
+      "msg": "hallo",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+  Array [
+    Object {
+      "data": Object {
+        "err": Object {
+          "message": "hello",
+          "name": "Error",
+          "stack": "Error: hello
+    at Object.<anonymous> (/home/mholman/Projects/block65/logger/__tests__/child.test.js:16:26)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)",
+        },
+        "helloChildLogger": "hello!",
+      },
+      "err": [Error: hello],
+      "level": 30,
+      "msg": "hello",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+  Array [
+    Object {
+      "data": Object {
+        "err": Object {
+          "message": "halo",
+          "name": "Error",
+          "stack": "Error: halo
+    at Object.<anonymous> (/home/mholman/Projects/block65/logger/__tests__/child.test.js:17:26)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)",
+        },
+        "helloChildLogger": "hello!",
+      },
+      "err": [Error: halo],
+      "level": 40,
+      "msg": "halo",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+  Array [
+    Object {
+      "data": Object {
+        "err": Object {
+          "message": "gday",
+          "name": "Error",
+          "stack": "Error: gday
+    at Object.<anonymous> (/home/mholman/Projects/block65/logger/__tests__/child.test.js:18:27)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)",
+        },
+        "helloChildLogger": "hello!",
+      },
+      "err": [Error: gday],
+      "level": 20,
+      "msg": "gday",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+  Array [
+    Object {
+      "data": Object {
+        "err": Object {
+          "message": "nihao2",
+          "name": "Error",
+          "stack": "Error: nihao2
+    at Object.<anonymous> (/home/mholman/Projects/block65/logger/__tests__/child.test.js:19:27)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)",
+        },
+        "helloChildLogger": "hello!",
+      },
+      "err": [Error: nihao2],
+      "level": 60,
+      "msg": "nihao2",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+]
+`;

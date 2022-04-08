@@ -2,11 +2,11 @@ import { jest } from '@jest/globals';
 import Emittery from 'emittery';
 import type { Mock } from 'jest-mock';
 import { PassThrough } from 'node:stream';
-import { createAutoConfiguredLogger } from '../lib/index.js';
+import { createLogger } from '../lib/index.js';
 import {
   CreateLoggerOptions,
-  LogDescriptor,
   Level,
+  LogDescriptor,
   Logger,
 } from '../lib/logger.js';
 
@@ -94,7 +94,7 @@ export function createAutoConfiguredLoggerWithWaitableMock(
 
   destination.on('data', (val: string) => writeCallback(val));
 
-  const logger = createAutoConfiguredLogger({
+  const logger = createLogger({
     destination,
     level: Level.Trace,
     ...options,

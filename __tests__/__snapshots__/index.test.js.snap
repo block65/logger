@@ -37,21 +37,6 @@ Array [
 ]
 `;
 
-exports[`Basic Object + String = Format 1`] = `
-Array [
-  Array [
-    Object {
-      "data": Object {
-        "omg": true,
-      },
-      "level": 40,
-      "msg": "hello",
-      "time": 2009-02-13T23:31:30.000Z,
-    },
-  ],
-]
-`;
-
 exports[`Basic Object 1`] = `
 Array [
   Array [
@@ -82,6 +67,36 @@ Array [
 ]
 `;
 
+exports[`Basic Object, String = No Format 1`] = `
+Array [
+  Array [
+    Object {
+      "data": Object {
+        "omg": true,
+      },
+      "level": 40,
+      "msg": "hello",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Basic Object, String Format, ...Primitives 1`] = `
+Array [
+  Array [
+    Object {
+      "data": Object {
+        "omg": true,
+      },
+      "level": 40,
+      "msg": "hello world:and 123",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+]
+`;
+
 exports[`Basic Object, String Format, String 1`] = `
 Array [
   Array [
@@ -91,21 +106,6 @@ Array [
       },
       "level": 40,
       "msg": "hello world",
-      "time": 2009-02-13T23:31:30.000Z,
-    },
-  ],
-]
-`;
-
-exports[`Basic Object, String Format, String 2`] = `
-Array [
-  Array [
-    Object {
-      "data": Object {
-        "omg": true,
-      },
-      "level": 40,
-      "msg": "hello world:and 123",
       "time": 2009-02-13T23:31:30.000Z,
     },
   ],
@@ -124,12 +124,12 @@ Array [
 ]
 `;
 
-exports[`Basic String, Object 1`] = `
+exports[`Basic String, Object = Object ignored 1`] = `
 Array [
   Array [
     Object {
       "level": 40,
-      "msg": "hello { omg: true }",
+      "msg": "hello",
       "time": 2009-02-13T23:31:30.000Z,
     },
   ],
@@ -188,10 +188,11 @@ exports[`Basic allow flush and reuse 1`] = `
 Array [
   Array [
     Object {
-      "err": Object {
-        "message": "Before 1",
-        "name": "Error",
-        "stack": "Error: Before 1
+      "data": Object {
+        "err": Object {
+          "message": "Before 1",
+          "name": "Error",
+          "stack": "Error: Before 1
     at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/index.test.js:160:22)
     at Promise.then.completed (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)
     at new Promise (<anonymous>)
@@ -202,7 +203,9 @@ Array [
     at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:66:9)
     at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:60:9)
     at run (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:25:3)",
+        },
       },
+      "err": [Error: Before 1],
       "level": 60,
       "msg": "Before 1",
       "time": 2009-02-13T23:31:30.000Z,
@@ -210,10 +213,11 @@ Array [
   ],
   Array [
     Object {
-      "err": Object {
-        "message": "Before 2",
-        "name": "Error",
-        "stack": "Error: Before 2
+      "data": Object {
+        "err": Object {
+          "message": "Before 2",
+          "name": "Error",
+          "stack": "Error: Before 2
     at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/index.test.js:161:22)
     at Promise.then.completed (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)
     at new Promise (<anonymous>)
@@ -224,7 +228,9 @@ Array [
     at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:66:9)
     at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:60:9)
     at run (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:25:3)",
+        },
       },
+      "err": [Error: Before 2],
       "level": 60,
       "msg": "Before 2",
       "time": 2009-02-13T23:31:30.000Z,
@@ -232,13 +238,16 @@ Array [
   ],
   Array [
     Object {
-      "err": Object {
-        "message": "After 1",
-        "name": "Error",
-        "stack": "Error: After 1
+      "data": Object {
+        "err": Object {
+          "message": "After 1",
+          "name": "Error",
+          "stack": "Error: After 1
     at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/index.test.js:163:22)
     at processTicksAndRejections (node:internal/process/task_queues:96:5)",
+        },
       },
+      "err": [Error: After 1],
       "level": 60,
       "msg": "After 1",
       "time": 2009-02-13T23:31:30.000Z,
@@ -246,13 +255,16 @@ Array [
   ],
   Array [
     Object {
-      "err": Object {
-        "message": "After 2",
-        "name": "Error",
-        "stack": "Error: After 2
+      "data": Object {
+        "err": Object {
+          "message": "After 2",
+          "name": "Error",
+          "stack": "Error: After 2
     at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/index.test.js:164:22)
     at processTicksAndRejections (node:internal/process/task_queues:96:5)",
+        },
       },
+      "err": [Error: After 2],
       "level": 60,
       "msg": "After 2",
       "time": 2009-02-13T23:31:30.000Z,
@@ -265,10 +277,11 @@ exports[`Basic allow undefined logger level 1`] = `
 Array [
   Array [
     Object {
-      "err": Object {
-        "message": "Fake",
-        "name": "Error",
-        "stack": "Error: Fake
+      "data": Object {
+        "err": Object {
+          "message": "Fake",
+          "name": "Error",
+          "stack": "Error: Fake
     at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/index.test.js:152:22)
     at Promise.then.completed (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)
     at new Promise (<anonymous>)
@@ -279,7 +292,9 @@ Array [
     at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:66:9)
     at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:60:9)
     at run (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:25:3)",
+        },
       },
+      "err": [Error: Fake],
       "level": 60,
       "msg": "Fake",
       "time": 2009-02-13T23:31:30.000Z,
@@ -287,10 +302,11 @@ Array [
   ],
   Array [
     Object {
-      "err": Object {
-        "message": "Fake",
-        "name": "Error",
-        "stack": "Error: Fake
+      "data": Object {
+        "err": Object {
+          "message": "Fake",
+          "name": "Error",
+          "stack": "Error: Fake
     at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/index.test.js:153:22)
     at Promise.then.completed (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)
     at new Promise (<anonymous>)
@@ -301,7 +317,9 @@ Array [
     at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:66:9)
     at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:60:9)
     at run (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:25:3)",
+        },
       },
+      "err": [Error: Fake],
       "level": 60,
       "msg": "Fake",
       "time": 2009-02-13T23:31:30.000Z,
@@ -335,10 +353,11 @@ Array [
   ],
   Array [
     Object {
-      "err": Object {
-        "message": "Warn",
-        "name": "Error",
-        "stack": "Error: Warn
+      "data": Object {
+        "err": Object {
+          "message": "Warn",
+          "name": "Error",
+          "stack": "Error: Warn
     at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/index.test.js:177:21)
     at Promise.then.completed (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)
     at new Promise (<anonymous>)
@@ -349,7 +368,9 @@ Array [
     at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:66:9)
     at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:60:9)
     at run (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:25:3)",
+        },
       },
+      "err": [Error: Warn],
       "level": 40,
       "msg": "Warn",
       "time": 2009-02-13T23:31:30.000Z,
@@ -357,10 +378,11 @@ Array [
   ],
   Array [
     Object {
-      "err": Object {
-        "message": "Its an error",
-        "name": "Error",
-        "stack": "Error: Its an error
+      "data": Object {
+        "err": Object {
+          "message": "Its an error",
+          "name": "Error",
+          "stack": "Error: Its an error
     at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/index.test.js:178:22)
     at Promise.then.completed (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)
     at new Promise (<anonymous>)
@@ -371,7 +393,9 @@ Array [
     at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:66:9)
     at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:60:9)
     at run (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:25:3)",
+        },
       },
+      "err": [Error: Its an error],
       "level": 50,
       "msg": "Its an error",
       "time": 2009-02-13T23:31:30.000Z,
@@ -379,10 +403,11 @@ Array [
   ],
   Array [
     Object {
-      "err": Object {
-        "message": "OMG fatal",
-        "name": "Error",
-        "stack": "Error: OMG fatal
+      "data": Object {
+        "err": Object {
+          "message": "OMG fatal",
+          "name": "Error",
+          "stack": "Error: OMG fatal
     at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/index.test.js:179:22)
     at Promise.then.completed (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)
     at new Promise (<anonymous>)
@@ -393,7 +418,9 @@ Array [
     at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:66:9)
     at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:60:9)
     at run (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:25:3)",
+        },
       },
+      "err": [Error: OMG fatal],
       "level": 60,
       "msg": "OMG fatal",
       "time": 2009-02-13T23:31:30.000Z,

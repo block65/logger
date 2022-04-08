@@ -46,21 +46,20 @@ export function createCliTransformer(options?: CliOptions): Transformer {
   };
 
   return (log) => {
-    const { level, msg = '', time, ctx = {}, data, err } = log;
+    const { level, msg, time, ctx = {}, data } = log;
     const { name, ...ctxRest } = ctx;
 
     const formattedName = name ? `(${name})` : '';
-    const formattedMsg = msg ? ` ${bold(msg)}` : '';
+    const formattedMsg = msg ? ` ${bold(msg.toLocaleString())}` : '';
 
-    const dataWithErr = {
+    const dataWithCtx = {
       ...data,
-      ...(err && { err }),
       ...(Object.keys(ctxRest).length > 0 && { ctx: ctxRest }),
     };
 
     const formattedData =
-      dataWithErr && Object.keys(dataWithErr).length > 0
-        ? ` ${util.inspect(dataWithErr, {
+      dataWithCtx && Object.keys(dataWithCtx).length > 0
+        ? ` ${util.inspect(dataWithCtx, {
             colors: useColor,
             compact: true,
             breakLength: Infinity,

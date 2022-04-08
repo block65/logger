@@ -6,10 +6,10 @@ import {
   jest,
   test,
 } from '@jest/globals';
-import { gcpProcessor } from '../lib/transformers/gcp.js';
+import { gcpErrorProcessor } from '../lib/processors/gcp.js';
 import { createLoggerWithWaitableMock } from './helpers.js';
 
-describe('GCP', () => {
+describe('GCP Processor', () => {
   const oldEnv = process.env;
   beforeEach(() => {
     // jest.clearAllMocks();
@@ -24,8 +24,7 @@ describe('GCP', () => {
 
   test('Cloud Run', async () => {
     const [logger, callback] = createLoggerWithWaitableMock({
-      // logFormat: 'gcp',
-      processors: [gcpProcessor],
+      processors: [gcpErrorProcessor],
     });
 
     logger.warn(new Error('hello'));
@@ -36,7 +35,7 @@ describe('GCP', () => {
   test('Cloud Run variant', async () => {
     process.env.VERSION_NAME = 'logger@foodfacecafe';
     const [logger, callback] = createLoggerWithWaitableMock({
-      // logFormat: 'gcp',
+      processors: [gcpErrorProcessor],
     });
 
     logger.warn(new Error('hello'));
@@ -46,7 +45,7 @@ describe('GCP', () => {
 
   test('Cloud Run Error Object', async () => {
     const [logger, callback] = createLoggerWithWaitableMock({
-      // logFormat: 'gcp',
+      processors: [gcpErrorProcessor],
     });
 
     logger.error(new Error('Ded 1'));
@@ -57,7 +56,7 @@ describe('GCP', () => {
 
   test('Cloud Run Fatal with Error Object', async () => {
     const [logger, callback] = createLoggerWithWaitableMock({
-      // logFormat: 'gcp',
+      processors: [gcpErrorProcessor],
     });
 
     logger.fatal(new Error(`Ded 2`));

@@ -2,16 +2,15 @@ import Emittery from 'emittery';
 import { AsyncLocalStorage } from 'node:async_hooks';
 import { PassThrough, Writable } from 'node:stream';
 import { finished } from 'node:stream/promises';
-import { format } from 'node:util';
+import format from 'quick-format-unescaped';
 import { ErrorObject, serializeError } from 'serialize-error';
 import Chain from 'stream-chain';
 import type { JsonObject, JsonPrimitive, JsonValue } from 'type-fest';
-import { asyncLocalContextProcessor } from './processors/als.js';
-import { callerProcessor } from './processors/caller.js';
+import { asyncLocalStorageProcessor } from './processors/als.js';
 import { jsonTransformer } from './transformers/json.js';
-import { isPlainObject } from './utils.js';
+import { isPlainObject, safeStringify } from './utils.js';
 
-export type Processor<T = LogDescriptor, R = T> =
+export type Processor<T = LogDescriptor, R = Partial<T>> =
   | ((log: T) => R)
   | ((log: T) => Promise<R>);
 // | ((log: T) => Readable)
@@ -45,26 +44,42 @@ export enum Level {
   Fatal = 60,
 }
 
-// export type LogDataWithoutError = { [Key in string]?: JsonValue | undefined };
-export type LogData = { [key in string]?: JsonValue | undefined | unknown };
+type LogJsonObject = { [Key in string]?: LogJsonValue };
+type LogJsonArray = LogJsonValue[];
+type LogJsonPrimitive = string | number | boolean | null;
 
-export type JsonObjectWithError = JsonObject & {
-  err?: Error | ErrorObject | undefined;
+// we support an extended set of values, as each have a toJSON method and
+// corresponding representation, typically a string
+type LogJsonValue =
+  | LogJsonPrimitive
+  | LogJsonObject
+  | LogJsonArray
+  | Date
+  | URL;
+
+export type LogData = {
+  [key in string]?: LogJsonValue | undefined | unknown;
+} & {
+  err?: ErrorObject;
 };
+
+export type JsonObjectWithError = {
+  err?: Error | unknown;
+} & JsonObject;
 
 export interface LogDescriptor {
   time: Date;
   level: Level;
-  msg?: string;
+  msg?: JsonPrimitive;
   ctx?: LogData;
   data?: LogData;
-  err?: ErrorObject | undefined;
+  err?: Error | unknown;
 }
 
 export interface LogMethod {
-  (err: Error, str?: string | number, ...args: JsonValue[]): void;
+  (err: Error | unknown, str?: string | number, ...args: JsonValue[]): void;
   (
-    data: LogData & { err?: Error },
+    data: LogData & { err?: Error | unknown },
     str?: string | number,
     ...args: JsonValue[]
   ): void;
@@ -99,13 +114,12 @@ function isPrimitive(value: unknown): value is JsonPrimitive {
 }
 
 function isLogDescriptor(log: LogDescriptor | Symbol): log is LogDescriptor {
-  // console.log('%o is %s', log, isPlainObject(log));
   return isPlainObject(log);
 }
 
 function toLogDescriptor(
   level: Level,
-  arg1: Error | JsonObjectWithError | JsonPrimitive,
+  arg1: Error | JsonObject | JsonObjectWithError | JsonPrimitive,
   arg2?: JsonPrimitive,
   ...args: JsonPrimitive[]
 ): LogDescriptor {
@@ -116,38 +130,62 @@ function toLogDescriptor(
       time,
       level,
       msg: arg2 ? arg2.toLocaleString() : arg1.message,
-      err: serializeError(arg1),
+      data: {
+        err: serializeError(arg1),
+      },
+      err: arg1,
     };
   }
 
   if (isPrimitive(arg1)) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    arg1 &&
+      console.log([
+        arg1,
+        [arg2, ...args],
+        {
+          stringify: safeStringify,
+        },
+      ]);
+
     return {
       time,
       level,
-      msg: format(arg1, ...(arg2 ? [arg2, ...args] : args)),
+      msg:
+        arg1 &&
+        format(arg1.toLocaleString(), [arg2, ...args], {
+          stringify: safeStringify,
+        }),
     };
   }
 
-  const { err, ...rest } = arg1;
+  const { err, ...data } = arg1;
+
+  if (err instanceof Error) {
+    return {
+      time,
+      level,
+      msg: arg2
+        ? arg2.toLocaleString()
+        : err.message || data.message?.toLocaleString() || undefined,
+      err,
+      data: withNullProto({
+        err: serializeError(err),
+        ...data,
+      }),
+    };
+  }
 
   return {
     time,
     level,
-
-    ...(err instanceof Error
-      ? {
-          msg: err.message,
-          err: serializeError(err),
-          data: withNullProto(rest),
-        }
-      : {
-          msg: typeof arg2 !== 'undefined' ? format(arg2, ...args) : arg2,
-          data: arg1,
-        }),
+    msg:
+      arg2 && format(arg2.toLocaleString(), args, { stringify: safeStringify }),
+    data,
   };
 }
 
-const chokeProbe = Symbol('choke-probe');
+const pipeCleaner = Symbol('pipe-cleaner');
 
 export class Logger implements LogMethods {
   #inputStream = new PassThrough({
@@ -155,9 +193,9 @@ export class Logger implements LogMethods {
     autoDestroy: true,
   });
 
-  public als: AsyncLocalStorage<AlsContext>;
+  public readonly als: AsyncLocalStorage<AlsContext>;
 
-  public level: Level;
+  public readonly level: Level;
 
   #emitter = new Emittery<{
     log: LogDescriptor;
@@ -191,12 +229,12 @@ export class Logger implements LogMethods {
       processor: Processor<LogDescriptor | Symbol> | Transformer,
     ): Processor<LogDescriptor | Symbol> | Transformer {
       if (typeof processor === 'function') {
-        return async function chokePointFilter(log: LogDescriptor | Symbol) {
-          // run the processor on all log descriptors
+        return async function ignorePipeCleaner(log: LogDescriptor | Symbol) {
+          // run the processor on anything log descriptory
           if (isLogDescriptor(log)) {
             return processor(log);
           }
-          // pass the choke point symbol straight through
+          // pass the pipe cleaner (or any symbol) straight through
           return log;
         };
       }
@@ -206,9 +244,7 @@ export class Logger implements LogMethods {
 
     this.#processorChain = Chain.chain([
       ...[
-        asyncLocalContextProcessor,
-        // errorProcessor,
-        callerProcessor,
+        asyncLocalStorageProcessor,
         ...decorators,
         ...(transformer ? [transformer] : []),
       ].map((processor) => processorWrapper(processor.bind(this))),
@@ -219,17 +255,10 @@ export class Logger implements LogMethods {
     this.#inputStream
       .pipe(this.#processorChain)
       .pipe(
-        // filter out the choke probe
-        Chain.chain([(obj) => (obj === chokeProbe ? null : obj)]),
+        // ignore the pipe cleaner
+        Chain.chain([(obj) => (obj === pipeCleaner ? null : obj)]),
       )
       .pipe(this.#destination);
-
-    /* // debug
-    ['drain', 'data', 'readable', 'resume'].forEach((eventName) => {
-      destination.on(eventName, (...args) =>
-        console.log('destination EVENT!!!!', { eventName, args }),
-      );
-    }); */
   }
 
   public static from(options: CreateLoggerOptions) {
@@ -261,9 +290,26 @@ export class Logger implements LogMethods {
     });
   }
 
+  public child(data: LogJsonObject) {
+    return new Logger({
+      destination: this.#inputStream,
+      processors: [
+        function childLoggerProcessor(log) {
+          return {
+            ...log,
+            data: {
+              ...log.data,
+              ...data,
+            },
+          };
+        },
+      ],
+    });
+  }
+
   public trace(...args: any[]) {
     // @ts-expect-error
-    this.#log(Level.Trace, ...args);
+    this.#log(Level.Fatal, ...args);
   }
 
   public debug(...args: any[]) {
@@ -292,16 +338,16 @@ export class Logger implements LogMethods {
   }
 
   public async flush() {
-    this.#inputStream.write(chokeProbe);
+    this.#inputStream.write(pipeCleaner);
 
     await new Promise<void>((resolve, reject) => {
       let t: NodeJS.Timeout | undefined;
 
       const stream = this.#processorChain;
 
-      function detectChokeProbe(obj: LogDescriptor | Symbol) {
-        if (obj === chokeProbe) {
-          stream.removeListener('data', detectChokeProbe);
+      function detectPipeCleaner(obj: LogDescriptor | Symbol) {
+        if (obj === pipeCleaner) {
+          stream.removeListener('data', detectPipeCleaner);
           stream.removeListener('error', reject);
           if (t) {
             clearTimeout(t);
@@ -312,9 +358,9 @@ export class Logger implements LogMethods {
       }
 
       stream.once('error', reject);
-      stream.addListener('data', detectChokeProbe);
+      stream.addListener('data', detectPipeCleaner);
 
-      t = setTimeout(() => detectChokeProbe(chokeProbe), 2000);
+      t = setTimeout(() => detectPipeCleaner(pipeCleaner), 2000);
     }).catch((err) => this.#emitter.emit('error', err));
 
     await this.#emitter
@@ -324,8 +370,12 @@ export class Logger implements LogMethods {
 
   public async end() {
     await this.flush();
-    this.#inputStream.end();
-    await finished(this.#destination);
+    if (!this.#inputStream.writableEnded) {
+      this.#inputStream.end();
+    }
+    if (!this.#destination.writableFinished) {
+      await finished(this.#destination);
+    }
   }
 
   public on<Name extends 'log' | 'error' | 'flush'>(
@@ -345,12 +395,4 @@ export class Logger implements LogMethods {
   ): void {
     return this.#emitter.off(event, fn);
   }
-}
-
-export function createLogger(options: CreateLoggerOptions) {
-  const logger = Logger.from(options);
-  process.on('beforeExit', async () => {
-    await logger.end();
-  });
-  return logger;
 }

@@ -26,17 +26,7 @@ export function sentryCaptureLog(
     ...options.context,
   };
 
-  // the err prop exists when something error-ish was detected in the log call
-  if (typeof log.data === 'object' && log.data && 'err' in log.data) {
-    captureException(Object.assign(new Error(), log.data.err), context);
-  } else {
-    captureException(
-      Object.assign(new Error(log.msg), {
-        // stack: log.data?.err?.stack,
-      }),
-      context,
-    );
-  }
+  captureException(log.err, context);
 }
 
 export function createSentryProcessor(

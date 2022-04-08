@@ -27,7 +27,6 @@ describe('Basic', () => {
   test('Object', async () => {
     const [logger, callback] = createLoggerWithWaitableMock();
     logger.warn({ omg: true });
-
     await logger.end();
     expect(callback.mock.calls).toMatchSnapshot();
   });
@@ -39,16 +38,16 @@ describe('Basic', () => {
     expect(callback.mock.calls).toMatchSnapshot();
   });
 
-  test('String, Object', async () => {
+  test('String, Object = Object ignored', async () => {
     const [logger, callback] = createLoggerWithWaitableMock();
     logger.warn('hello', { omg: true });
     await logger.end();
     expect(callback.mock.calls).toMatchSnapshot();
   });
 
-  test('String Format, Object', async () => {
+  test.only('String Format, Object', async () => {
     const [logger, callback] = createLoggerWithWaitableMock();
-    logger.warn('hello %o', { omg: true });
+    logger.warn('hello %j spleen!', { omg: true });
     await logger.end();
     expect(callback.mock.calls).toMatchSnapshot();
   });
@@ -60,15 +59,15 @@ describe('Basic', () => {
     expect(callback.mock.calls).toMatchSnapshot();
   });
 
-  test('Object, String Format, String', async () => {
+  test('Object, String Format, ...Primitives', async () => {
     const [logger, callback] = createLoggerWithWaitableMock();
 
-    logger.warn({ omg: true }, 'hello %s:%s %d', 'world', 'and', 123);
+    logger.warn({ omg: true }, 'hello %s %s %d', 'world', 'and', 123);
     await logger.end();
     expect(callback.mock.calls).toMatchSnapshot();
   });
 
-  test('Object + String = Format', async () => {
+  test('Object, String = No Format', async () => {
     const [logger, callback] = createLoggerWithWaitableMock();
     logger.warn({ omg: true }, 'hello');
     await logger.end();

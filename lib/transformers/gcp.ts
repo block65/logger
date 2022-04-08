@@ -1,18 +1,14 @@
-import {
-  Level,
-  LogData,
-  LogDescriptor,
-  Processor,
-  Transformer,
-} from '../logger.js';
-import { isEmptyObject, withNullProto } from '../utils.js';
+import type { JsonPrimitive } from 'type-fest';
+import { Level, LogData, LogDescriptor, Transformer } from '../logger.js';
+import { gcpErrorProcessor } from '../processors/gcp.js';
+import { safeStringify, withNullProto } from '../utils.js';
 
 type GcpSeverities = 'DEBUG' | 'INFO' | 'WARNING' | 'ERROR' | 'CRITICAL';
 
 type GcpJsonLogFormat = {
   severity: GcpSeverities;
   time: string;
-  message?: string;
+  message?: JsonPrimitive;
   ctx?: LogData;
 } & LogData;
 
@@ -25,34 +21,8 @@ const logLevelGcpSeverityMap = new Map<Level, GcpSeverities>([
   [Level.Fatal, 'CRITICAL'],
 ]);
 
-export const gcpProcessor: Processor = (log: LogDescriptor): LogDescriptor => {
-  if (log.level < Level.Warn) {
-    return log;
-  }
-
-  if (!log.err) {
-    return log;
-  }
-
-  const { stack, message, ...restErr } = log.err;
-
-  return {
-    ...log,
-    data: {
-      ...log.data,
-      '@type':
-        'type.googleapis.com/google.devtools.clouderrorreporting.v1beta1.ReportedErrorEvent',
-      stack_trace: stack,
-      message,
-      ...(!isEmptyObject(restErr) && {
-        meta: restErr,
-      }),
-    },
-  };
-};
-
 export const gcpTransformer: Transformer = (log: LogDescriptor): string => {
-  const { level, time, ctx, data, msg } = log;
+  const { level, time, ctx, data, msg } = gcpErrorProcessor(log);
 
   // See https://cloud.google.com/error-reporting/docs/formatting-error-messages
   const jsonLog: GcpJsonLogFormat = withNullProto({
@@ -63,5 +33,5 @@ export const gcpTransformer: Transformer = (log: LogDescriptor): string => {
     ctx,
   });
 
-  return JSON.stringify(jsonLog);
+  return safeStringify(jsonLog);
 };

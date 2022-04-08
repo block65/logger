@@ -1,6 +1,6 @@
-import type { JsonObject } from 'type-fest';
+import type { JsonPrimitive } from 'type-fest';
 import { LogData, LogDescriptor } from '../logger.js';
-import { withNullProto } from '../utils.js';
+import { safeStringify, withNullProto } from '../utils.js';
 
 // const levelToStringMap = new Map<Level, string>([
 //   [Level.Trace, 'trace'],
@@ -14,7 +14,7 @@ import { withNullProto } from '../utils.js';
 export interface JsonLogFormat {
   level: number;
   time: string;
-  msg?: string;
+  msg?: JsonPrimitive;
   ctx?: LogData;
 }
 
@@ -29,5 +29,5 @@ export const jsonTransformer = (log: LogDescriptor): string => {
     ctx,
   });
 
-  return JSON.stringify(jsonLog);
+  return safeStringify(jsonLog);
 };

@@ -1,4 +1,11 @@
-import { afterAll, beforeEach, describe, jest, test } from '@jest/globals';
+import {
+  afterAll,
+  beforeEach,
+  describe,
+  expect,
+  jest,
+  test,
+} from '@jest/globals';
 
 describe('Child Logger', () => {
   beforeEach(() => {
@@ -11,5 +18,18 @@ describe('Child Logger', () => {
     jest.useRealTimers();
   });
 
-  test('GCP', async () => {});
+  test('Basic', async () => {
+    const { createLoggerWithWaitableMock } = await import('./helpers.js');
+
+    const [logger, callback] = createLoggerWithWaitableMock();
+
+    const childLogger = logger.child({ helloChildLogger: 'hello!' });
+
+    childLogger.error(new Error('hallo'));
+    childLogger.info(new Error('hello'));
+    childLogger.warn(new Error('halo'));
+    childLogger.debug(new Error('gday'));
+    childLogger.trace(new Error('nihao2'));
+    await expect(callback.waitUntilCalledTimes(5)).resolves.toMatchSnapshot();
+  });
 });

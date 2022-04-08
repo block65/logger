@@ -1,5 +1,5 @@
 import { Level, Transformer } from '../logger.js';
-import { isEmptyObject, stringifyUndefined } from '../utils.js';
+import { isEmptyObject, safeStringify, stringifyUndefined } from '../utils.js';
 
 // https://github.com/aws/aws-lambda-nodejs-runtime-interface-client/blob/c31c41ffe5f2f03ae9e8589b96f3b005e2bb8a4a/src/utils/LogPatch.ts#L10
 type AwsLevelNames = 'FATAL' | 'ERROR' | 'WARN' | 'INFO' | 'DEBUG' | 'TRACE';
@@ -15,14 +15,13 @@ const levelNumberToCloudwatchStringMap = new Map<Level, AwsLevelNames>([
 ]);
 
 const cloudwatchTransformer: Transformer = (log) => {
-  const { level, msg, ctx, time, data, err } = log;
+  const { level, msg, ctx, time, data } = log;
 
   const { id: contextId, ...contextRest } = ctx || {};
 
-  const rest = { level, ...((data || err) && { data: { ...data, ...err } }) };
-
-  const restStr = JSON.stringify({
-    ...stringifyUndefined(rest),
+  const dataStr = safeStringify({
+    level,
+    ...stringifyUndefined(data),
     ...(contextRest && !isEmptyObject(contextRest) && { ctx: contextRest }),
   });
 
@@ -30,8 +29,8 @@ const cloudwatchTransformer: Transformer = (log) => {
     time.toISOString(),
     contextId,
     levelNumberToCloudwatchStringMap.get(level),
-    msg || '',
-    restStr,
+    typeof msg !== 'undefined' ? msg : '', // don't print 'undefined'
+    dataStr,
   ].join('\t');
 };
 
