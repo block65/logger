@@ -6,8 +6,10 @@ import {
   jest,
   test,
 } from '@jest/globals';
+import { lambdaProcessor } from '../lib/processors/lambda.js';
 import { withLambdaLoggerContextWrapper } from '../lib/lambda.js';
-import { createLoggerWithTmpfileDestination } from './helpers.js';
+import { createCloudwatchTransformer } from '../lib/transformers/cloudwatch.js';
+import { createLoggerWithWaitableMock } from './helpers.js';
 
 describe('AWS', () => {
   beforeEach(() => {
@@ -19,11 +21,11 @@ describe('AWS', () => {
     jest.useRealTimers();
   });
 
-  describe('Lambda Logger', () => {
+  describe('Lambda', () => {
     test('Logger + contextId', async () => {
-      const [logger, callback] = await createLoggerWithTmpfileDestination({
-        platform: 'aws-lambda',
-        logFormat: 'aws-cloudwatch',
+      const [logger, callback, errback] = createLoggerWithWaitableMock({
+        processors: [lambdaProcessor],
+        transformer: createCloudwatchTransformer(),
       });
 
       await withLambdaLoggerContextWrapper(
@@ -44,42 +46,43 @@ describe('AWS', () => {
         },
       );
 
-      await logger.flushTransports();
+      await logger.flush();
 
-      const logs = await callback();
-      expect(logs).toBeTruthy();
+      await callback.waitUntilCalled();
 
-      await expect(callback()).resolves.toMatchSnapshot();
+      expect(errback).not.toBeCalled();
+      expect(callback).toBeCalledTimes(2);
+      expect(callback.mock.calls).toMatchSnapshot();
     });
 
     test('Error Object', async () => {
-      const [logger, callback] = await createLoggerWithTmpfileDestination({
-        platform: 'aws-lambda',
-        logFormat: 'aws-cloudwatch',
+      const [logger, callback] = createLoggerWithWaitableMock({
+        processors: [lambdaProcessor],
+        transformer: createCloudwatchTransformer(),
       });
 
       logger.error(new Error('Ded 4'));
 
-      await logger.flushTransports();
+      await logger.flush();
 
-      await expect(callback()).resolves.toMatchSnapshot();
+      await expect(callback.mock.calls).toMatchSnapshot();
     });
   });
 
-  describe('ECS Logger', () => {
+  describe('ECS', () => {
     test('Error Object', async () => {
-      const [logger, callback] = await createLoggerWithTmpfileDestination({
-        platform: 'aws-ecs',
-        logFormat: 'aws-cloudwatch',
+      const [logger, callback] = createLoggerWithWaitableMock({
+        // decorators: [lambdaDecorator],
+        transformer: createCloudwatchTransformer(),
       });
 
       logger.error(new Error('Ded 3'));
 
-      await logger.flushTransports();
+      await logger.flush();
 
       // await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      await expect(callback()).resolves.toMatchSnapshot();
+      await expect(callback.mock.calls).toMatchSnapshot();
     });
   });
 });

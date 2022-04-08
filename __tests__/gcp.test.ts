@@ -6,9 +6,11 @@ import {
   jest,
   test,
 } from '@jest/globals';
-import { createLoggerWithTmpfileDestinationJson } from './helpers.js';
+import { gcpErrorProcessor } from '../lib/processors/gcp.js';
+import { createLoggerWithWaitableMock } from './helpers.js';
 
-describe('GCP', () => {
+describe('GCP Processor', () => {
+  const oldEnv = process.env;
   beforeEach(() => {
     // jest.clearAllMocks();
     jest.useFakeTimers('modern');
@@ -16,38 +18,50 @@ describe('GCP', () => {
   });
 
   afterEach(() => {
+    process.env = { ...oldEnv };
     jest.useRealTimers();
   });
 
   test('Cloud Run', async () => {
-    const [logger, callback] = await createLoggerWithTmpfileDestinationJson({
-      logFormat: 'gcp',
+    const [logger, callback] = createLoggerWithWaitableMock({
+      processors: [gcpErrorProcessor],
     });
 
     logger.warn(new Error('hello'));
-    await logger.flushTransports();
-    await expect(callback()).resolves.toMatchSnapshot();
+    await logger.end();
+    await expect(callback.mock.calls).toMatchSnapshot();
+  });
+
+  test('Cloud Run variant', async () => {
+    process.env.VERSION_NAME = 'logger@foodfacecafe';
+    const [logger, callback] = createLoggerWithWaitableMock({
+      processors: [gcpErrorProcessor],
+    });
+
+    logger.warn(new Error('hello'));
+    await logger.end();
+    await expect(callback.mock.calls).toMatchSnapshot();
   });
 
   test('Cloud Run Error Object', async () => {
-    const [logger, callback] = await createLoggerWithTmpfileDestinationJson({
-      logFormat: 'gcp',
+    const [logger, callback] = createLoggerWithWaitableMock({
+      processors: [gcpErrorProcessor],
     });
 
     logger.error(new Error('Ded 1'));
-    await logger.flushTransports();
+    await logger.end();
 
-    await expect(callback()).resolves.toMatchSnapshot();
+    await expect(callback.mock.calls).toMatchSnapshot();
   });
 
   test('Cloud Run Fatal with Error Object', async () => {
-    const [logger, callback] = await createLoggerWithTmpfileDestinationJson({
-      logFormat: 'gcp',
+    const [logger, callback] = createLoggerWithWaitableMock({
+      processors: [gcpErrorProcessor],
     });
 
     logger.fatal(new Error(`Ded 2`));
-    await logger.flushTransports();
+    await logger.end();
 
-    await expect(callback()).resolves.toMatchSnapshot();
+    await expect(callback.mock.calls).toMatchSnapshot();
   });
 });
