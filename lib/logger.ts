@@ -10,6 +10,26 @@ import { asyncLocalStorageProcessor } from './processors/als.js';
 import { jsonTransformer } from './transformers/json.js';
 import { isPlainObject, safeStringify } from './utils.js';
 
+// we support an extended set of values, as each have a toJSON method and
+// corresponding representation, typically a string
+type JsonValueExtended =
+  | JsonObjectExtended
+  | JsonArrayExtended
+  | JsonPrimitive
+  | Date
+  | URL;
+
+type JsonObjectExtended = { [Key in string]?: JsonValueExtended };
+type JsonArrayExtended = JsonValueExtended[];
+
+interface LoggerOptions {
+  destination: Writable;
+  level?: Level;
+  processors?: Processor[];
+  transformer?: Transformer;
+  context?: LogDescriptor['ctx'];
+}
+
 export type Processor<T = LogDescriptor, R = Partial<T>> =
   | ((log: T) => R)
   | ((log: T) => Promise<R>);
@@ -26,14 +46,6 @@ export interface CreateLoggerOptions {
   context?: LogDescriptor['ctx'];
 }
 
-interface LoggerOptions {
-  destination: Writable;
-  level?: Level;
-  processors?: Processor[];
-  transformer?: Transformer;
-  context?: LogDescriptor['ctx'];
-}
-
 export enum Level {
   Silent = 0,
   Trace = 10,
@@ -44,28 +56,15 @@ export enum Level {
   Fatal = 60,
 }
 
-type LogJsonObject = { [Key in string]?: LogJsonValue };
-type LogJsonArray = LogJsonValue[];
-type LogJsonPrimitive = string | number | boolean | null;
-
-// we support an extended set of values, as each have a toJSON method and
-// corresponding representation, typically a string
-type LogJsonValue =
-  | LogJsonPrimitive
-  | LogJsonObject
-  | LogJsonArray
-  | Date
-  | URL;
-
 export type LogData = {
-  [key in string]?: LogJsonValue | undefined | unknown;
+  [key in string]?: JsonValueExtended | undefined | unknown;
 } & {
   err?: ErrorObject;
 };
 
-export type JsonObjectWithError = {
+export type JsonObjectExtendedWithError = {
   err?: Error | unknown;
-} & JsonObject;
+} & JsonObjectExtended;
 
 export interface LogDescriptor {
   time: Date;
@@ -97,7 +96,7 @@ export interface LogMethods {
 
 export interface AlsContext {
   id: string;
-  context?: JsonObject;
+  context?: JsonObjectExtended;
 }
 
 function withNullProto<T extends Record<string, any>>(obj: T): T {
@@ -119,7 +118,11 @@ function isLogDescriptor(log: LogDescriptor | Symbol): log is LogDescriptor {
 
 function toLogDescriptor(
   level: Level,
-  arg1: Error | JsonObject | JsonObjectWithError | JsonPrimitive,
+  arg1:
+    | Error
+    | JsonObjectExtended
+    | JsonObjectExtendedWithError
+    | JsonPrimitive,
   arg2?: JsonPrimitive,
   ...args: JsonPrimitive[]
 ): LogDescriptor {
@@ -282,7 +285,7 @@ export class Logger implements LogMethods {
     }
   }
 
-  public child(data: LogJsonObject) {
+  public child(data: JsonObjectExtended) {
     return new Logger({
       level: this.level,
       destination: this.#inputStream,
