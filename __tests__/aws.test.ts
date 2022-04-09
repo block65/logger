@@ -44,8 +44,6 @@ describe('AWS', () => {
         },
       );
 
-      await logger.flush();
-
       await callback.waitUntilCalled();
 
       expect(errback).not.toBeCalled();
@@ -60,9 +58,7 @@ describe('AWS', () => {
 
       logger.error(new Error('Ded 4'));
 
-      await logger.flush();
-
-      await expect(callback.mock.calls).toMatchSnapshot();
+      await expect(callback.waitUntilCalled()).resolves.toMatchSnapshot();
     });
   });
 
