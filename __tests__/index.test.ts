@@ -217,9 +217,7 @@ describe('Basic', () => {
   test('context and release name co-exist', async () => {
     process.env.VERSION_NAME = 'logger@feedfacecafe';
 
-    const [logger, getLogs] = createLoggerWithWaitableMock({
-      level: undefined,
-    });
+    const [logger, getLogs] = createLoggerWithWaitableMock();
 
     logger.trace('stuff');
     logger.debug('oh debug yes');
@@ -232,5 +230,22 @@ describe('Basic', () => {
 
     expect(getLogs.mock.calls).toHaveLength(6);
     expect(getLogs.mock.calls).toMatchSnapshot();
+  });
+
+  test('log levels', async () => {
+    process.env.VERSION_NAME = 'logger@feedfacecafe';
+
+    const [logger, getLogs] = createLoggerWithWaitableMock({
+      level: Level.Fatal,
+    });
+
+    logger.trace('stuff');
+    logger.debug('oh debug yes');
+    logger.info('Completed');
+    logger.warn(new Error('Warn'));
+    logger.error(new Error('Its an error'));
+    logger.fatal(new Error('OMG fatal'));
+
+    await expect(getLogs.waitUntilCalled()).resolves.toMatchSnapshot();
   });
 });
