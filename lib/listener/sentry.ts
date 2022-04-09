@@ -1,4 +1,4 @@
-import { captureException, flush, Severity } from '@sentry/node';
+import { addBreadcrumb, captureException, flush, Severity } from '@sentry/node';
 import type { ScopeContext } from '@sentry/types';
 import { Level, LogDescriptor, Logger } from '../logger.js';
 
@@ -29,10 +29,19 @@ export function sentryCaptureLog(
 }
 
 export function createSentryListener(options: SentryListenerOptions = {}) {
-  return (log: LogDescriptor): void => {
+  return (log: LogDescriptor): LogDescriptor => {
+    if (log.level < Level.Error) {
+      addBreadcrumb({
+        level: sentrySeverityMap.get(log.level) || Severity.Log,
+        message: log.msg?.toLocaleString(),
+        data: log.data,
+        timestamp: log.time.getTime(),
+      });
+    }
     if (log.level >= Level.Error && log.err) {
       sentryCaptureLog(log, options);
     }
+    return log;
   };
 }
 
@@ -42,7 +51,9 @@ export function attachSentryListener(
 ): Logger {
   const listener = createSentryListener(options);
 
-  logger.on('log', listener);
+  logger.on('log', (log) => {
+    listener(log);
+  });
   logger.on('flush', async () => {
     await flush(1000);
   });

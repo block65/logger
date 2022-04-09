@@ -7,9 +7,12 @@ import {
   test,
 } from '@jest/globals';
 import * as sentryModule from '@sentry/node';
-import { PassThrough } from 'stream';
 
 const captureException = jest.fn((/* exception, captureContext */) => {
+  return 'yes';
+});
+
+const addBreadcrumb = jest.fn((/* exception, captureContext */) => {
   return 'yes';
 });
 
@@ -26,6 +29,7 @@ jest.unstable_mockModule('@sentry/node', () => {
     ...sentryModule,
     flush,
     captureException,
+    addBreadcrumb,
     captureMessage,
   };
 });
@@ -58,16 +62,53 @@ describe('Sentry processor', () => {
       },
     });
 
-    await listener({
+    listener({
+      level: Level.Info,
+      time: new Date(),
+      msg: 'This happened before the error',
+    });
+
+    listener({
       level: Level.Error,
       time: new Date(),
       err: new Error('Oh its a fake error'),
     });
 
     expect(captureException).toBeCalledTimes(1);
-    expect(flush).toBeCalledTimes(0);
+    expect(addBreadcrumb).toBeCalledTimes(1);
 
     expect(captureException.mock.calls).toMatchSnapshot();
+    expect(addBreadcrumb.mock.calls).toMatchSnapshot();
+  });
+
+  test('listener as processor', async () => {
+    const { createLoggerWithWaitableMock } = await import('./helpers.js');
+    const { createSentryListener } = await import('../lib/listener/sentry.js');
+
+    const listener = createSentryListener({
+      context: {
+        user: {
+          id: '1234',
+        },
+        tags: {
+          admin: true,
+        },
+      },
+    });
+
+    const [logger, callback] = createLoggerWithWaitableMock({
+      processors: [listener],
+    });
+
+    logger.error(new Error('Oops kaboom'));
+
+    await expect(callback.waitUntilCalled()).resolves.toMatchSnapshot();
+
+    expect(captureException).toBeCalledTimes(1);
+
+    expect(flush).toBeCalledTimes(0);
+    expect(captureException.mock.calls).toMatchSnapshot();
+    expect(addBreadcrumb.mock.calls).toMatchSnapshot();
   });
 
   test('listener attach', async () => {
