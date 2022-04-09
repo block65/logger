@@ -1,7 +1,6 @@
 import { hostname } from 'node:os';
 import { CreateLoggerOptions, Level, Logger } from './logger.js';
 import { callerProcessor } from './processors/caller.js';
-import { attachSentryProcessor } from './processors/sentry.js';
 import { createCliTransformer } from './transformers/cli.js';
 import { createCloudwatchTransformer } from './transformers/cloudwatch.js';
 import { gcpTransformer } from './transformers/gcp.js';
@@ -104,10 +103,13 @@ function internalCreateLogger(
 
 function trySentry(logger: Logger) {
   import('@sentry/node')
-    .then((Sentry) => {
+    .then(async (Sentry) => {
       const sentryOptions = Sentry.getCurrentHub().getClient()?.getOptions();
       // if sentry is configured with a DSN, attach a sentry processor
       if (sentryOptions?.dsn) {
+        const { attachSentryProcessor } = await import(
+          './processors/sentry.js'
+        );
         attachSentryProcessor(logger);
       }
     })
