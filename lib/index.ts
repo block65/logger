@@ -1,15 +1,10 @@
 import { hostname } from 'node:os';
 import { CreateLoggerOptions, Level, Logger } from './logger.js';
 import { callerProcessor } from './processors/caller.js';
-import { lambdaProcessor } from './processors/lambda.js';
-import { attachSentryProcessor } from './processors/sentry.js';
 import { createCliTransformer } from './transformers/cli.js';
 import { createCloudwatchTransformer } from './transformers/cloudwatch.js';
 import { gcpTransformer } from './transformers/gcp.js';
-import { jsonTransformer } from './transformers/json.js';
 
-export { expressLoggerContextMiddleware } from './express.js';
-export { withLambdaLoggerContextWrapper } from './lambda.js';
 export { Level, Logger } from './logger.js';
 export type { CreateLoggerOptions, LogDescriptor } from './logger.js';
 export { createRedactProcessor } from './processors/redact.js';
@@ -30,11 +25,7 @@ function internalCreateLogger(
     return new Logger({
       level,
       destination,
-      processors: [
-        ...recommendedProcessors,
-        ...(options.processors || []),
-        lambdaProcessor,
-      ],
+      processors: [...recommendedProcessors, ...(options.processors || [])],
       ...options,
       transformer: createCloudwatchTransformer(),
     });
@@ -46,7 +37,7 @@ function internalCreateLogger(
       level,
       destination,
       transformer: createCloudwatchTransformer(),
-      processors: [...recommendedProcessors],
+      processors: [...recommendedProcessors, ...(options.processors || [])],
       context: {
         ...options.context,
         pid: process.pid,
@@ -65,7 +56,7 @@ function internalCreateLogger(
     return new Logger({
       level,
       destination,
-      processors: [...recommendedProcessors],
+      processors: [...recommendedProcessors, ...(options.processors || [])],
       transformer: gcpTransformer,
       context: {
         ...options.context,
@@ -105,10 +96,13 @@ function internalCreateLogger(
 
 function trySentry(logger: Logger) {
   import('@sentry/node')
-    .then((Sentry) => {
+    .then(async (Sentry) => {
       const sentryOptions = Sentry.getCurrentHub().getClient()?.getOptions();
       // if sentry is configured with a DSN, attach a sentry processor
       if (sentryOptions?.dsn) {
+        const { attachSentryProcessor } = await import(
+          './processors/sentry.js'
+        );
         attachSentryProcessor(logger);
       }
     })

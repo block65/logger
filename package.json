@@ -6,7 +6,10 @@
   "sideEffects": false,
   "type": "module",
   "exports": {
-    ".": "./lib/index.js"
+    ".": "./lib/index.js",
+    "./sentry": "./lib/sentry.js",
+    "./express": "./lib/express.js",
+    "./lambda": "./lib/lambda.js"
   },
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
