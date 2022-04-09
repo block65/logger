@@ -26,11 +26,7 @@ function internalCreateLogger(
     return new Logger({
       level,
       destination,
-      processors: [
-        ...recommendedProcessors,
-        ...(options.processors || []),
-        lambdaProcessor,
-      ],
+      processors: [...recommendedProcessors, ...(options.processors || [])],
       ...options,
       transformer: createCloudwatchTransformer(),
     });
@@ -42,7 +38,7 @@ function internalCreateLogger(
       level,
       destination,
       transformer: createCloudwatchTransformer(),
-      processors: [...recommendedProcessors],
+      processors: [...recommendedProcessors, ...(options.processors || [])],
       context: {
         ...options.context,
         pid: process.pid,
@@ -61,7 +57,7 @@ function internalCreateLogger(
     return new Logger({
       level,
       destination,
-      processors: [...recommendedProcessors],
+      processors: [...recommendedProcessors, ...(options.processors || [])],
       transformer: gcpTransformer,
       context: {
         ...options.context,
