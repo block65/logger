@@ -6,7 +6,6 @@ import {
   jest,
   test,
 } from '@jest/globals';
-import { createLoggerWithWaitableMock } from './helpers.js';
 
 describe('Control', () => {
   beforeEach(() => {
@@ -19,18 +18,21 @@ describe('Control', () => {
   });
 
   test('Error Object', async () => {
+    const { createLoggerWithWaitableMock } = await import('./helpers.js');
     const [logger, callback] = createLoggerWithWaitableMock();
     logger.error(Object.assign(new Error('hallo'), { debug: 'wooyeah' }));
     await expect(callback.waitUntilCalled()).resolves.toMatchSnapshot();
   });
 
   test('Error Object serialized on non-error level', async () => {
+    const { createLoggerWithWaitableMock } = await import('./helpers.js');
     const [logger, callback] = createLoggerWithWaitableMock();
     logger.info(new Error('hallo'));
     await expect(callback.waitUntilCalled()).resolves.toMatchSnapshot();
   });
 
   test('high velocity doesnt crash', async () => {
+    const { createLoggerWithWaitableMock } = await import('./helpers.js');
     const [logger, callback] = createLoggerWithWaitableMock();
 
     const arr = Array.from(Array(100000), (_, idx) => idx);

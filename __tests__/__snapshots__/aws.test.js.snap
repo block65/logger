@@ -3,14 +3,14 @@
 exports[`AWS ECS Error Object 1`] = `
 Array [
   Array [
-    "2009-02-13T23:31:30.000Z		ERROR	Ded 3	{\\"level\\":50,\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"Ded 3\\",\\"stack\\":\\"Error: Ded 3\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)\\\\n    at new Promise (<anonymous>)\\"}}",
+    "2009-02-13T23:31:30.000Z		ERROR	Ded 3	{\\"level\\":50,\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"Ded 3\\",\\"stack\\":\\"Error: Ded 3\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/aws.test.js:51:26)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)\\"}}",
   ],
 ]
 `;
 
 exports[`AWS Lambda Error Object 1`] = `
 Array [
-  "2009-02-13T23:31:30.000Z		ERROR	Ded 4	{\\"level\\":50,\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"Ded 4\\",\\"stack\\":\\"Error: Ded 4\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)\\\\n    at new Promise (<anonymous>)\\"}}",
+  "2009-02-13T23:31:30.000Z		ERROR	Ded 4	{\\"level\\":50,\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"Ded 4\\",\\"stack\\":\\"Error: Ded 4\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/aws.test.js:41:26)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)\\"}}",
 ]
 `;
 

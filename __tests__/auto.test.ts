@@ -6,7 +6,6 @@ import {
   jest,
   test,
 } from '@jest/globals';
-import { createAutoConfiguredLoggerWithWaitableMock } from './helpers.js';
 
 describe('Auto Logger', () => {
   const initialEnv = process.env;
@@ -26,6 +25,10 @@ describe('Auto Logger', () => {
     process.env.K_SERVICE = 'svc';
     process.env.K_REVISION = 'rev';
 
+    const { createAutoConfiguredLoggerWithWaitableMock } = await import(
+      './helpers.js'
+    );
+
     const [logger, callback, errBack] =
       createAutoConfiguredLoggerWithWaitableMock();
 
@@ -41,6 +44,10 @@ describe('Auto Logger', () => {
   test('AWS ECS', async () => {
     process.env.ECS_AVAILABLE_LOGGING_DRIVERS = 'aws-logs';
 
+    const { createAutoConfiguredLoggerWithWaitableMock } = await import(
+      './helpers.js'
+    );
+
     const [logger, callback, errBack] =
       createAutoConfiguredLoggerWithWaitableMock();
 
@@ -55,7 +62,9 @@ describe('Auto Logger', () => {
 
   test('AWS Lambda', async () => {
     process.env.AWS_LAMBDA_FUNCTION_VERSION = '$LATEST';
-
+    const { createAutoConfiguredLoggerWithWaitableMock } = await import(
+      './helpers.js'
+    );
     const [logger, callback, errBack] =
       createAutoConfiguredLoggerWithWaitableMock();
 
