@@ -9,8 +9,15 @@ export function createRedactProcessor(
     serialize: false,
   });
 
-  return (log) => ({
-    ...log,
-    data: Object(redact(log.data)),
-  });
+  return (log) => {
+    if (!log.data) {
+      return log;
+    }
+
+    return {
+      ...log,
+      // redact types are wrong, it claims this could return a string.
+      data: redact(log.data) as typeof log.data,
+    };
+  };
 }

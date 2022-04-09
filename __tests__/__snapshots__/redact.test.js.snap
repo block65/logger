@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Redact Basic 1`] = `
+Array [
+  Array [
+    Object {
+      "data": Object {
+        "secret": "🧱🧱🧱🧱",
+      },
+      "level": 50,
+      "msg": undefined,
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+  Array [
+    Object {
+      "level": 50,
+      "msg": "trustno1",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+]
+`;

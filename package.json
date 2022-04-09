@@ -26,12 +26,13 @@
     "build:clean": "bazel clean",
     "build:watch": "ibazel build",
     "test": "bazel test //:unit",
-    "test:update": "bazel run //:unit.update",
-    "test:watch": "ibazel test //:unit",
     "test:dev": "TEST_TARGET=DONOTUSE NODE_OPTIONS=--experimental-vm-modules jest --watchAll --runInBand",
-    "test:dev:update": "TEST_TARGET=DONOTUSE NODE_OPTIONS=--experimental-vm-modules jest --runInBand --updateSnapshot"
+    "test:dev:update": "TEST_TARGET=DONOTUSE NODE_OPTIONS=--experimental-vm-modules jest --runInBand --updateSnapshot",
+    "test:update": "bazel run //:unit.update",
+    "test:watch": "ibazel test //:unit"
   },
   "dependencies": {
+    "@types/fast-redact": "^3.0.1",
     "colorette": "^2.0.16",
     "emittery": "^0.10.2",
     "fast-redact": "^3.1.1",
