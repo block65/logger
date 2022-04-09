@@ -10,6 +10,7 @@ export { Level, Logger } from './logger.js';
 export type { CreateLoggerOptions, LogDescriptor } from './logger.js';
 export { createRedactProcessor } from './processors/redact.js';
 export { createCliTransformer } from './transformers/cli.js';
+export { jsonTransformer } from './transformers/json.js';
 
 function internalCreateLogger(
   options: Omit<CreateLoggerOptions, 'transformer'> = {},
