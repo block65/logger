@@ -42,14 +42,12 @@ describe('Sentry processor', () => {
     jest.useRealTimers();
   });
 
-  test('module', async () => {
+  test('listener one shot', async () => {
     const { Level } = await import('../lib/logger.js');
 
-    const { createSentryProcessor } = await import(
-      '../lib/processors/sentry.js'
-    );
+    const { createSentryListener } = await import('../lib/listener/sentry.js');
 
-    const processor = createSentryProcessor({
+    const listener = createSentryListener({
       context: {
         user: {
           id: '1234',
@@ -60,7 +58,7 @@ describe('Sentry processor', () => {
       },
     });
 
-    await processor({
+    await listener({
       level: Level.Error,
       time: new Date(),
       err: new Error('Oh its a fake error'),
@@ -72,41 +70,12 @@ describe('Sentry processor', () => {
     expect(captureException.mock.calls).toMatchSnapshot();
   });
 
-  test('integrated', async () => {
-    const { Level, Logger } = await import('../lib/logger.js');
-    const { createSentryProcessor } = await import(
-      '../lib/processors/sentry.js'
-    );
-
-    const logger = new Logger({
-      destination: new PassThrough({ objectMode: true }),
-      level: Level.Info,
-      processors: [createSentryProcessor()],
-    });
-
-    logger.error(new Error('fake'));
-    logger.error(new Error('fake'));
-    logger.error(new Error('fake'));
-
-    await logger.flush();
-
-    expect(flush).toBeCalledTimes(0);
-    expect(captureException).toBeCalledTimes(3);
-    expect(captureException.mock.calls).toMatchSnapshot();
-  });
-
-  test('processor attached', async () => {
-    const { createSentryProcessor } = await import(
-      '../lib/processors/sentry.js'
-    );
+  test('listener attach', async () => {
+    const { attachSentryListener } = await import('../lib/listener/sentry.js');
     const { createLoggerWithWaitableMock } = await import('./helpers.js');
 
-    const [logger, getLogs] = createLoggerWithWaitableMock({
-      // sentryTransportOptions: {
-      //   minLogLevel: 'error',
-      // },
-      processors: [createSentryProcessor()],
-    });
+    const [logger, getLogs] = createLoggerWithWaitableMock();
+    attachSentryListener(logger);
 
     logger.error(new Error('fake'));
     logger.error(new Error('fake'));
