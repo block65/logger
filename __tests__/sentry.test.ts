@@ -105,10 +105,7 @@ describe('Sentry processor', () => {
     await expect(callback.waitUntilCalled()).resolves.toMatchSnapshot();
 
     expect(captureException).toBeCalledTimes(1);
-
-    expect(flush).toBeCalledTimes(0);
     expect(captureException.mock.calls).toMatchSnapshot();
-    expect(addBreadcrumb.mock.calls).toMatchSnapshot();
   });
 
   test('listener attach', async () => {
