@@ -208,7 +208,7 @@ export class Logger implements LogMethods {
     const {
       level = Level.Info,
       transformer,
-      processors: decorators = [],
+      processors = [],
       destination,
     } = options;
 
@@ -238,7 +238,7 @@ export class Logger implements LogMethods {
     this.#processorChain = Chain.chain([
       ...[
         asyncLocalStorageProcessor,
-        ...decorators,
+        ...processors,
         ...(transformer ? [transformer] : []),
       ].map((processor) => processorWrapper(processor.bind(this))),
     ]);
