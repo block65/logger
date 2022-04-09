@@ -284,6 +284,7 @@ export class Logger implements LogMethods {
 
   public child(data: LogJsonObject) {
     return new Logger({
+      level: this.level,
       destination: this.#inputStream,
       processors: [
         function childLoggerProcessor(log) {

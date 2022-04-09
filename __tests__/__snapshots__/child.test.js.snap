@@ -82,7 +82,7 @@ Array [
         "helloChildLogger": "hello!",
       },
       "err": [Error: nihao2],
-      "level": 60,
+      "level": 10,
       "msg": "nihao2",
       "time": 2009-02-13T23:31:30.000Z,
     },
