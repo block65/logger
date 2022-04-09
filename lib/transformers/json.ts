@@ -29,5 +29,5 @@ export const jsonTransformer = (log: LogDescriptor): string => {
     ctx,
   });
 
-  return safeStringify(jsonLog);
+  return `${safeStringify(jsonLog)}\n`;
 };

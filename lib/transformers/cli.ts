@@ -71,6 +71,6 @@ export function createCliTransformer(options?: CliOptions): Transformer {
     return `${gray(new Date(time).toJSON())} ${formatLevel(level).padEnd(
       6,
       ' ',
-    )}${formattedName} ${formattedMsg}${formattedData}`;
+    )}${formattedName} ${formattedMsg}${formattedData}\n`;
   };
 }
