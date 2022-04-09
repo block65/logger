@@ -273,11 +273,13 @@ export class Logger implements LogMethods {
       .emit('log', log)
       .catch((err) => this.#emitter.emit('error', err));
 
-    this.#inputStream.write(log, (err: Error | null | undefined) => {
-      if (err) {
-        this.#emitter.emit('error', err);
-      }
-    });
+    if (log.level >= this.level) {
+      this.#inputStream.write(log, (err: Error | null | undefined) => {
+        if (err) {
+          this.#emitter.emit('error', err);
+        }
+      });
+    }
   }
 
   public child(data: LogJsonObject) {
