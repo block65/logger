@@ -6,7 +6,6 @@ import {
   jest,
   test,
 } from '@jest/globals';
-import { lambdaProcessor } from '../lib/processors/lambda.js';
 import { withLambdaLoggerContextWrapper } from '../lib/lambda.js';
 import { createCloudwatchTransformer } from '../lib/transformers/cloudwatch.js';
 import { createLoggerWithWaitableMock } from './helpers.js';
@@ -24,7 +23,6 @@ describe('AWS', () => {
   describe('Lambda', () => {
     test('Logger + contextId', async () => {
       const [logger, callback, errback] = createLoggerWithWaitableMock({
-        processors: [lambdaProcessor],
         transformer: createCloudwatchTransformer(),
       });
 
@@ -57,7 +55,6 @@ describe('AWS', () => {
 
     test('Error Object', async () => {
       const [logger, callback] = createLoggerWithWaitableMock({
-        processors: [lambdaProcessor],
         transformer: createCloudwatchTransformer(),
       });
 

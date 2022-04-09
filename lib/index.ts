@@ -1,7 +1,6 @@
 import { hostname } from 'node:os';
 import { CreateLoggerOptions, Level, Logger } from './logger.js';
 import { callerProcessor } from './processors/caller.js';
-import { lambdaProcessor } from './processors/lambda.js';
 import { attachSentryProcessor } from './processors/sentry.js';
 import { createCliTransformer } from './transformers/cli.js';
 import { createCloudwatchTransformer } from './transformers/cloudwatch.js';
