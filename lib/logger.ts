@@ -200,6 +200,8 @@ export class Logger implements LogMethods {
 
   #destination: Writable;
 
+  #context: LogData | undefined;
+
   /**
    *
    * @param options {LoggerOptions}
@@ -210,9 +212,13 @@ export class Logger implements LogMethods {
       transformer,
       processors = [],
       destination,
+      context,
     } = options;
 
     this.als = new AsyncLocalStorage<AlsContext>();
+
+    this.#context = context && withNullProto(context);
+
     this.level = level;
 
     // TODO: validate decorators here
@@ -265,11 +271,19 @@ export class Logger implements LogMethods {
 
   #log(
     level: Level,
-    arg1: Error | (JsonObject & { err?: Error | undefined }) | JsonPrimitive,
+    arg1:
+      | Error
+      | JsonObjectExtended
+      | JsonObjectExtendedWithError
+      | JsonPrimitive,
     arg2?: JsonPrimitive,
     ...args: JsonPrimitive[]
   ): void {
-    const log = toLogDescriptor(level, arg1, arg2, ...args);
+    const log = Object.freeze(
+      withNullProto(toLogDescriptor(level, arg1, arg2, ...args), {
+        ...(this.#context && { ctx: this.#context }),
+      }),
+    );
 
     // no await
     this.#emitter
