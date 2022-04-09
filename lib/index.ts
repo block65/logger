@@ -4,11 +4,13 @@ import { callerProcessor } from './processors/caller.js';
 import { createCliTransformer } from './transformers/cli.js';
 import { createCloudwatchTransformer } from './transformers/cloudwatch.js';
 import { gcpTransformer } from './transformers/gcp.js';
+import { jsonTransformer } from './transformers/json.js';
 
 export { Level, Logger } from './logger.js';
 export type { CreateLoggerOptions, LogDescriptor } from './logger.js';
 export { createRedactProcessor } from './processors/redact.js';
 export { createCliTransformer } from './transformers/cli.js';
+export { jsonTransformer } from './transformers/json.js';
 
 function internalCreateLogger(
   options: Omit<CreateLoggerOptions, 'transformer'> = {},
@@ -85,6 +87,7 @@ function internalCreateLogger(
   return new Logger({
     level,
     destination,
+    transformer: jsonTransformer,
     ...options,
     context: {
       ...options.context,
