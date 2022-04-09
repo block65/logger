@@ -4,6 +4,7 @@ import { callerProcessor } from './processors/caller.js';
 import { createCliTransformer } from './transformers/cli.js';
 import { createCloudwatchTransformer } from './transformers/cloudwatch.js';
 import { gcpTransformer } from './transformers/gcp.js';
+import { jsonTransformer } from './transformers/json.js';
 
 export { Level, Logger } from './logger.js';
 export type { CreateLoggerOptions, LogDescriptor } from './logger.js';
@@ -85,6 +86,7 @@ function internalCreateLogger(
   return new Logger({
     level,
     destination,
+    transformer: jsonTransformer,
     ...options,
     context: {
       ...options.context,
