@@ -99,8 +99,8 @@ export interface AlsContext {
   context?: JsonObjectExtended;
 }
 
-function withNullProto<T extends Record<string, any>>(obj: T): T {
-  return Object.assign(Object.create(null), obj);
+function withNullProto<T extends object>(obj: T, ...objs: Partial<T>[]): T {
+  return Object.assign(Object.create(null), obj, ...objs);
 }
 
 function isPrimitive(value: unknown): value is JsonPrimitive {
