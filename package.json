@@ -11,6 +11,19 @@
     "./express": "./lib/express.js",
     "./lambda": "./lib/lambda.js"
   },
+  "typesVersions": {
+    "*": {
+      "sentry": [
+        "./lib/sentry.d.ts"
+      ],
+      "express": [
+        "./lib/express.d.ts"
+      ],
+      "lambda": [
+        "./lib/lambda.d.ts"
+      ]
+    }
+  },
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "files": [
