@@ -13,6 +13,9 @@
   },
   "typesVersions": {
     "*": {
+      "sentry": [
+        "./lib/sentry.d.ts"
+      ],
       "express": [
         "./lib/express.d.ts"
       ],
