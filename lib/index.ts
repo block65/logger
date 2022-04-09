@@ -3,14 +3,17 @@ import { CreateLoggerOptions, Level, Logger } from './logger.js';
 import { callerProcessor } from './processors/caller.js';
 import { lambdaProcessor } from './processors/lambda.js';
 import { attachSentryProcessor } from './processors/sentry.js';
+import { createCliTransformer } from './transformers/cli.js';
 import { createCloudwatchTransformer } from './transformers/cloudwatch.js';
 import { gcpTransformer } from './transformers/gcp.js';
+import { jsonTransformer } from './transformers/json.js';
 
 export { expressLoggerContextMiddleware } from './express.js';
 export { withLambdaLoggerContextWrapper } from './lambda.js';
-export { Level } from './logger.js';
-export type { CreateLoggerOptions, LogDescriptor, Logger } from './logger.js';
+export { Level, Logger } from './logger.js';
+export type { CreateLoggerOptions, LogDescriptor } from './logger.js';
 export { createRedactProcessor } from './processors/redact.js';
+export { createCliTransformer } from './transformers/cli.js';
 
 function internalCreateLogger(
   options: Omit<CreateLoggerOptions, 'transformer'> = {},
@@ -18,13 +21,15 @@ function internalCreateLogger(
   const recommendedProcessors =
     process.env.NODE_ENV === 'development' ? [callerProcessor] : [];
 
-  const level = process.env.LOG_LEVEL as Level | undefined;
+  const level = options.level || (process.env.LOG_LEVEL as Level | undefined);
+
+  const destination = options.destination || process.stdout;
 
   // Lambda
   if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
     return new Logger({
       level,
-      destination: process.stdout,
+      destination,
       processors: [
         ...recommendedProcessors,
         ...(options.processors || []),
@@ -39,7 +44,7 @@ function internalCreateLogger(
   if (process.env.ECS_AVAILABLE_LOGGING_DRIVERS?.includes('aws-logs')) {
     return new Logger({
       level,
-      destination: process.stdout,
+      destination,
       transformer: createCloudwatchTransformer(),
       processors: [...recommendedProcessors],
       context: {
@@ -59,7 +64,7 @@ function internalCreateLogger(
   ) {
     return new Logger({
       level,
-      destination: process.stdout,
+      destination,
       processors: [...recommendedProcessors],
       transformer: gcpTransformer,
       context: {
@@ -71,9 +76,24 @@ function internalCreateLogger(
     });
   }
 
+  // TTY
+  if ('isTTY' in destination && destination.isTTY) {
+    return new Logger({
+      level,
+      destination,
+      transformer: createCliTransformer(),
+      ...options,
+      context: {
+        ...options.context,
+        pid: process.pid,
+        hostname: hostname(),
+      },
+    });
+  }
+
   return new Logger({
     level,
-    destination: process.stdout,
+    destination,
     ...options,
     context: {
       ...options.context,
@@ -87,6 +107,7 @@ function trySentry(logger: Logger) {
   import('@sentry/node')
     .then((Sentry) => {
       const sentryOptions = Sentry.getCurrentHub().getClient()?.getOptions();
+      // if sentry is configured with a DSN, attach a sentry processor
       if (sentryOptions?.dsn) {
         attachSentryProcessor(logger);
       }

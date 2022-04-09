@@ -3,19 +3,24 @@
 exports[`CLI force-color 1`] = `
 Array [
   Array [
-    "[90m2009-02-13T23:31:30.000Z[39m [31mERROR[39m  [1mhallo[22m { err: { message: [32m'hallo'[39m, name: [32m'Error'[39m, stack: [32m'Error: hallo\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/cli.test.js:33:22)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)'[39m } }",
+    "[90m2009-02-13T23:31:30.000Z[39m [31mERROR[39m  [1mhallo[22m { err: { message: [32m'hallo'[39m, name: [32m'Error'[39m, stack: [32m'Error: hallo\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/cli.test.js:33:22)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)'[39m } }
+",
   ],
   Array [
-    "[90m2009-02-13T23:31:30.000Z[39m [34mINFO[39m  [1mhello[22m { err: { message: [32m'hello'[39m, name: [32m'Error'[39m, stack: [32m'Error: hello\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/cli.test.js:34:21)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)'[39m } }",
+    "[90m2009-02-13T23:31:30.000Z[39m [34mINFO[39m  [1mhello[22m { err: { message: [32m'hello'[39m, name: [32m'Error'[39m, stack: [32m'Error: hello\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/cli.test.js:34:21)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)'[39m } }
+",
   ],
   Array [
-    "[90m2009-02-13T23:31:30.000Z[39m [43m[30m[1mWARN[22m[39m[49m  [1mhalo[22m { err: { message: [32m'halo'[39m, name: [32m'Error'[39m, stack: [32m'Error: halo\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/cli.test.js:35:21)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)'[39m } }",
+    "[90m2009-02-13T23:31:30.000Z[39m [43m[30m[1mWARN[22m[39m[49m  [1mhalo[22m { err: { message: [32m'halo'[39m, name: [32m'Error'[39m, stack: [32m'Error: halo\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/cli.test.js:35:21)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)'[39m } }
+",
   ],
   Array [
-    "[90m2009-02-13T23:31:30.000Z[39m [32mDEBUG[39m  [1mgday[22m { err: { message: [32m'gday'[39m, name: [32m'Error'[39m, stack: [32m'Error: gday\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/cli.test.js:36:22)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)'[39m } }",
+    "[90m2009-02-13T23:31:30.000Z[39m [32mDEBUG[39m  [1mgday[22m { err: { message: [32m'gday'[39m, name: [32m'Error'[39m, stack: [32m'Error: gday\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/cli.test.js:36:22)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)'[39m } }
+",
   ],
   Array [
-    "[90m2009-02-13T23:31:30.000Z[39m [41m[97m[1mFATAL[22m[39m[49m  [1mnihao3[22m { err: { message: [32m'nihao3'[39m, name: [32m'Error'[39m, stack: [32m'Error: nihao3\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/cli.test.js:37:22)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)'[39m } }",
+    "[90m2009-02-13T23:31:30.000Z[39m [2mTRACE[22m  [1mnihao3[22m { err: { message: [32m'nihao3'[39m, name: [32m'Error'[39m, stack: [32m'Error: nihao3\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/cli.test.js:37:22)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)'[39m } }
+",
   ],
 ]
 `;
@@ -23,19 +28,24 @@ Array [
 exports[`CLI no-color 1`] = `
 Array [
   Array [
-    "2009-02-13T23:31:30.000Z ERROR   hallo { err: { message: 'hallo', name: 'Error', stack: 'Error: hallo\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/cli.test.js:17:22)' } }",
+    "2009-02-13T23:31:30.000Z ERROR   hallo { err: { message: 'hallo', name: 'Error', stack: 'Error: hallo\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/cli.test.js:17:22)' } }
+",
   ],
   Array [
-    "2009-02-13T23:31:30.000Z INFO    hello { err: { message: 'hello', name: 'Error', stack: 'Error: hello\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/cli.test.js:18:21)' } }",
+    "2009-02-13T23:31:30.000Z INFO    hello { err: { message: 'hello', name: 'Error', stack: 'Error: hello\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/cli.test.js:18:21)' } }
+",
   ],
   Array [
-    "2009-02-13T23:31:30.000Z WARN    halo { err: { message: 'halo', name: 'Error', stack: 'Error: halo\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/cli.test.js:19:21)' } }",
+    "2009-02-13T23:31:30.000Z WARN    halo { err: { message: 'halo', name: 'Error', stack: 'Error: halo\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/cli.test.js:19:21)' } }
+",
   ],
   Array [
-    "2009-02-13T23:31:30.000Z DEBUG   gday { err: { message: 'gday', name: 'Error', stack: 'Error: gday\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/cli.test.js:20:22)' } }",
+    "2009-02-13T23:31:30.000Z DEBUG   gday { err: { message: 'gday', name: 'Error', stack: 'Error: gday\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/cli.test.js:20:22)' } }
+",
   ],
   Array [
-    "2009-02-13T23:31:30.000Z FATAL   nihao2 { err: { message: 'nihao2', name: 'Error', stack: 'Error: nihao2\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/cli.test.js:21:22)' } }",
+    "2009-02-13T23:31:30.000Z TRACE   nihao2 { err: { message: 'nihao2', name: 'Error', stack: 'Error: nihao2\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/cli.test.js:21:22)' } }
+",
   ],
 ]
 `;

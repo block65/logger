@@ -37,16 +37,20 @@ Array [
 exports[`Auto Logger GCP 1`] = `
 Array [
   Array [
-    "{\\"severity\\":\\"INFO\\",\\"time\\":\\"2009-02-13T23:31:30.000Z\\",\\"message\\":\\"woo yeah!!!\\"}",
+    "{\\"severity\\":\\"INFO\\",\\"time\\":\\"2009-02-13T23:31:30.000Z\\",\\"message\\":\\"woo yeah!!!\\"}
+",
   ],
   Array [
-    "{\\"severity\\":\\"ERROR\\",\\"time\\":\\"2009-02-13T23:31:30.000Z\\",\\"message\\":\\"Unknown SmallInt\\",\\"@type\\":\\"type.googleapis.com~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)\\\\n    at new Promise (<anonymous>)\\",\\"name\\":\\"TypeError\\"}",
+    "{\\"severity\\":\\"ERROR\\",\\"time\\":\\"2009-02-13T23:31:30.000Z\\",\\"message\\":\\"Unknown SmallInt\\",\\"@type\\":\\"type.googleapis.com~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)\\\\n    at new Promise (<anonymous>)\\",\\"name\\":\\"TypeError\\"}
+",
   ],
   Array [
-    "{\\"severity\\":\\"WARNING\\",\\"time\\":\\"2009-02-13T23:31:30.000Z\\",\\"message\\":\\"this code stinks\\",\\"err\\":{\\"name\\":\\"SyntaxError\\",\\"message\\":\\"this code stinks\\",\\"stack\\":\\"SyntaxError: this code stinks\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)\\\\n    at new Promise (<anonymous>)\\"}}",
+    "{\\"severity\\":\\"WARNING\\",\\"time\\":\\"2009-02-13T23:31:30.000Z\\",\\"message\\":\\"this code stinks\\",\\"err\\":{\\"name\\":\\"SyntaxError\\",\\"message\\":\\"this code stinks\\",\\"stack\\":\\"SyntaxError: this code stinks\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)\\\\n    at new Promise (<anonymous>)\\"}}
+",
   ],
   Array [
-    "{\\"severity\\":\\"WARNING\\",\\"time\\":\\"2009-02-13T23:31:30.000Z\\",\\"message\\":\\"Connection refused\\",\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"Connection refused\\",\\"stack\\":\\"Error: Connection refused\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)\\\\n    at new Promise (<anonymous>)\\"}}",
+    "{\\"severity\\":\\"WARNING\\",\\"time\\":\\"2009-02-13T23:31:30.000Z\\",\\"message\\":\\"Connection refused\\",\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"Connection refused\\",\\"stack\\":\\"Error: Connection refused\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)\\\\n    at new Promise (<anonymous>)\\"}}
+",
   ],
 ]
 `;

@@ -273,15 +273,18 @@ export class Logger implements LogMethods {
       .emit('log', log)
       .catch((err) => this.#emitter.emit('error', err));
 
-    this.#inputStream.write(log, (err: Error | null | undefined) => {
-      if (err) {
-        this.#emitter.emit('error', err);
-      }
-    });
+    if (log.level >= this.level) {
+      this.#inputStream.write(log, (err: Error | null | undefined) => {
+        if (err) {
+          this.#emitter.emit('error', err);
+        }
+      });
+    }
   }
 
   public child(data: LogJsonObject) {
     return new Logger({
+      level: this.level,
       destination: this.#inputStream,
       processors: [
         function childLoggerProcessor(log) {
@@ -299,7 +302,7 @@ export class Logger implements LogMethods {
 
   public trace(...args: any[]) {
     // @ts-expect-error
-    this.#log(Level.Fatal, ...args);
+    this.#log(Level.Trace, ...args);
   }
 
   public debug(...args: any[]) {

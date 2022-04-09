@@ -33,5 +33,5 @@ export const gcpTransformer: Transformer = (log: LogDescriptor): string => {
     ctx,
   });
 
-  return safeStringify(jsonLog);
+  return `${safeStringify(jsonLog)}\n`;
 };
