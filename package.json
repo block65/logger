@@ -32,6 +32,8 @@
     "test:watch": "ibazel test //:unit"
   },
   "dependencies": {
+    "@types/aws-lambda": "^8.10.93",
+    "@types/express": "^4.17.13",
     "@types/fast-redact": "^3.0.1",
     "colorette": "^2.0.16",
     "emittery": "^0.10.2",
@@ -70,19 +72,12 @@
   "peerDependencies": {
     "@sentry/integrations": "^6.19.6",
     "@sentry/node": "^6.19.6"
-    "@types/express": "^4.17.13"
   },
   "peerDependenciesMeta": {
     "@sentry/integrations": {
       "optional": true
     },
     "@sentry/node": {
-      "optional": true
-    },
-    "@types/aws-lambda": {
-      "optional": true
-    },
-    "@types/express": {
       "optional": true
     }
   },
