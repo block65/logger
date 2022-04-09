@@ -9,7 +9,7 @@ Array [
           "message": "hallo",
           "name": "Error",
           "stack": "Error: hallo
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:15:27)",
+    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:16:27)",
         },
         "helloChildLogger": "hello!",
       },
@@ -26,7 +26,7 @@ Array [
           "message": "hello",
           "name": "Error",
           "stack": "Error: hello
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:16:26)",
+    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:17:26)",
         },
         "helloChildLogger": "hello!",
       },
@@ -43,7 +43,7 @@ Array [
           "message": "halo",
           "name": "Error",
           "stack": "Error: halo
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:17:26)",
+    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:18:26)",
         },
         "helloChildLogger": "hello!",
       },
@@ -60,7 +60,7 @@ Array [
           "message": "gday",
           "name": "Error",
           "stack": "Error: gday
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:18:27)",
+    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:19:27)",
         },
         "helloChildLogger": "hello!",
       },
@@ -77,7 +77,7 @@ Array [
           "message": "nihao2",
           "name": "Error",
           "stack": "Error: nihao2
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:19:27)",
+    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:20:27)",
         },
         "helloChildLogger": "hello!",
       },
@@ -86,6 +86,31 @@ Array [
       "msg": "nihao2",
       "time": 2009-02-13T23:31:30.000Z,
     },
+  ],
+]
+`;
+
+exports[`Child Logger with context + cli 1`] = `
+Array [
+  Array [
+    "2009-02-13T23:31:30.000Z ERROR  (CHILDLOGGER) hallo { err: { message: 'hallo', name: 'Error', stack: 'Error: hallo\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:31:27)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)' }, helloChildLogger: 'hello!' }
+",
+  ],
+  Array [
+    "2009-02-13T23:31:30.000Z INFO   (CHILDLOGGER) hello { err: { message: 'hello', name: 'Error', stack: 'Error: hello\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:32:26)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)' }, helloChildLogger: 'hello!' }
+",
+  ],
+  Array [
+    "2009-02-13T23:31:30.000Z WARN   (CHILDLOGGER) halo { err: { message: 'halo', name: 'Error', stack: 'Error: halo\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:33:26)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)' }, helloChildLogger: 'hello!' }
+",
+  ],
+  Array [
+    "2009-02-13T23:31:30.000Z DEBUG  (CHILDLOGGER) gday { err: { message: 'gday', name: 'Error', stack: 'Error: gday\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:34:27)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)' }, helloChildLogger: 'hello!' }
+",
+  ],
+  Array [
+    "2009-02-13T23:31:30.000Z TRACE  (CHILDLOGGER) nihao2 { err: { message: 'nihao2', name: 'Error', stack: 'Error: nihao2\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:35:27)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)' }, helloChildLogger: 'hello!' }
+",
   ],
 ]
 `;
