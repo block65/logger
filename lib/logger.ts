@@ -301,7 +301,7 @@ export class Logger implements LogMethods {
 
   public trace(...args: any[]) {
     // @ts-expect-error
-    this.#log(Level.Fatal, ...args);
+    this.#log(Level.Trace, ...args);
   }
 
   public debug(...args: any[]) {
