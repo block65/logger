@@ -8,7 +8,6 @@ import {
 } from '@jest/globals';
 import { withLambdaLoggerContextWrapper } from '../lib/lambda.js';
 import { createCloudwatchTransformer } from '../lib/transformers/cloudwatch.js';
-import { createLoggerWithWaitableMock } from './helpers.js';
 
 describe('AWS', () => {
   beforeEach(() => {
@@ -22,6 +21,8 @@ describe('AWS', () => {
 
   describe('Lambda', () => {
     test('Logger + contextId', async () => {
+      const { createLoggerWithWaitableMock } = await import('./helpers.js');
+
       const [logger, callback, errback] = createLoggerWithWaitableMock({
         transformer: createCloudwatchTransformer(),
       });
@@ -52,6 +53,8 @@ describe('AWS', () => {
     });
 
     test('Error Object', async () => {
+      const { createLoggerWithWaitableMock } = await import('./helpers.js');
+
       const [logger, callback] = createLoggerWithWaitableMock({
         transformer: createCloudwatchTransformer(),
       });
@@ -64,6 +67,7 @@ describe('AWS', () => {
 
   describe('ECS', () => {
     test('Error Object', async () => {
+      const { createLoggerWithWaitableMock } = await import('./helpers.js');
       const [logger, callback] = createLoggerWithWaitableMock({
         // decorators: [lambdaDecorator],
         transformer: createCloudwatchTransformer(),

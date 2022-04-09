@@ -103,10 +103,8 @@ function trySentry(logger: Logger) {
       const sentryOptions = Sentry.getCurrentHub().getClient()?.getOptions();
       // if sentry is configured with a DSN, attach a sentry processor
       if (sentryOptions?.dsn) {
-        const { attachSentryProcessor } = await import(
-          './processors/sentry.js'
-        );
-        attachSentryProcessor(logger);
+        const { attachSentryListener } = await import('./listener/sentry.js');
+        attachSentryListener(logger);
       }
     })
     .catch(() => {

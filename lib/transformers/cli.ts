@@ -49,8 +49,8 @@ export function createCliTransformer(options?: CliOptions): Transformer {
     const { level, msg, time, ctx = {}, data } = log;
     const { name, ...ctxRest } = ctx;
 
-    const formattedName = name ? `(${name})` : '';
-    const formattedMsg = msg ? ` ${bold(msg.toLocaleString())}` : '';
+    const maybeFormattedName = name ? `(${name}) ` : '';
+    const maybeFormattedMsg = msg ? `${bold(msg.toLocaleString())} ` : '';
 
     const dataWithCtx = {
       ...data,
@@ -59,7 +59,7 @@ export function createCliTransformer(options?: CliOptions): Transformer {
 
     const formattedData =
       dataWithCtx && Object.keys(dataWithCtx).length > 0
-        ? ` ${util.inspect(dataWithCtx, {
+        ? `${util.inspect(dataWithCtx, {
             colors: useColor,
             compact: true,
             breakLength: Infinity,
@@ -68,9 +68,9 @@ export function createCliTransformer(options?: CliOptions): Transformer {
           })}`
         : '';
 
-    return `${gray(new Date(time).toJSON())} ${formatLevel(level).padEnd(
-      6,
-      ' ',
-    )}${formattedName} ${formattedMsg}${formattedData}\n`;
+    const formattedLevel = formatLevel(level).padEnd(6);
+    const formattedDate = gray(new Date(time).toJSON());
+
+    return `${formattedDate} ${formattedLevel} ${maybeFormattedName}${maybeFormattedMsg}${formattedData}\n`;
   };
 }

@@ -5,9 +5,8 @@ import { finished } from 'node:stream/promises';
 import format from 'quick-format-unescaped';
 import { ErrorObject, serializeError } from 'serialize-error';
 import Chain from 'stream-chain';
-import type { JsonObject, JsonPrimitive, JsonValue } from 'type-fest';
+import type { JsonPrimitive, JsonValue } from 'type-fest';
 import { asyncLocalStorageProcessor } from './processors/als.js';
-import { jsonTransformer } from './transformers/json.js';
 import { isPlainObject, safeStringify } from './utils.js';
 
 // we support an extended set of values, as each have a toJSON method and
@@ -21,6 +20,10 @@ type JsonValueExtended =
 
 type JsonObjectExtended = { [Key in string]?: JsonValueExtended };
 type JsonArrayExtended = JsonValueExtended[];
+
+type JsonObjectExtendedWithError = JsonObjectExtended & {
+  err?: Error | unknown;
+};
 
 interface LoggerOptions {
   destination: Writable;
@@ -62,10 +65,6 @@ export type LogData = {
   err?: ErrorObject;
 };
 
-export type JsonObjectExtendedWithError = {
-  err?: Error | unknown;
-} & JsonObjectExtended;
-
 export interface LogDescriptor {
   time: Date;
   level: Level;
@@ -76,13 +75,13 @@ export interface LogDescriptor {
 }
 
 export interface LogMethod {
-  (err: Error | unknown, str?: string | number, ...args: JsonValue[]): void;
+  (err: Error | unknown, str?: JsonPrimitive, ...args: JsonValue[]): void;
   (
-    data: LogData & { err?: Error | unknown },
-    str?: string | number,
+    data: JsonObjectExtendedWithError,
+    str?: JsonPrimitive,
     ...args: JsonValue[]
   ): void;
-  (str: string | number): void;
+  (str: JsonPrimitive): void;
 }
 
 export interface LogMethods {
@@ -99,8 +98,8 @@ export interface AlsContext {
   context?: JsonObjectExtended;
 }
 
-function withNullProto<T extends Record<string, any>>(obj: T): T {
-  return Object.assign(Object.create(null), obj);
+function withNullProto<T extends object>(obj: T, ...objs: Partial<T>[]): T {
+  return Object.assign(Object.create(null), obj, ...objs);
 }
 
 function isPrimitive(value: unknown): value is JsonPrimitive {
@@ -200,6 +199,8 @@ export class Logger implements LogMethods {
 
   #destination: Writable;
 
+  #context: LogData | undefined;
+
   /**
    *
    * @param options {LoggerOptions}
@@ -208,11 +209,15 @@ export class Logger implements LogMethods {
     const {
       level = Level.Info,
       transformer,
-      processors: decorators = [],
+      processors = [],
       destination,
+      context,
     } = options;
 
     this.als = new AsyncLocalStorage<AlsContext>();
+
+    this.#context = context && withNullProto(context);
+
     this.level = level;
 
     // TODO: validate decorators here
@@ -238,7 +243,7 @@ export class Logger implements LogMethods {
     this.#processorChain = Chain.chain([
       ...[
         asyncLocalStorageProcessor,
-        ...decorators,
+        ...processors,
         ...(transformer ? [transformer] : []),
       ].map((processor) => processorWrapper(processor.bind(this))),
     ]);
@@ -254,22 +259,21 @@ export class Logger implements LogMethods {
       .pipe(this.#destination);
   }
 
-  public static from(options: CreateLoggerOptions) {
-    return new Logger({
-      destination: process.stdout,
-      transformer: jsonTransformer,
-      level: Level.Info,
-      ...options,
-    });
-  }
-
   #log(
     level: Level,
-    arg1: Error | (JsonObject & { err?: Error | undefined }) | JsonPrimitive,
+    arg1:
+      | Error
+      | JsonObjectExtended
+      | JsonObjectExtendedWithError
+      | JsonPrimitive,
     arg2?: JsonPrimitive,
     ...args: JsonPrimitive[]
   ): void {
-    const log = toLogDescriptor(level, arg1, arg2, ...args);
+    const log = Object.freeze(
+      withNullProto(toLogDescriptor(level, arg1, arg2, ...args), {
+        ...(this.#context && { ctx: this.#context }),
+      }),
+    );
 
     // no await
     this.#emitter
@@ -285,7 +289,10 @@ export class Logger implements LogMethods {
     }
   }
 
-  public child(data: JsonObjectExtended) {
+  public child(
+    data: JsonObjectExtended,
+    options: Pick<LoggerOptions, 'level' | 'context' | 'processors'> = {},
+  ) {
     return new Logger({
       level: this.level,
       destination: this.#inputStream,
@@ -299,7 +306,9 @@ export class Logger implements LogMethods {
             },
           };
         },
+        ...(options.processors || []),
       ],
+      ...options,
     });
   }
 
