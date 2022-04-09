@@ -22,6 +22,10 @@ type JsonValueExtended =
 type JsonObjectExtended = { [Key in string]?: JsonValueExtended };
 type JsonArrayExtended = JsonValueExtended[];
 
+type JsonObjectExtendedWithError = JsonObjectExtended & {
+  err?: Error | unknown;
+};
+
 interface LoggerOptions {
   destination: Writable;
   level?: Level;
@@ -62,10 +66,6 @@ export type LogData = {
   err?: ErrorObject;
 };
 
-export type JsonObjectExtendedWithError = {
-  err?: Error | unknown;
-} & JsonObjectExtended;
-
 export interface LogDescriptor {
   time: Date;
   level: Level;
@@ -76,13 +76,13 @@ export interface LogDescriptor {
 }
 
 export interface LogMethod {
-  (err: Error | unknown, str?: string | number, ...args: JsonValue[]): void;
+  (err: Error | unknown, str?: JsonPrimitive, ...args: JsonValue[]): void;
   (
-    data: LogData & { err?: Error | unknown },
-    str?: string | number,
+    data: JsonObjectExtendedWithError,
+    str?: JsonPrimitive,
     ...args: JsonValue[]
   ): void;
-  (str: string | number): void;
+  (str: JsonPrimitive): void;
 }
 
 export interface LogMethods {
