@@ -216,7 +216,6 @@ describe('Basic', () => {
 
   test('context and release name co-exist', async () => {
     process.env.VERSION_NAME = 'logger@feedfacecafe';
-
     const [logger, getLogs] = createLoggerWithWaitableMock();
 
     logger.trace('stuff');
