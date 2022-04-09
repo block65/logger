@@ -171,7 +171,7 @@ function toLogDescriptor(
     level,
     msg:
       arg2 && format(arg2.toLocaleString(), args, { stringify: safeStringify }),
-    data,
+    data: data && withNullProto(data),
   };
 }
 
