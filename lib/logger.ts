@@ -260,15 +260,6 @@ export class Logger implements LogMethods {
       .pipe(this.#destination);
   }
 
-  public static from(options: CreateLoggerOptions) {
-    return new Logger({
-      destination: process.stdout,
-      transformer: jsonTransformer,
-      level: Level.Info,
-      ...options,
-    });
-  }
-
   #log(
     level: Level,
     arg1:
