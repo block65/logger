@@ -6,8 +6,6 @@ import { createCloudwatchTransformer } from './transformers/cloudwatch.js';
 import { gcpTransformer } from './transformers/gcp.js';
 import { jsonTransformer } from './transformers/json.js';
 
-export { expressLoggerContextMiddleware } from './express.js';
-export { withLambdaLoggerContextWrapper } from './lambda.js';
 export { Level, Logger } from './logger.js';
 export type { CreateLoggerOptions, LogDescriptor } from './logger.js';
 export { createRedactProcessor } from './processors/redact.js';
