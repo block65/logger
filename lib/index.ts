@@ -18,7 +18,8 @@ function internalCreateLogger(
   const recommendedProcessors =
     process.env.NODE_ENV === 'development' ? [callerProcessor] : [];
 
-  const level = process.env.LOG_LEVEL as Level | undefined;
+  const level = options.level || (process.env.LOG_LEVEL as Level | undefined);
+
 
   // Lambda
   if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
