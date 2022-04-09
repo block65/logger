@@ -31,17 +31,15 @@ TEST_SNAPSHOT_SRCS = glob(
 )
 
 DEPS = [
-    "@npm//@types/node",
     "@npm//emittery",
     "@npm//stream-chain",
     "@npm//colorette",
     "@npm//serialize-error",
     "@npm//quick-format-unescaped",
     "@npm//fast-redact",
-
-    # peer dep
-    "@npm//@types/express",
+    "@npm//@types/node",
     "@npm//@types/aws-lambda",
+    "@npm//@types/express",
 
     # peer deps
     "@npm//@sentry/node",
