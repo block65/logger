@@ -5,9 +5,8 @@ import { finished } from 'node:stream/promises';
 import format from 'quick-format-unescaped';
 import { ErrorObject, serializeError } from 'serialize-error';
 import Chain from 'stream-chain';
-import type { JsonObject, JsonPrimitive, JsonValue } from 'type-fest';
+import type { JsonPrimitive, JsonValue } from 'type-fest';
 import { asyncLocalStorageProcessor } from './processors/als.js';
-import { jsonTransformer } from './transformers/json.js';
 import { isPlainObject, safeStringify } from './utils.js';
 
 // we support an extended set of values, as each have a toJSON method and
@@ -290,7 +289,10 @@ export class Logger implements LogMethods {
     }
   }
 
-  public child(data: JsonObjectExtended) {
+  public child(
+    data: JsonObjectExtended,
+    options: Pick<LoggerOptions, 'level' | 'context' | 'processors'> = {},
+  ) {
     return new Logger({
       level: this.level,
       destination: this.#inputStream,
@@ -304,7 +306,9 @@ export class Logger implements LogMethods {
             },
           };
         },
+        ...(options.processors || []),
       ],
+      ...options,
     });
   }
 
