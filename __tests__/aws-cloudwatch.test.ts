@@ -78,6 +78,11 @@ describe('AWS Cloudwatch', () => {
           },
         },
       },
+      {
+        level: Level.Trace,
+        time: new Date(),
+        msg: 'This\nmessage\ncontains\nnewlines\r\nyes\rit\rdoes\n',
+      },
     ];
 
     expect(logs.map((log) => transformer(log))).toMatchSnapshot();

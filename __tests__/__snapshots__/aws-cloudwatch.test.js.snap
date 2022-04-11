@@ -2,11 +2,26 @@
 
 exports[`AWS Cloudwatch Transformer 1`] = `
 Array [
-  "2009-02-13T23:31:30.000Z		TRACE	This is a trace	{\\"level\\":10,\\"random\\":{\\"bool\\":true,\\"str\\":\\"hello\\",\\"number\\":12,\\"arr\\":[1,2,3]}}",
-  "2009-02-13T23:31:30.000Z		DEBUG	This is debug	{\\"level\\":20}",
-  "2009-02-13T23:31:30.000Z		INFO	This is info	{\\"level\\":30}",
-  "2009-02-13T23:31:30.000Z		WARN	This is a warning	{\\"level\\":40}",
-  "2009-02-13T23:31:30.000Z		ERROR	Oh no an error	{\\"level\\":50,\\"err\\":{\\"message\\":\\"Error\\",\\"type\\":\\"Error\\",\\"stack\\":\\"stuff\\\\ncode\\"}}",
-  "2009-02-13T23:31:30.000Z		FATAL	OMG this is fatal	{\\"level\\":60,\\"err\\":{\\"message\\":\\"Error\\",\\"type\\":\\"Error\\",\\"stack\\":\\"stuff\\\\ncode\\"}}",
+  "2009-02-13T23:31:30.000Z		TRACE	This is a trace	{\\"level\\":10,\\"random\\":{\\"bool\\":true,\\"str\\":\\"hello\\",\\"number\\":12,\\"arr\\":[1,2,3]}}
+",
+  "2009-02-13T23:31:30.000Z		DEBUG	This is debug	{\\"level\\":20}
+",
+  "2009-02-13T23:31:30.000Z		INFO	This is info	{\\"level\\":30}
+",
+  "2009-02-13T23:31:30.000Z		WARN	This is a warning	{\\"level\\":40}
+",
+  "2009-02-13T23:31:30.000Z		ERROR	Oh no an error	{\\"level\\":50,\\"err\\":{\\"message\\":\\"Error\\",\\"type\\":\\"Error\\",\\"stack\\":\\"stuff\\\\ncode\\"}}
+",
+  "2009-02-13T23:31:30.000Z		FATAL	OMG this is fatal	{\\"level\\":60,\\"err\\":{\\"message\\":\\"Error\\",\\"type\\":\\"Error\\",\\"stack\\":\\"stuff\\\\ncode\\"}}
+",
+  "2009-02-13T23:31:30.000Z		TRACE	This
+message
+contains
+newlines
+
+yes
+it
+does	{\\"level\\":10}
+",
 ]
 `;
