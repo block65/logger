@@ -4,18 +4,18 @@ export function asyncLocalStorageProcessor(
   this: Logger,
   log: LogDescriptor,
 ): LogDescriptor {
-  const store = this.als.getStore();
+  const context = this.als.getStore();
 
-  if (!store) {
+  if (!context) {
     return log;
   }
 
   return {
     ...log,
-    ...(store?.context && {
+    ...(context && {
       ctx: {
         ...log.ctx,
-        ...store?.context,
+        ...context,
       },
     }),
   };
