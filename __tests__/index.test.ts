@@ -10,7 +10,7 @@ import { Level } from '../lib/logger.js';
 import { createLoggerWithWaitableMock } from './helpers.js';
 
 describe('Basic', () => {
-  const oldEnv = process.env;
+  const initialEnv = process.env;
   const originalStackTraceLimit = Error.stackTraceLimit;
 
   beforeEach(() => {
@@ -19,7 +19,7 @@ describe('Basic', () => {
   });
 
   afterAll(() => {
-    process.env = { ...oldEnv };
+    process.env = { ...initialEnv };
     Error.stackTraceLimit = originalStackTraceLimit;
     jest.useRealTimers();
   });
