@@ -22,7 +22,7 @@ describe('Child Logger', () => {
   test('Basic', async () => {
     const { createLoggerWithWaitableMock } = await import('./helpers.js');
 
-    const [logger, callback] = createLoggerWithWaitableMock();
+    const [logger, callback, errback] = createLoggerWithWaitableMock();
 
     const childLogger = logger.child({ helloChildLogger: 'hello!' });
 
@@ -32,12 +32,13 @@ describe('Child Logger', () => {
     childLogger.debug(new Error('gday'));
     childLogger.trace(new Error('nihao2'));
     await expect(callback.waitUntilCalledTimes(5)).resolves.toMatchSnapshot();
+    expect(errback).not.toBeCalled();
   });
 
   test('with context + cli', async () => {
     const { createLoggerWithWaitableMock } = await import('./helpers.js');
 
-    const [logger, callback] = createLoggerWithWaitableMock({
+    const [logger, callback, errback] = createLoggerWithWaitableMock({
       transformer: createCliTransformer(),
     });
 
@@ -54,5 +55,6 @@ describe('Child Logger', () => {
     childLogger.debug(new Error('gday'));
     childLogger.trace(new Error('nihao2'));
     await expect(callback.waitUntilCalledTimes(5)).resolves.toMatchSnapshot();
+    expect(errback).not.toBeCalled();
   });
 });

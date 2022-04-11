@@ -19,21 +19,23 @@ describe('Control', () => {
 
   test('Error Object', async () => {
     const { createLoggerWithWaitableMock } = await import('./helpers.js');
-    const [logger, callback] = createLoggerWithWaitableMock();
+    const [logger, callback, errback] = createLoggerWithWaitableMock();
     logger.error(Object.assign(new Error('hallo'), { debug: 'wooyeah' }));
     await expect(callback.waitUntilCalled()).resolves.toMatchSnapshot();
+    expect(errback).not.toBeCalled();
   });
 
   test('Error Object serialized on non-error level', async () => {
     const { createLoggerWithWaitableMock } = await import('./helpers.js');
-    const [logger, callback] = createLoggerWithWaitableMock();
+    const [logger, callback, errback] = createLoggerWithWaitableMock();
     logger.info(new Error('hallo'));
     await expect(callback.waitUntilCalled()).resolves.toMatchSnapshot();
+    expect(errback).not.toBeCalled();
   });
 
   test('high velocity doesnt crash', async () => {
     const { createLoggerWithWaitableMock } = await import('./helpers.js');
-    const [logger, callback] = createLoggerWithWaitableMock();
+    const [logger, callback, errback] = createLoggerWithWaitableMock();
 
     const arr = Array.from(Array(100000), (_, idx) => idx);
     // eslint-disable-next-line no-restricted-syntax
@@ -42,5 +44,6 @@ describe('Control', () => {
     }
 
     await callback.waitUntilCalledTimes(100000);
+    expect(errback).not.toBeCalled();
   });
 });

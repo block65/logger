@@ -20,7 +20,7 @@ describe('Redact', () => {
   });
 
   test('Basic', async () => {
-    const [logger, callback] = createLoggerWithWaitableMock({
+    const [logger, callback, errback] = createLoggerWithWaitableMock({
       processors: [
         createRedactProcessor({
           censor: '🧱🧱🧱🧱',
@@ -35,5 +35,6 @@ describe('Redact', () => {
     await logger.flush();
 
     await expect(callback.waitUntilCalledTimes(1)).resolves.toMatchSnapshot();
+    expect(errback).not.toBeCalled();
   });
 });
