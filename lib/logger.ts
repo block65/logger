@@ -261,7 +261,7 @@ export class Logger implements LogMethods {
       .pipe(this.#destination);
   }
 
-  #log(
+  #write(
     level: Level,
     arg1:
       | Error
@@ -316,32 +316,32 @@ export class Logger implements LogMethods {
 
   public trace(...args: any[]) {
     // @ts-expect-error
-    this.#log(Level.Trace, ...args);
+    this.#write(Level.Trace, ...args);
   }
 
   public debug(...args: any[]) {
     // @ts-expect-error
-    this.#log(Level.Debug, ...args);
+    this.#write(Level.Debug, ...args);
   }
 
   public warn(...args: any[]) {
     // @ts-expect-error
-    this.#log(Level.Warn, ...args);
+    this.#write(Level.Warn, ...args);
   }
 
   public info(...args: any[]) {
     // @ts-expect-error
-    this.#log(Level.Info, ...args);
+    this.#write(Level.Info, ...args);
   }
 
   public error(...args: any[]) {
     // @ts-expect-error
-    this.#log(Level.Error, ...args);
+    this.#write(Level.Error, ...args);
   }
 
   public fatal(...args: any[]) {
     // @ts-expect-error
-    this.#log(Level.Fatal, ...args);
+    this.#write(Level.Fatal, ...args);
   }
 
   public async flush() {
