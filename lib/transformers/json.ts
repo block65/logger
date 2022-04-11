@@ -11,7 +11,7 @@ import { safeStringify, withNullProto } from '../utils.js';
 //   [Level.Fatal, 'fatal'],
 // ]);
 
-export interface JsonLogFormat {
+interface LogFormat {
   level: number;
   time: string;
   msg?: JsonPrimitive;

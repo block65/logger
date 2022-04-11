@@ -16,10 +16,7 @@ const sentrySeverityMap = new Map<Level, Severity>([
   [Level.Trace, Severity.Debug],
 ]);
 
-export function sentryCaptureLog(
-  log: LogDescriptor,
-  options: SentryListenerOptions,
-) {
+function sentryCaptureLog(log: LogDescriptor, options: SentryListenerOptions) {
   const context: Partial<ScopeContext> = {
     level: sentrySeverityMap.get(log.level) || Severity.Log,
     ...options.context,
