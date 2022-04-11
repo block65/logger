@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AWS Lambda Logger + contextId 1`] = `
+Object {
+  "somethingUseful": true,
+}
+`;
+
+exports[`AWS Lambda Logger + contextId 2`] = `
+Array [
+  Array [
+    "{\\"level\\":40,\\"time\\":\\"2009-02-13T23:31:30.000Z\\",\\"msg\\":\\"hello\\",\\"ctx\\":{\\"pid\\":1337,\\"hostname\\":\\"testhost\\"}}
+",
+  ],
+  Array [
+    "{\\"level\\":50,\\"time\\":\\"2009-02-13T23:31:30.000Z\\",\\"msg\\":\\"fake\\",\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"fake\\",\\"stack\\":\\"Error: fake\\\\n    at fn (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/lib/lambda.js:12:16\\\\n    at AsyncLocalStorage.run (node:async_hooks:320:14)\\"},\\"ctx\\":{\\"pid\\":1337,\\"hostname\\":\\"testhost\\"}}
+",
+  ],
+]
+`;
