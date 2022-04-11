@@ -55,7 +55,7 @@ export type LevelAsString = Lowercase<keyof typeof Level>;
 
 export interface CreateLoggerOptions {
   destination?: Writable;
-  level?: Level | LevelAsString;
+  level?: Level;
   processors?: Processor[];
   transformer?: Transformer;
   context?: LogDescriptor['ctx'];
