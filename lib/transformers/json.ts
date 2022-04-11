@@ -1,4 +1,4 @@
-import type { JsonPrimitive } from 'type-fest';
+import type { Jsonify, JsonObject, JsonPrimitive } from 'type-fest';
 import { LogData, LogDescriptor } from '../logger.js';
 import { safeStringify, withNullProto } from '../utils.js';
 
@@ -18,10 +18,12 @@ interface LogFormat {
   ctx?: LogData;
 }
 
+export type JsonLogFormat = JsonObject & Jsonify<LogFormat>;
+
 export const jsonTransformer = (log: LogDescriptor): string => {
   const { level, time, ctx, data, msg } = log;
 
-  const jsonLog: JsonLogFormat = withNullProto({
+  const jsonLog: LogFormat = withNullProto({
     level,
     time: time.toISOString(),
     msg,
