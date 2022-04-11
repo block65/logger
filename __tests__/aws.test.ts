@@ -27,7 +27,7 @@ describe('AWS', () => {
         transformer: createCloudwatchTransformer(),
       });
 
-      await withLambdaLoggerContextWrapper(
+      const result = await withLambdaLoggerContextWrapper(
         logger,
         {
           awsRequestId: '000fake-0000-000request-000-id',
@@ -42,8 +42,13 @@ describe('AWS', () => {
         async () => {
           logger.warn('hello');
           logger.error(new Error('fake'));
+          return {
+            somethingUseful: true,
+          };
         },
       );
+
+      expect(result).toMatchSnapshot();
 
       await callback.waitUntilCalled();
 
