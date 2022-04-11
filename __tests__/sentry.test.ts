@@ -96,7 +96,7 @@ describe('Sentry processor', () => {
       },
     });
 
-    const [logger, callback] = createLoggerWithWaitableMock({
+    const [logger, callback, errback] = createLoggerWithWaitableMock({
       processors: [listener],
     });
 
@@ -106,13 +106,14 @@ describe('Sentry processor', () => {
 
     expect(captureException).toBeCalledTimes(1);
     expect(captureException.mock.calls).toMatchSnapshot();
+    expect(errback).not.toBeCalled();
   });
 
   test('listener attach', async () => {
     const { attachSentryListener } = await import('../lib/listener/sentry.js');
     const { createLoggerWithWaitableMock } = await import('./helpers.js');
 
-    const [logger, getLogs] = createLoggerWithWaitableMock();
+    const [logger, callback, errback] = createLoggerWithWaitableMock();
     attachSentryListener(logger);
 
     logger.error(new Error('fake'));
@@ -121,7 +122,7 @@ describe('Sentry processor', () => {
 
     await logger.flush();
 
-    expect(getLogs.mock.calls).toHaveLength(3);
+    expect(callback.mock.calls).toHaveLength(3);
 
     logger.error(new Error('fake'));
     logger.error(new Error('fake'));
@@ -129,7 +130,8 @@ describe('Sentry processor', () => {
 
     await logger.end();
 
-    expect(getLogs.mock.calls).toHaveLength(6);
-    expect(getLogs.mock.calls).toMatchSnapshot();
+    expect(callback.mock.calls).toHaveLength(6);
+    expect(callback.mock.calls).toMatchSnapshot();
+    expect(errback).not.toBeCalled();
   });
 });

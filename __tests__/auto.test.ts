@@ -29,7 +29,7 @@ describe('Auto Logger', () => {
       './helpers.js'
     );
 
-    const [logger, callback, errBack] =
+    const [logger, callback, errback] =
       createAutoConfiguredLoggerWithWaitableMock();
 
     logger.info('woo yeah!!!');
@@ -38,7 +38,7 @@ describe('Auto Logger', () => {
     logger.warn({ err: new Error('Connection refused') });
 
     await expect(callback.waitUntilCalledTimes(1)).resolves.toMatchSnapshot();
-    expect(errBack).toBeCalledTimes(0);
+    expect(errback).not.toBeCalled();
   });
 
   test('AWS ECS', async () => {
@@ -48,7 +48,7 @@ describe('Auto Logger', () => {
       './helpers.js'
     );
 
-    const [logger, callback, errBack] =
+    const [logger, callback, errback] =
       createAutoConfiguredLoggerWithWaitableMock();
 
     logger.info('woo yeah!!!');
@@ -57,7 +57,7 @@ describe('Auto Logger', () => {
     logger.warn({ err: new Error('bad stuff') });
 
     await expect(callback.waitUntilCalledTimes(1)).resolves.toMatchSnapshot();
-    expect(errBack).toBeCalledTimes(0);
+    expect(errback).not.toBeCalled();
   });
 
   test('AWS Lambda', async () => {
@@ -65,7 +65,7 @@ describe('Auto Logger', () => {
     const { createAutoConfiguredLoggerWithWaitableMock } = await import(
       './helpers.js'
     );
-    const [logger, callback, errBack] =
+    const [logger, callback, errback] =
       createAutoConfiguredLoggerWithWaitableMock();
 
     logger.info('woo yeah!!!');
@@ -74,6 +74,6 @@ describe('Auto Logger', () => {
     logger.warn({ err: new Error('bad stuff') });
 
     await expect(callback.waitUntilCalledTimes(1)).resolves.toMatchSnapshot();
-    expect(errBack).toBeCalledTimes(0);
+    expect(errback).not.toBeCalled();
   });
 });

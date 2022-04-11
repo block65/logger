@@ -25,7 +25,7 @@ describe('CLI', () => {
 
     const transformer = createCliTransformer();
 
-    const [logger, callback] = createLoggerWithWaitableMock({
+    const [logger, callback, errback] = createLoggerWithWaitableMock({
       transformer,
     });
     logger.error(new Error('hallo'));
@@ -34,6 +34,7 @@ describe('CLI', () => {
     logger.debug(new Error('gday'));
     logger.trace(new Error('nihao2'));
     await expect(callback.waitUntilCalledTimes(5)).resolves.toMatchSnapshot();
+    expect(errback).not.toBeCalled();
   });
 
   test('force-color', async () => {
@@ -44,7 +45,7 @@ describe('CLI', () => {
       color: true,
     });
 
-    const [logger, callback] = createLoggerWithWaitableMock({
+    const [logger, callback, errback] = createLoggerWithWaitableMock({
       transformer,
     });
 
@@ -55,5 +56,6 @@ describe('CLI', () => {
     logger.trace(new Error('nihao3'));
 
     await expect(callback.waitUntilCalledTimes(5)).resolves.toMatchSnapshot();
+    expect(errback).not.toBeCalled();
   });
 });
