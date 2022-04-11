@@ -41,14 +41,6 @@ export type Processor<T = LogDescriptor, R = Partial<T>> =
 
 export type Transformer = Processor<LogDescriptor, unknown>;
 
-export interface CreateLoggerOptions {
-  destination?: Writable;
-  level?: Level;
-  processors?: Processor[];
-  transformer?: Transformer;
-  context?: LogDescriptor['ctx'];
-}
-
 export enum Level {
   Silent = 0,
   Trace = 10,
@@ -57,6 +49,16 @@ export enum Level {
   Warn = 40,
   Error = 50,
   Fatal = 60,
+}
+
+export type LevelAsString = Lowercase<keyof typeof Level>;
+
+export interface CreateLoggerOptions {
+  destination?: Writable;
+  level?: Level | LevelAsString;
+  processors?: Processor[];
+  transformer?: Transformer;
+  context?: LogDescriptor['ctx'];
 }
 
 export type LogData = {
