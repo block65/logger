@@ -101,7 +101,7 @@ describe('Events', () => {
     expect(callback).toHaveBeenCalledTimes(6);
     expect(callback.mock.calls).toMatchSnapshot();
 
-    expect(errback).toHaveBeenCalledTimes(2);
+    expect(errback).toHaveBeenCalledTimes(1);
     expect(errback.mock.calls).toMatchSnapshot();
   });
 

@@ -282,14 +282,6 @@ export class Logger implements LogMethods {
     arg2?: JsonPrimitive,
     ...args: JsonPrimitive[]
   ): void {
-    if (!this.#destination.writable) {
-      this.#emitter.emit(
-        'error',
-        new Error('Destination was unpiped as it is not writeable'),
-      );
-      this.#processorChain.unpipe(this.#destination);
-    }
-
     const log = Object.freeze(
       withNullProto(toLogDescriptor(level, arg1, arg2, ...args), {
         ...(this.#context && { ctx: this.#context }),
