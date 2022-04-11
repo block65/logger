@@ -52,28 +52,29 @@ describe('AWS', () => {
 
       await callback.waitUntilCalled();
 
-      expect(errback).not.toBeCalled();
       expect(callback).toBeCalledTimes(2);
       expect(callback.mock.calls).toMatchSnapshot();
+      expect(errback).not.toBeCalled();
     });
 
     test('Error Object', async () => {
       const { createLoggerWithWaitableMock } = await import('./helpers.js');
 
-      const [logger, callback] = createLoggerWithWaitableMock({
+      const [logger, callback, errback] = createLoggerWithWaitableMock({
         transformer: createCloudwatchTransformer(),
       });
 
       logger.error(new Error('Ded 4'));
 
       await expect(callback.waitUntilCalled()).resolves.toMatchSnapshot();
+      expect(errback).not.toBeCalled();
     });
   });
 
   describe('ECS', () => {
     test('Error Object', async () => {
       const { createLoggerWithWaitableMock } = await import('./helpers.js');
-      const [logger, callback] = createLoggerWithWaitableMock({
+      const [logger, callback, errback] = createLoggerWithWaitableMock({
         // decorators: [lambdaDecorator],
         transformer: createCloudwatchTransformer(),
       });
@@ -84,7 +85,8 @@ describe('AWS', () => {
 
       // await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      await expect(callback.mock.calls).toMatchSnapshot();
+      expect(callback.mock.calls).toMatchSnapshot();
+      expect(errback).not.toBeCalled();
     });
   });
 });
