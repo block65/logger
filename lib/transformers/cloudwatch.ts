@@ -25,13 +25,18 @@ const cloudwatchTransformer: Transformer = (log) => {
     ...(contextRest && !isEmptyObject(contextRest) && { ctx: contextRest }),
   });
 
-  return [
+  const line = [
     time.toISOString(),
     contextId,
     levelNumberToCloudwatchStringMap.get(level),
-    typeof msg !== 'undefined' ? msg : '', // don't print 'undefined'
+    // the LF -> CR replacement is what happens in the AWS Lambda RIC
+    (typeof msg !== 'undefined' ? String(msg) : '')
+      .trim()
+      .replaceAll(/\n/g, '\r'),
     dataStr,
   ].join('\t');
+
+  return `${line}\n`;
 };
 
 export function createCloudwatchTransformer(/* options = {} */): Transformer {
