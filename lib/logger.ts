@@ -252,13 +252,24 @@ export class Logger implements LogMethods {
 
     this.#destination = destination;
 
-    this.#inputStream
-      .pipe(this.#processorChain)
-      .pipe(
-        // ignore the pipe cleaner
-        Chain.chain([(obj) => (obj === pipeCleaner ? null : obj)]),
-      )
-      .pipe(this.#destination);
+    this.#destination.on('error', (err) => this.#emitter.emit('error', err));
+
+    const pipeline = this.#inputStream.pipe(this.#processorChain).pipe(
+      // ignore the pipe cleaner
+      Chain.chain([(obj) => (obj === pipeCleaner ? null : obj)]),
+    );
+
+    if (this.#destination.writable) {
+      pipeline.pipe(this.#destination);
+    } else {
+      this.#emitter.emit('error', new Error('Destination is not writeable'));
+    }
+
+    this.#destination.on('end', () => {
+      pipeline.unpipe(this.#destination);
+    });
+
+    pipeline.on('error', (err) => this.#emitter.emit('error', err));
   }
 
   #write(
@@ -271,23 +282,37 @@ export class Logger implements LogMethods {
     arg2?: JsonPrimitive,
     ...args: JsonPrimitive[]
   ): void {
+    if (!this.#destination.writable) {
+      this.#emitter.emit(
+        'error',
+        new Error('Destination was unpiped as it is not writeable'),
+      );
+      this.#processorChain.unpipe(this.#destination);
+    }
+
     const log = Object.freeze(
       withNullProto(toLogDescriptor(level, arg1, arg2, ...args), {
         ...(this.#context && { ctx: this.#context }),
       }),
     );
 
-    // no await
-    this.#emitter
-      .emit('log', log)
-      .catch((err) => this.#emitter.emit('error', err));
-
     if (log.level >= this.level) {
-      this.#inputStream.write(log, (err: Error | null | undefined) => {
-        if (err) {
-          this.#emitter.emit('error', err);
-        }
-      });
+      if (this.#inputStream.writable) {
+        this.#inputStream.write(log, (writeErr: Error | null | undefined) => {
+          if (writeErr) {
+            this.#emitter.emit('error', writeErr);
+          } else {
+            // no await here
+            this.#emitter
+              .emit('log', log)
+              .catch((err) => this.#emitter.emit('error', err));
+          }
+        });
+      } else {
+        this.#emitter
+          .emit('error', new Error('Input stream is not writeable'))
+          .catch(() => {});
+      }
     }
   }
 
@@ -345,17 +370,13 @@ export class Logger implements LogMethods {
   }
 
   public async flush() {
-    this.#inputStream.write(pipeCleaner);
-
     await new Promise<void>((resolve, reject) => {
       let t: NodeJS.Timeout | undefined;
 
-      const stream = this.#processorChain;
-
       const detectPipeCleaner = (obj: LogDescriptor | Symbol) => {
         if (obj === pipeCleaner) {
-          stream.removeListener('data', detectPipeCleaner);
-          stream.removeListener('error', reject);
+          this.#processorChain.off('data', detectPipeCleaner);
+          this.#processorChain.off('error', reject);
           if (t) {
             clearTimeout(t);
           }
@@ -364,10 +385,22 @@ export class Logger implements LogMethods {
         }
       };
 
-      stream.once('error', reject);
-      stream.addListener('data', detectPipeCleaner);
+      this.#processorChain.on('data', detectPipeCleaner);
+      this.#processorChain.once('error', reject);
 
-      t = setTimeout(() => detectPipeCleaner(pipeCleaner), 2000);
+      // timeout waiting for the pipe cleaner
+      // t = setTimeout(
+      //   () =>
+      //     reject(new Error('Timed out waiting for input stream to flush')),
+      //   2000,
+      // );
+
+      if (this.#inputStream.writable) {
+        this.#inputStream.write(pipeCleaner);
+      } else {
+        // reject(new Error('Stream was not writeable'));
+        resolve();
+      }
     }).catch((err) => this.#emitter.emit('error', err));
 
     await this.#emitter
@@ -377,12 +410,8 @@ export class Logger implements LogMethods {
 
   public async end() {
     await this.flush();
-    if (!this.#inputStream.writableEnded) {
-      this.#inputStream.end();
-    }
-    if (!this.#destination.writableFinished) {
-      await finished(this.#destination);
-    }
+    this.#inputStream.end();
+    await finished(this.#destination);
   }
 
   public on<Name extends 'log' | 'error' | 'flush'>(
