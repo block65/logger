@@ -5,7 +5,7 @@ import { safeStringify, withNullProto } from '../utils.js';
 
 type GcpSeverities = 'DEBUG' | 'INFO' | 'WARNING' | 'ERROR' | 'CRITICAL';
 
-type GcpJsonLogFormat = {
+export type GcpJsonLogFormat = {
   severity: GcpSeverities;
   time: string;
   message?: JsonPrimitive;

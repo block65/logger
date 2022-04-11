@@ -1,5 +1,5 @@
 import { hostname } from 'node:os';
-import { CreateLoggerOptions, Level, Logger } from './logger.js';
+import { CreateLoggerOptions, Level, LevelAsString, Logger } from './logger.js';
 import { callerProcessor } from './processors/caller.js';
 import { createCliTransformer } from './transformers/cli.js';
 import { createCloudwatchTransformer } from './transformers/cloudwatch.js';
@@ -10,7 +10,17 @@ export { Level, Logger } from './logger.js';
 export type { CreateLoggerOptions, LogDescriptor } from './logger.js';
 export { createRedactProcessor } from './processors/redact.js';
 export { createCliTransformer } from './transformers/cli.js';
-export { jsonTransformer } from './transformers/json.js';
+export { jsonTransformer, type JsonLogFormat } from './transformers/json.js';
+
+const stringLogLevelMap = new Map<LevelAsString | string | undefined, Level>([
+  ['silent', Level.Silent],
+  ['trace', Level.Trace],
+  ['debug', Level.Debug],
+  ['info', Level.Info],
+  ['warn', Level.Warn],
+  ['error', Level.Error],
+  ['fatal', Level.Fatal],
+]);
 
 function internalCreateLogger(
   options: Omit<CreateLoggerOptions, 'transformer'> = {},
@@ -18,7 +28,10 @@ function internalCreateLogger(
   const recommendedProcessors =
     process.env.NODE_ENV === 'development' ? [callerProcessor] : [];
 
-  const level = options.level || (process.env.LOG_LEVEL as Level | undefined);
+  const level =
+    options.level ||
+    stringLogLevelMap.get(process.env.LOG_LEVEL) ||
+    (process.env.NODE_ENV === 'development' ? Level.Trace : undefined);
 
   const destination = options.destination || process.stdout;
 
