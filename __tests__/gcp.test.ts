@@ -10,7 +10,7 @@ import { gcpErrorProcessor } from '../lib/processors/gcp.js';
 import { createLoggerWithWaitableMock } from './helpers.js';
 
 describe('GCP Processor', () => {
-  const oldEnv = process.env;
+  const initialEnv = process.env;
   beforeEach(() => {
     // jest.clearAllMocks();
     jest.useFakeTimers('modern');
@@ -18,7 +18,7 @@ describe('GCP Processor', () => {
   });
 
   afterEach(() => {
-    process.env = { ...oldEnv };
+    process.env = { ...initialEnv };
     jest.useRealTimers();
   });
 

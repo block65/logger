@@ -8,17 +8,22 @@ import {
 } from '@jest/globals';
 
 describe('AWS', () => {
+  const initialEnv = process.env;
   beforeEach(() => {
+    // jest.clearAllMocks();
     jest.useFakeTimers('modern');
     jest.setSystemTime(new Date('2009-02-13T23:31:30.000Z'));
   });
 
   afterEach(() => {
+    process.env = { ...initialEnv };
     jest.useRealTimers();
   });
 
   describe('Lambda', () => {
     test('Logger + contextId', async () => {
+      process.env.AWS_LAMBDA_FUNCTION_VERSION = '$LATEST';
+
       const { createAutoConfiguredLoggerWithWaitableMock } = await import(
         './helpers.js'
       );
