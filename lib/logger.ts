@@ -352,7 +352,7 @@ export class Logger implements LogMethods {
 
       const stream = this.#processorChain;
 
-      function detectPipeCleaner(obj: LogDescriptor | Symbol) {
+      const detectPipeCleaner = (obj: LogDescriptor | Symbol) => {
         if (obj === pipeCleaner) {
           stream.removeListener('data', detectPipeCleaner);
           stream.removeListener('error', reject);
@@ -362,7 +362,7 @@ export class Logger implements LogMethods {
 
           resolve();
         }
-      }
+      };
 
       stream.once('error', reject);
       stream.addListener('data', detectPipeCleaner);
