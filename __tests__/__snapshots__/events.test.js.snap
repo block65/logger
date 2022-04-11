@@ -1,0 +1,151 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Events logger.end 1`] = `
+Array [
+  Array [
+    Object {
+      "ctx": Object {
+        "hostname": "testhost",
+        "pid": 1337,
+      },
+      "level": 30,
+      "msg": "Hello",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+  Array [
+    Object {
+      "ctx": Object {
+        "hostname": "testhost",
+        "pid": 1337,
+      },
+      "level": 30,
+      "msg": "Hello",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+  Array [
+    Object {
+      "ctx": Object {
+        "hostname": "testhost",
+        "pid": 1337,
+      },
+      "level": 30,
+      "msg": "Hello",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+  Array [
+    Object {
+      "ctx": Object {
+        "hostname": "testhost",
+        "pid": 1337,
+      },
+      "level": 30,
+      "msg": "Hello",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+  Array [
+    Object {
+      "ctx": Object {
+        "hostname": "testhost",
+        "pid": 1337,
+      },
+      "level": 30,
+      "msg": "Hello",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+  Array [
+    Object {
+      "ctx": Object {
+        "hostname": "testhost",
+        "pid": 1337,
+      },
+      "level": 30,
+      "msg": "Hello",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Events logger.end 2`] = `
+Array [
+  Array [
+    Object {
+      "ctx": Object {
+        "hostname": "testhost",
+        "pid": 1337,
+      },
+      "level": 30,
+      "msg": "Hello",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+  Array [
+    Object {
+      "ctx": Object {
+        "hostname": "testhost",
+        "pid": 1337,
+      },
+      "level": 30,
+      "msg": "Hello",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+  Array [
+    Object {
+      "ctx": Object {
+        "hostname": "testhost",
+        "pid": 1337,
+      },
+      "level": 30,
+      "msg": "Hello",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+  Array [
+    Object {
+      "ctx": Object {
+        "hostname": "testhost",
+        "pid": 1337,
+      },
+      "level": 30,
+      "msg": "Hello",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+  Array [
+    Object {
+      "ctx": Object {
+        "hostname": "testhost",
+        "pid": 1337,
+      },
+      "level": 30,
+      "msg": "Hello",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+  Array [
+    Object {
+      "ctx": Object {
+        "hostname": "testhost",
+        "pid": 1337,
+      },
+      "level": 30,
+      "msg": "Hello",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Events logger.end 3`] = `
+Array [
+  Array [
+    [Error: Input stream is not writeable],
+  ],
+]
+`;
