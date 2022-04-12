@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Processsors Crashy 1`] = `
+Array [
+  Object {
+    "level": 50,
+    "msg": "I sure hope this doesnt crash",
+    "time": 2009-02-13T23:31:30.000Z,
+  },
+]
+`;
+
+exports[`Processsors Crashy 2`] = `
+Array [
+  Array [
+    [Error: oops I crashed],
+  ],
+]
+`;

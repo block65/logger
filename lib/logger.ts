@@ -225,14 +225,19 @@ export class Logger implements LogMethods {
     // TODO: validate decorators here
     // validate transformer also
 
-    function processorWrapper(
+    const processorWrapper = (
       processor: Processor<LogDescriptor | Symbol> | Transformer,
-    ): Processor<LogDescriptor | Symbol> | Transformer {
+    ): Processor<LogDescriptor | Symbol> | Transformer => {
       if (typeof processor === 'function') {
-        return async function ignorePipeCleaner(log: LogDescriptor | Symbol) {
+        return async (log: LogDescriptor | Symbol) => {
           // run the processor on anything log descriptory
           if (isLogDescriptor(log)) {
-            return processor(log);
+            try {
+              return processor(log);
+            } catch (err) {
+              this.#emitter.emit('error', err);
+              return log;
+            }
           }
           // pass the pipe cleaner (or any symbol) straight through
           return log;
@@ -240,7 +245,7 @@ export class Logger implements LogMethods {
       }
 
       return processor;
-    }
+    };
 
     this.#processorChain = Chain.chain([
       ...[
