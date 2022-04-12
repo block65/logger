@@ -37,4 +37,26 @@ describe('Redact', () => {
     await expect(callback.waitUntilCalledTimes(1)).resolves.toMatchSnapshot();
     expect(errback).not.toBeCalled();
   });
+
+  test('Crashy', async () => {
+    const [logger, callback, errback] = createLoggerWithWaitableMock({
+      processors: [
+        createRedactProcessor({
+          paths: ['*.jwt'],
+        }),
+      ],
+    });
+
+    const someSpecialObject = Object.freeze({
+      jwt: 'eyJ...secret',
+    });
+
+    logger.error(
+      { someSpecialObject },
+      'the data contains a special frozen object',
+    );
+
+    await expect(callback.waitUntilCalled()).resolves.toMatchSnapshot();
+    expect(errback).not.toBeCalled();
+  });
 });

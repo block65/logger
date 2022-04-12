@@ -11,6 +11,8 @@
     "./express": "./lib/express.js",
     "./lambda": "./lib/lambda.js"
   },
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "typesVersions": {
     "*": {
       "sentry": [
@@ -24,8 +26,6 @@
       ]
     }
   },
-  "main": "./lib/index.js",
-  "types": "./lib/index.d.ts",
   "files": [
     "lib/**/*.js",
     "lib/**/*.d.ts",
@@ -38,6 +38,7 @@
     "bazel:format": "find . -type f \\( -name \"*.bzl\" -or -name WORKSPACE -or -name BUILD -or -name BUILD.bazel \\) ! -path \"*/node_modules/*\" ! -path \"*/tmp/*\" | xargs buildifier -v --warnings=attr-cfg,attr-license,attr-non-empty,attr-output-default,attr-single-file,constant-glob,ctx-actions,ctx-args,depset-iteration,depset-union,dict-concatenation,duplicated-name,filetype,git-repository,http-archive,integer-division,load,load-on-top,native-build,native-package,out-of-order-load,output-group,package-name,package-on-top,positional-args,redefined-variable,repository-name,same-origin-load,string-iteration,unsorted-dict-items,unused-variable",
     "bazel:lint": "yarn bazel:format --lint=warn",
     "bazel:lint-fix": "yarn bazel:format --lint=fix",
+    "benchmark": "node --loader=ts-node/esm lib/benchmarks/basic.ts",
     "build": "bazel build",
     "build:clean": "bazel clean",
     "build:watch": "ibazel build",
