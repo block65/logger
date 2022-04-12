@@ -2,14 +2,24 @@ import { createWriteStream } from 'node:fs';
 import { createLogger } from '../index.js';
 import { Level } from '../logger.js';
 
-console.time('test');
+async function basicIterations(iterations: number) {
+  const testName = `Basic: ${iterations} iterations`;
 
-const logger = createLogger({
-  destination: createWriteStream('/dev/null'),
-  level: Level.Info,
-});
+  console.time(testName);
 
-[...Array(1_000_000)].forEach(() => logger.info('hello world'));
+  const logger = createLogger({
+    destination: createWriteStream('/dev/null'),
+    level: Level.Trace,
+  });
 
-await logger.end();
-console.timeEnd('test');
+  [...Array(iterations)].forEach(() => logger.info('hello world'));
+
+  await logger.end();
+
+  console.timeEnd(testName);
+}
+
+await basicIterations(100);
+await basicIterations(1_000);
+await basicIterations(10_000);
+await basicIterations(100_000);
