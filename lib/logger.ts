@@ -1,5 +1,7 @@
 import Emittery from 'emittery';
 import { AsyncLocalStorage } from 'node:async_hooks';
+import { WriteStream } from 'node:fs';
+import { WriteStream as TtyWriteStream } from 'node:tty';
 import { PassThrough, Writable } from 'node:stream';
 import { finished } from 'node:stream/promises';
 import format from 'quick-format-unescaped';
