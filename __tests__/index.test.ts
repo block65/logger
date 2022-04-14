@@ -266,4 +266,29 @@ describe('Basic', () => {
 
     await expect(callback.waitUntilCalled()).resolves.toMatchSnapshot();
   });
+
+  test('change logger level', async () => {
+    const [logger, callback] = createLoggerWithWaitableMock({
+      level: Level.Fatal,
+    });
+
+    logger.trace('hello');
+    logger.fatal('boom');
+
+    await logger.flush();
+
+    await callback.waitUntilCalled();
+    expect(callback).toHaveBeenCalledTimes(1);
+    callback.mockClear();
+
+    logger.setLevel(Level.Trace);
+
+    logger.trace('hello');
+    logger.fatal('boom');
+
+    await logger.flush();
+
+    await callback.waitUntilCalledTimes(2);
+    expect(callback).toHaveBeenCalledTimes(2);
+  });
 });

@@ -201,7 +201,8 @@ export class Logger implements LogMethods {
 
   public readonly als: AsyncLocalStorage<AlsContext>;
 
-  public readonly level: Level;
+  public level: Level;
+
 
   #emitter = new Emittery<{
     log: LogDescriptor;
@@ -214,6 +215,10 @@ export class Logger implements LogMethods {
   #destination: Writable;
 
   #context: LogData | undefined;
+
+  public setLevel(level: Level) {
+    this.level = level;
+  }
 
   /**
    *
