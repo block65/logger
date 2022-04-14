@@ -8,6 +8,7 @@ Object.defineProperty(process, 'pid', {
 jest.unstable_mockModule('node:os', () => {
   const actual = jest.requireActual('node:os');
   return {
+    default: actual,
     ...actual,
     hostname: jest.fn(() => 'testhost'),
   };

@@ -1,5 +1,7 @@
 import Emittery from 'emittery';
 import { AsyncLocalStorage } from 'node:async_hooks';
+import { WriteStream } from 'node:fs';
+import { WriteStream as TtyWriteStream } from 'node:tty';
 import { PassThrough, Writable } from 'node:stream';
 import { finished } from 'node:stream/promises';
 import format from 'quick-format-unescaped';
@@ -33,13 +35,25 @@ interface LoggerOptions {
   context?: LogDescriptor['ctx'];
 }
 
-export type Processor<T = LogDescriptor, R = Partial<T>> =
+export type LoggerProcessor<T, R = Partial<T>> =
+  | ((this: Logger, log: T) => R)
+  | ((this: Logger, log: T) => Promise<R>);
+// | ((log: T) => Readable)
+// | ((log: T) => Generator<T, R, unknown>);
+
+export type PlainProcessor<T, R = Partial<T>> =
   | ((log: T) => R)
   | ((log: T) => Promise<R>);
 // | ((log: T) => Readable)
 // | ((log: T) => Generator<T, R, unknown>);
 
-export type Transformer = Processor<LogDescriptor, unknown>;
+export type Processor<T = LogDescriptor, R = Partial<T>> =
+  | LoggerProcessor<T, R>
+  | PlainProcessor<T, R>;
+
+export type PlainTransformer = PlainProcessor<LogDescriptor, unknown>;
+export type LoggerTransformer = LoggerProcessor<LogDescriptor, unknown>;
+export type Transformer = PlainTransformer | LoggerTransformer;
 
 export enum Level {
   Silent = 0,
@@ -189,7 +203,9 @@ export class Logger implements LogMethods {
 
   public readonly als: AsyncLocalStorage<AlsContext>;
 
-  public readonly level: Level;
+  public level: Level;
+
+  public destination: Writable | WriteStream | TtyWriteStream;
 
   #emitter = new Emittery<{
     log: LogDescriptor;
@@ -199,9 +215,11 @@ export class Logger implements LogMethods {
 
   #processorChain: Chain;
 
-  #destination: Writable;
-
   #context: LogData | undefined;
+
+  public setLevel(level: Level) {
+    this.level = level;
+  }
 
   /**
    *
@@ -233,7 +251,7 @@ export class Logger implements LogMethods {
           // run the processor on anything log descriptory
           if (isLogDescriptor(log)) {
             try {
-              return processor(log);
+              return processor.call(this, log);
             } catch (err) {
               this.#emitter.emit('error', err);
               return log;
@@ -251,27 +269,27 @@ export class Logger implements LogMethods {
       ...[
         asyncLocalStorageProcessor,
         ...processors,
-        ...(transformer ? [transformer] : []),
-      ].map((processor) => processorWrapper(processor.bind(this))),
+        ...(transformer ? [transformer.bind(this)] : []),
+      ].map((processor) => processorWrapper(processor)),
     ]);
 
-    this.#destination = destination;
+    this.destination = destination;
 
-    this.#destination.on('error', (err) => this.#emitter.emit('error', err));
+    this.destination.on('error', (err) => this.#emitter.emit('error', err));
 
     const pipeline = this.#inputStream.pipe(this.#processorChain).pipe(
       // ignore the pipe cleaner
       Chain.chain([(obj) => (obj === pipeCleaner ? null : obj)]),
     );
 
-    if (this.#destination.writable) {
-      pipeline.pipe(this.#destination);
+    if (this.destination.writable) {
+      pipeline.pipe(this.destination);
     } else {
       this.#emitter.emit('error', new Error('Destination is not writeable'));
     }
 
-    this.#destination.on('end', () => {
-      pipeline.unpipe(this.#destination);
+    this.destination.on('end', () => {
+      pipeline.unpipe(this.destination);
     });
 
     pipeline.on('error', (err) => this.#emitter.emit('error', err));
@@ -408,7 +426,7 @@ export class Logger implements LogMethods {
   public async end() {
     await this.flush();
     this.#inputStream.end();
-    await finished(this.#destination);
+    await finished(this.destination);
   }
 
   public on<Name extends 'log' | 'error' | 'flush'>(

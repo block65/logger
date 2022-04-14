@@ -1,5 +1,11 @@
 import type { JsonPrimitive } from 'type-fest';
-import { Level, LogData, LogDescriptor, Transformer } from '../logger.js';
+import {
+  Level,
+  LogData,
+  LogDescriptor,
+  PlainTransformer,
+  Transformer,
+} from '../logger.js';
 import { gcpErrorProcessor } from '../processors/gcp.js';
 import { safeStringify, withNullProto } from '../utils.js';
 
@@ -21,7 +27,9 @@ const logLevelGcpSeverityMap = new Map<Level, GcpSeverities>([
   [Level.Fatal, 'CRITICAL'],
 ]);
 
-export const gcpTransformer: Transformer = (log: LogDescriptor): string => {
+export const gcpTransformer: PlainTransformer = (
+  log: LogDescriptor,
+): string => {
   const { level, time, ctx, data, msg } = gcpErrorProcessor(log);
 
   // See https://cloud.google.com/error-reporting/docs/formatting-error-messages
