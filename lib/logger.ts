@@ -251,7 +251,7 @@ export class Logger implements LogMethods {
           // run the processor on anything log descriptory
           if (isLogDescriptor(log)) {
             try {
-              return processor(log);
+              return processor.call(this, log);
             } catch (err) {
               this.#emitter.emit('error', err);
               return log;
@@ -269,8 +269,8 @@ export class Logger implements LogMethods {
       ...[
         asyncLocalStorageProcessor,
         ...processors,
-        ...(transformer ? [transformer] : []),
-      ].map((processor) => processorWrapper(processor.bind(this))),
+        ...(transformer ? [transformer.bind(this)] : []),
+      ].map((processor) => processorWrapper(processor)),
     ]);
 
     this.destination = destination;
