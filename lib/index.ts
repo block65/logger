@@ -82,18 +82,13 @@ function internalCreateLogger(
     });
   }
 
-  // TTY
-  if ('isTTY' in destination && destination.isTTY) {
+  // TTY or CI
+  if (process.env.CI || ('isTTY' in destination && destination.isTTY)) {
     return new Logger({
       level,
       destination,
       transformer: createCliTransformer(),
       ...options,
-      context: {
-        ...options.context,
-        pid: process.pid,
-        hostname: hostname(),
-      },
     });
   }
 
