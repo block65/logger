@@ -33,13 +33,25 @@ interface LoggerOptions {
   context?: LogDescriptor['ctx'];
 }
 
-export type Processor<T = LogDescriptor, R = Partial<T>> =
+export type LoggerProcessor<T, R = Partial<T>> =
+  | ((this: Logger, log: T) => R)
+  | ((this: Logger, log: T) => Promise<R>);
+// | ((log: T) => Readable)
+// | ((log: T) => Generator<T, R, unknown>);
+
+export type PlainProcessor<T, R = Partial<T>> =
   | ((log: T) => R)
   | ((log: T) => Promise<R>);
 // | ((log: T) => Readable)
 // | ((log: T) => Generator<T, R, unknown>);
 
-export type Transformer = Processor<LogDescriptor, unknown>;
+export type Processor<T = LogDescriptor, R = Partial<T>> =
+  | LoggerProcessor<T, R>
+  | PlainProcessor<T, R>;
+
+export type PlainTransformer = PlainProcessor<LogDescriptor, unknown>;
+export type LoggerTransformer = LoggerProcessor<LogDescriptor, unknown>;
+export type Transformer = PlainTransformer | LoggerTransformer;
 
 export enum Level {
   Silent = 0,
