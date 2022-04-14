@@ -203,6 +203,7 @@ export class Logger implements LogMethods {
 
   public level: Level;
 
+  public destination: Writable | WriteStream | TtyWriteStream;
 
   #emitter = new Emittery<{
     log: LogDescriptor;
@@ -211,8 +212,6 @@ export class Logger implements LogMethods {
   }>();
 
   #processorChain: Chain;
-
-  #destination: Writable;
 
   #context: LogData | undefined;
 
@@ -272,23 +271,23 @@ export class Logger implements LogMethods {
       ].map((processor) => processorWrapper(processor.bind(this))),
     ]);
 
-    this.#destination = destination;
+    this.destination = destination;
 
-    this.#destination.on('error', (err) => this.#emitter.emit('error', err));
+    this.destination.on('error', (err) => this.#emitter.emit('error', err));
 
     const pipeline = this.#inputStream.pipe(this.#processorChain).pipe(
       // ignore the pipe cleaner
       Chain.chain([(obj) => (obj === pipeCleaner ? null : obj)]),
     );
 
-    if (this.#destination.writable) {
-      pipeline.pipe(this.#destination);
+    if (this.destination.writable) {
+      pipeline.pipe(this.destination);
     } else {
       this.#emitter.emit('error', new Error('Destination is not writeable'));
     }
 
-    this.#destination.on('end', () => {
-      pipeline.unpipe(this.#destination);
+    this.destination.on('end', () => {
+      pipeline.unpipe(this.destination);
     });
 
     pipeline.on('error', (err) => this.#emitter.emit('error', err));
@@ -425,7 +424,7 @@ export class Logger implements LogMethods {
   public async end() {
     await this.flush();
     this.#inputStream.end();
-    await finished(this.#destination);
+    await finished(this.destination);
   }
 
   public on<Name extends 'log' | 'error' | 'flush'>(
