@@ -7,7 +7,7 @@ import { WriteStream as TtyWriteStream } from 'node:tty';
 import format from 'quick-format-unescaped';
 import { ErrorObject, serializeError } from 'serialize-error';
 import Chain from 'stream-chain';
-import type { JsonPrimitive, JsonValue } from 'type-fest';
+import type { JsonPrimitive } from 'type-fest';
 import { asyncLocalStorageProcessor } from './processors/als.js';
 import { isPlainObject, safeStringify } from './utils.js';
 
@@ -91,11 +91,11 @@ export interface LogDescriptor {
 }
 
 export type LogMethod =
-  | ((err: Error | unknown, str?: JsonPrimitive, ...args: JsonValue[]) => void)
+  | ((err: Error | unknown, str?: JsonPrimitive, ...args: unknown[]) => void)
   | ((
       data: JsonObjectExtendedWithError,
       str?: JsonPrimitive,
-      ...args: JsonValue[]
+      ...args: unknown[]
     ) => void)
   | ((str: JsonPrimitive) => void);
 
@@ -383,14 +383,14 @@ export class Logger implements LogMethods {
   public trace(
     err: Error | unknown,
     str?: JsonPrimitive,
-    ...args: JsonValue[]
+    ...args: unknown[]
   ): void;
   public trace(
     data: JsonObjectExtendedWithError,
     str?: JsonPrimitive,
-    ...args: JsonValue[]
+    ...args: unknown[]
   ): void;
-  public trace(str: JsonPrimitive): void;
+  public trace(str: JsonPrimitive, ...args: unknown[]): void;
   // @ts-expect-error
   public trace(...args) {
     // @ts-expect-error
@@ -401,14 +401,14 @@ export class Logger implements LogMethods {
   public debug(
     err: Error | unknown,
     str?: JsonPrimitive,
-    ...args: JsonValue[]
+    ...args: unknown[]
   ): void;
   public debug(
     data: JsonObjectExtendedWithError,
     str?: JsonPrimitive,
-    ...args: JsonValue[]
+    ...args: unknown[]
   ): void;
-  public debug(str: JsonPrimitive): void;
+  public debug(str: JsonPrimitive, ...args: unknown[]): void;
   // @ts-expect-error
   public debug(...args) {
     // @ts-expect-error
@@ -419,12 +419,12 @@ export class Logger implements LogMethods {
   public info(
     err: Error | unknown,
     str?: JsonPrimitive,
-    ...args: JsonValue[]
+    ...args: unknown[]
   ): void;
   public info(
     data: JsonObjectExtendedWithError,
     str?: JsonPrimitive,
-    ...args: JsonValue[]
+    ...args: unknown[]
   ): void;
   public info(str: JsonPrimitive): void;
   // @ts-expect-error
@@ -437,12 +437,12 @@ export class Logger implements LogMethods {
   public warn(
     err: Error | unknown,
     str?: JsonPrimitive,
-    ...args: JsonValue[]
+    ...args: unknown[]
   ): void;
   public warn(
     data: JsonObjectExtendedWithError,
     str?: JsonPrimitive,
-    ...args: JsonValue[]
+    ...args: unknown[]
   ): void;
   public warn(str: JsonPrimitive): void;
   // @ts-expect-error
@@ -455,12 +455,12 @@ export class Logger implements LogMethods {
   public error(
     err: Error | unknown,
     str?: JsonPrimitive,
-    ...args: JsonValue[]
+    ...args: unknown[]
   ): void;
   public error(
     data: JsonObjectExtendedWithError,
     str?: JsonPrimitive,
-    ...args: JsonValue[]
+    ...args: unknown[]
   ): void;
   public error(str: JsonPrimitive): void;
   // @ts-expect-error
@@ -472,12 +472,12 @@ export class Logger implements LogMethods {
   public fatal(
     err: Error | unknown,
     str?: JsonPrimitive,
-    ...args: JsonValue[]
+    ...args: unknown[]
   ): void;
   public fatal(
     data: JsonObjectExtendedWithError,
     str?: JsonPrimitive,
-    ...args: JsonValue[]
+    ...args: unknown[]
   ): void;
   public fatal(str: JsonPrimitive): void;
   // @ts-expect-error
