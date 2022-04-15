@@ -42,6 +42,7 @@ describe('Basic', () => {
 
   test('String, Object = Object ignored', async () => {
     const [logger, callback, errback] = createLoggerWithWaitableMock();
+    // @ts-expect-error
     logger.warn('hello', { omg: true });
     await logger.end();
     expect(callback.mock.calls).toMatchSnapshot();
@@ -50,6 +51,7 @@ describe('Basic', () => {
 
   test('String Format, Object', async () => {
     const [logger, callback, errback] = createLoggerWithWaitableMock();
+    // @ts-expect-error
     logger.warn('hello %j spleen!', { omg: true });
     await logger.end();
     expect(callback.mock.calls).toMatchSnapshot();
@@ -273,6 +275,9 @@ describe('Basic', () => {
     });
 
     logger.trace('hello');
+    logger.debug('hello');
+    logger.info('hello');
+    logger.error('hello');
     logger.fatal('boom');
 
     await logger.flush();

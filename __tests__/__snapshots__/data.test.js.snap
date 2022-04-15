@@ -1,0 +1,213 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Data 0 argdddds ['string',123,false,Symbol(123)] does not crash 1`] = `
+Array [
+  Array [
+    Object {
+      "level": 60,
+      "msg": "string",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Data 1 argdddds [123,'string',false,Symbol(123)] does not crash 1`] = `
+Array [
+  Array [
+    Object {
+      "level": 60,
+      "msg": "123",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Data 2 argdddds [false,'string',123,Symbol(123)] does not crash 1`] = `
+Array [
+  Array [
+    Object {
+      "level": 60,
+      "msg": "false",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Data 3 argdddds [Symbol(123),'string',123,false] does not crash 1`] = `
+Array [
+  Array [
+    Object {
+      "level": 60,
+      "msg": "Symbol(123)",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Data 4 argdddds [{ [Symbol(234)]: 'symbol as key' },'string',123,false] does not crash 1`] = `
+Array [
+  Array [
+    Object {
+      "data": Object {
+        Symbol(234): "symbol as key",
+      },
+      "level": 60,
+      "msg": "string",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Data 5 argdddds [{ frozen: 123 },'string',123,false] does not crash 1`] = `
+Array [
+  Array [
+    Object {
+      "data": Object {
+        "frozen": 123,
+      },
+      "level": 60,
+      "msg": "string",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Data 6 argdddds [Error
+    at fake.js:0:0 {
+  [stack]: 'Error\\n    at fake.js:0:0',
+  [message]: 'test'
+},'string',123,false] does not crash 1`] = `
+Array [
+  Array [
+    Object {
+      "data": Object {
+        "err": Object {
+          "message": "test",
+          "name": "Error",
+          "stack": "Error
+    at fake.js:0:0",
+        },
+      },
+      "err": [Error: test],
+      "level": 60,
+      "msg": "string",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Data 7 argdddds [null,'string',123,false] does not crash 1`] = `
+Array [
+  Array [
+    Object {
+      "level": 60,
+      "msg": "null",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Data 8 argdddds [undefined,'string',123,false] does not crash 1`] = `
+Array [
+  Array [
+    Object {
+      "level": 60,
+      "msg": "string",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Data 9 argdddds [1n,'string',123,false] does not crash 1`] = `
+Array [
+  Array [
+    Object {
+      "level": 60,
+      "msg": "1",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Data 10 argdddds [<Buffer >,'string',123,false] does not crash 1`] = `
+Array [
+  Array [
+    Object {
+      "data": Object {
+        "data": Array [],
+        "type": "Buffer",
+      },
+      "level": 60,
+      "msg": "string",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Data 11 argdddds [{ message: 'test' },'string',123,false] does not crash 1`] = `
+Array [
+  Array [
+    Object {
+      "data": Object {
+        "message": "test",
+      },
+      "level": 60,
+      "msg": "string",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Data 12 argdddds [{ err: null },'string',123,false] does not crash 1`] = `
+Array [
+  Array [
+    Object {
+      "data": Object {
+        "err": null,
+      },
+      "level": 60,
+      "msg": "string",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Data 13 argdddds [{
+  err: Error
+      at fake.js:0:0 {
+    [stack]: 'Error\\n    at fake.js:0:0',
+    [message]: 'err prop'
+  }
+},'string',123,false] does not crash 1`] = `
+Array [
+  Array [
+    Object {
+      "data": Object {
+        "err": Object {
+          "message": "err prop",
+          "name": "Error",
+          "stack": "Error
+    at fake.js:0:0",
+        },
+      },
+      "err": [Error: err prop],
+      "level": 60,
+      "msg": "string",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+]
+`;

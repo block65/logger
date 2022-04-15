@@ -1,9 +1,9 @@
 import Emittery from 'emittery';
 import { AsyncLocalStorage } from 'node:async_hooks';
 import { WriteStream } from 'node:fs';
-import { WriteStream as TtyWriteStream } from 'node:tty';
 import { PassThrough, Writable } from 'node:stream';
 import { finished } from 'node:stream/promises';
+import { WriteStream as TtyWriteStream } from 'node:tty';
 import format from 'quick-format-unescaped';
 import { ErrorObject, serializeError } from 'serialize-error';
 import Chain from 'stream-chain';
@@ -90,17 +90,16 @@ export interface LogDescriptor {
   err?: Error | unknown;
 }
 
-export interface LogMethod {
-  (err: Error | unknown, str?: JsonPrimitive, ...args: JsonValue[]): void;
-  (
-    data: JsonObjectExtendedWithError,
-    str?: JsonPrimitive,
-    ...args: JsonValue[]
-  ): void;
-  (str: JsonPrimitive): void;
-}
+export type LogMethod =
+  | ((err: Error | unknown, str?: JsonPrimitive, ...args: JsonValue[]) => void)
+  | ((
+      data: JsonObjectExtendedWithError,
+      str?: JsonPrimitive,
+      ...args: JsonValue[]
+    ) => void)
+  | ((str: JsonPrimitive) => void);
 
-export interface LogMethods {
+interface LogMethods {
   trace: LogMethod;
   debug: LogMethod;
   info: LogMethod;
@@ -112,6 +111,10 @@ export interface LogMethods {
 export interface AlsContext {
   id: string;
   context?: JsonObjectExtended;
+}
+
+function stringifyIfNotUndefined(val: unknown): string | undefined {
+  return typeof val !== 'undefined' ? String(val) : val;
 }
 
 function withNullProto<T extends object>(obj: T, ...objs: Partial<T>[]): T {
@@ -131,15 +134,14 @@ function isLogDescriptor(log: LogDescriptor | Symbol): log is LogDescriptor {
   return isPlainObject(log);
 }
 
+/**
+ * Arguments are all set to unknown as we really cant trust the user
+ */
 function toLogDescriptor(
   level: Level,
-  arg1:
-    | Error
-    | JsonObjectExtended
-    | JsonObjectExtendedWithError
-    | JsonPrimitive,
-  arg2?: JsonPrimitive,
-  ...args: JsonPrimitive[]
+  arg1: unknown,
+  arg2?: unknown,
+  ...args: unknown[]
 ): LogDescriptor {
   const time = new Date();
 
@@ -147,7 +149,7 @@ function toLogDescriptor(
     return {
       time,
       level,
-      msg: arg2 ? arg2.toLocaleString() : arg1.message,
+      msg: typeof arg2 === 'string' ? arg2 : arg1.message,
       data: {
         err: serializeError(arg1),
       },
@@ -159,28 +161,52 @@ function toLogDescriptor(
     return {
       time,
       level,
-      msg:
-        arg1 &&
-        format(arg1.toLocaleString(), [arg2, ...args], {
-          stringify: safeStringify,
-        }),
+      msg: format(String(arg1), [arg2, ...args], {
+        stringify: safeStringify,
+      }),
     };
   }
 
-  const { err, ...data } = arg1;
-
-  if (err instanceof Error) {
+  if (Array.isArray(arg1)) {
     return {
       time,
       level,
-      msg: arg2
-        ? arg2.toLocaleString()
-        : err.message || data.message?.toLocaleString() || undefined,
-      err,
-      data: withNullProto({
-        err: serializeError(err),
-        ...data,
-      }),
+      msg:
+        typeof arg2 === 'string'
+          ? format(arg2, args, {
+              stringify: safeStringify,
+            })
+          : stringifyIfNotUndefined(arg2),
+      data: { ...arg1 },
+    };
+  }
+
+  if (arg1 && typeof arg1 === 'object') {
+    const { err, ...data } = arg1 as JsonObjectExtendedWithError;
+
+    if (err instanceof Error) {
+      return {
+        time,
+        level,
+        msg: typeof arg2 === 'string' ? arg2 : err.message || undefined,
+        err,
+        data: withNullProto({
+          err: serializeError(err),
+          ...data,
+        }),
+      };
+    }
+
+    return {
+      time,
+      level,
+      msg:
+        typeof arg2 === 'string'
+          ? format(String(arg2), args, {
+              stringify: safeStringify,
+            })
+          : stringifyIfNotUndefined(arg2),
+      data: arg1,
     };
   }
 
@@ -188,8 +214,11 @@ function toLogDescriptor(
     time,
     level,
     msg:
-      arg2 && format(arg2.toLocaleString(), args, { stringify: safeStringify }),
-    data: data && withNullProto(data),
+      typeof arg2 === 'string'
+        ? format(arg2, args, {
+            stringify: safeStringify,
+          })
+        : stringifyIfNotUndefined(arg1),
   };
 }
 
@@ -297,13 +326,9 @@ export class Logger implements LogMethods {
 
   #write(
     level: Level,
-    arg1:
-      | Error
-      | JsonObjectExtended
-      | JsonObjectExtendedWithError
-      | JsonPrimitive,
-    arg2?: JsonPrimitive,
-    ...args: JsonPrimitive[]
+    arg1: unknown,
+    arg2?: unknown,
+    ...args: unknown[]
   ): void {
     const log = Object.freeze(
       withNullProto(toLogDescriptor(level, arg1, arg2, ...args), {
@@ -354,32 +379,109 @@ export class Logger implements LogMethods {
     });
   }
 
-  public trace(...args: any[]) {
+  // https://github.com/microsoft/TypeScript/issues/10570
+  public trace(
+    err: Error | unknown,
+    str?: JsonPrimitive,
+    ...args: JsonValue[]
+  ): void;
+  public trace(
+    data: JsonObjectExtendedWithError,
+    str?: JsonPrimitive,
+    ...args: JsonValue[]
+  ): void;
+  public trace(str: JsonPrimitive): void;
+  // @ts-expect-error
+  public trace(...args) {
     // @ts-expect-error
     this.#write(Level.Trace, ...args);
   }
 
-  public debug(...args: any[]) {
+  // https://github.com/microsoft/TypeScript/issues/10570
+  public debug(
+    err: Error | unknown,
+    str?: JsonPrimitive,
+    ...args: JsonValue[]
+  ): void;
+  public debug(
+    data: JsonObjectExtendedWithError,
+    str?: JsonPrimitive,
+    ...args: JsonValue[]
+  ): void;
+  public debug(str: JsonPrimitive): void;
+  // @ts-expect-error
+  public debug(...args) {
     // @ts-expect-error
     this.#write(Level.Debug, ...args);
   }
 
-  public warn(...args: any[]) {
-    // @ts-expect-error
-    this.#write(Level.Warn, ...args);
-  }
-
-  public info(...args: any[]) {
+  // https://github.com/microsoft/TypeScript/issues/10570
+  public info(
+    err: Error | unknown,
+    str?: JsonPrimitive,
+    ...args: JsonValue[]
+  ): void;
+  public info(
+    data: JsonObjectExtendedWithError,
+    str?: JsonPrimitive,
+    ...args: JsonValue[]
+  ): void;
+  public info(str: JsonPrimitive): void;
+  // @ts-expect-error
+  public info(...args) {
     // @ts-expect-error
     this.#write(Level.Info, ...args);
   }
 
-  public error(...args: any[]) {
+  // https://github.com/microsoft/TypeScript/issues/10570
+  public warn(
+    err: Error | unknown,
+    str?: JsonPrimitive,
+    ...args: JsonValue[]
+  ): void;
+  public warn(
+    data: JsonObjectExtendedWithError,
+    str?: JsonPrimitive,
+    ...args: JsonValue[]
+  ): void;
+  public warn(str: JsonPrimitive): void;
+  // @ts-expect-error
+  public warn(...args) {
+    // @ts-expect-error
+    this.#write(Level.Warn, ...args);
+  }
+
+  // https://github.com/microsoft/TypeScript/issues/10570
+  public error(
+    err: Error | unknown,
+    str?: JsonPrimitive,
+    ...args: JsonValue[]
+  ): void;
+  public error(
+    data: JsonObjectExtendedWithError,
+    str?: JsonPrimitive,
+    ...args: JsonValue[]
+  ): void;
+  public error(str: JsonPrimitive): void;
+  // @ts-expect-error
+  public error(...args) {
     // @ts-expect-error
     this.#write(Level.Error, ...args);
   }
 
-  public fatal(...args: any[]) {
+  public fatal(
+    err: Error | unknown,
+    str?: JsonPrimitive,
+    ...args: JsonValue[]
+  ): void;
+  public fatal(
+    data: JsonObjectExtendedWithError,
+    str?: JsonPrimitive,
+    ...args: JsonValue[]
+  ): void;
+  public fatal(str: JsonPrimitive): void;
+  // @ts-expect-error
+  public fatal(...args) {
     // @ts-expect-error
     this.#write(Level.Fatal, ...args);
   }
