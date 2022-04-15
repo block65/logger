@@ -114,6 +114,10 @@ export interface AlsContext {
   context?: JsonObjectExtended;
 }
 
+function stringifyIfNotUndefined(val: unknown): string | undefined {
+  return typeof val !== 'undefined' ? String(val) : val;
+}
+
 function withNullProto<T extends object>(obj: T, ...objs: Partial<T>[]): T {
   return Object.assign(Object.create(null), obj, ...objs);
 }
@@ -131,15 +135,14 @@ function isLogDescriptor(log: LogDescriptor | Symbol): log is LogDescriptor {
   return isPlainObject(log);
 }
 
+/**
+ * Arguments are all set to unknown as we really cant trust the user
+ */
 function toLogDescriptor(
   level: Level,
-  arg1:
-    | Error
-    | JsonObjectExtended
-    | JsonObjectExtendedWithError
-    | JsonPrimitive,
-  arg2?: JsonPrimitive,
-  ...args: JsonPrimitive[]
+  arg1: unknown,
+  arg2?: unknown,
+  ...args: unknown[]
 ): LogDescriptor {
   const time = new Date();
 
@@ -147,7 +150,7 @@ function toLogDescriptor(
     return {
       time,
       level,
-      msg: arg2 ? arg2.toLocaleString() : arg1.message,
+      msg: typeof arg2 === 'string' ? arg2 : arg1.message,
       data: {
         err: serializeError(arg1),
       },
@@ -159,28 +162,52 @@ function toLogDescriptor(
     return {
       time,
       level,
-      msg:
-        arg1 &&
-        format(arg1.toLocaleString(), [arg2, ...args], {
-          stringify: safeStringify,
-        }),
+      msg: format(String(arg1), [arg2, ...args], {
+        stringify: safeStringify,
+      }),
     };
   }
 
-  const { err, ...data } = arg1;
-
-  if (err instanceof Error) {
+  if (Array.isArray(arg1)) {
     return {
       time,
       level,
-      msg: arg2
-        ? arg2.toLocaleString()
-        : err.message || data.message?.toLocaleString() || undefined,
-      err,
-      data: withNullProto({
-        err: serializeError(err),
-        ...data,
-      }),
+      msg:
+        typeof arg2 === 'string'
+          ? format(arg2, args, {
+              stringify: safeStringify,
+            })
+          : stringifyIfNotUndefined(arg2),
+      data: { ...arg1 },
+    };
+  }
+
+  if (arg1 && typeof arg1 === 'object') {
+    const { err, ...data } = arg1 as JsonObjectExtendedWithError;
+
+    if (err instanceof Error) {
+      return {
+        time,
+        level,
+        msg: typeof arg2 === 'string' ? arg2 : err.message || undefined,
+        err,
+        data: withNullProto({
+          err: serializeError(err),
+          ...data,
+        }),
+      };
+    }
+
+    return {
+      time,
+      level,
+      msg:
+        typeof arg2 === 'string'
+          ? format(String(arg2), args, {
+              stringify: safeStringify,
+            })
+          : stringifyIfNotUndefined(arg2),
+      data: arg1,
     };
   }
 
@@ -188,8 +215,11 @@ function toLogDescriptor(
     time,
     level,
     msg:
-      arg2 && format(arg2.toLocaleString(), args, { stringify: safeStringify }),
-    data: data && withNullProto(data),
+      typeof arg2 === 'string'
+        ? format(arg2, args, {
+            stringify: safeStringify,
+          })
+        : stringifyIfNotUndefined(arg1),
   };
 }
 
@@ -297,13 +327,9 @@ export class Logger implements LogMethods {
 
   #write(
     level: Level,
-    arg1:
-      | Error
-      | JsonObjectExtended
-      | JsonObjectExtendedWithError
-      | JsonPrimitive,
-    arg2?: JsonPrimitive,
-    ...args: JsonPrimitive[]
+    arg1: unknown,
+    arg2?: unknown,
+    ...args: unknown[]
   ): void {
     const log = Object.freeze(
       withNullProto(toLogDescriptor(level, arg1, arg2, ...args), {
