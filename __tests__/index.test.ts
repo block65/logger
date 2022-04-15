@@ -275,6 +275,9 @@ describe('Basic', () => {
     });
 
     logger.trace('hello');
+    logger.debug('hello');
+    logger.info('hello');
+    logger.error('hello');
     logger.fatal('boom');
 
     await logger.flush();

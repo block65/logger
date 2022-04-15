@@ -7,6 +7,12 @@ import {
   test,
 } from '@jest/globals';
 
+function newError(msg: string): Error {
+  const err = new Error(msg);
+  err.stack = `${err.name}\n    at fake.js:0:0`;
+  return err;
+}
+
 describe('Data', () => {
   beforeEach(() => {
     jest.resetAllMocks();
@@ -25,14 +31,14 @@ describe('Data', () => {
     Symbol(123),
     { [Symbol('234')]: 'symbol as key' },
     Object.freeze({ frozen: 123 }),
-    new Error('test'),
+    newError('test'),
     null,
     undefined,
     BigInt(1),
     Buffer.from([]),
     { message: 'test' },
     { err: null },
-    { err: Error('err prop') },
+    { err: newError('err prop') },
   ];
 
   const randomArgumentSet: typeof bigOlSetOfTypes[] = [];
@@ -42,7 +48,7 @@ describe('Data', () => {
   });
 
   test.each(randomArgumentSet)(
-    '%# args [%o,%o,%o,%o] does not crash',
+    '%# argdddds [%o,%o,%o,%o] does not crash',
     async (...args: unknown[]) => {
       const { createLoggerWithWaitableMock } = await import('./helpers.js');
 
