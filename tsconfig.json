@@ -11,7 +11,8 @@
     "removeComments": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "noUncheckedIndexedAccess": true
+    "noUncheckedIndexedAccess": true,
+    "useUnknownInCatchVariables": true
   },
   "include": ["./lib", "./__tests__"]
 }
