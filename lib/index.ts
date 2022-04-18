@@ -97,11 +97,6 @@ function internalCreateLogger(
     destination,
     transformer: jsonTransformer,
     ...options,
-    context: {
-      ...options.context,
-      pid: process.pid,
-      hostname: hostname(),
-    },
   });
 }
 
