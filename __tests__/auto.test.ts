@@ -42,7 +42,7 @@ describe('Auto Logger', () => {
   });
 
   test('AWS ECS', async () => {
-    process.env.ECS_AVAILABLE_LOGGING_DRIVERS = 'aws-logs';
+    process.env.ECS_AVAILABLE_LOGGING_DRIVERS = JSON.stringify(['awslogs']);
 
     const { createAutoConfiguredLoggerWithWaitableMock } = await import(
       './helpers.js'
