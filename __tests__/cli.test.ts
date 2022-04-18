@@ -21,17 +21,15 @@ describe('CLI', () => {
   });
 
   test('force-color on', async () => {
-    const { Level, Logger } = await import('../lib/logger.js');
+    const { createFileLoggerWithWaitableMock, Level } = await import(
+      './helpers.js'
+    );
     const { createCliTransformer } = await import('../lib/transformers/cli.js');
 
-    const logger = new Logger({
+    const [logger, callback, errback] = createFileLoggerWithWaitableMock({
       transformer: createCliTransformer({ color: true }),
-      destination: process.stdout,
       level: Level.Trace,
     });
-
-    // @ts-ignore
-    const callback = jest.spyOn(console._stdout, 'write').mockImplementation();
 
     logger.fatal(new Error('herp'));
     logger.error(new Error('hallo'));
@@ -42,25 +40,21 @@ describe('CLI', () => {
 
     await logger.flush();
 
-    expect(callback).toHaveBeenCalledTimes(6);
-    expect(callback.mock.calls).toMatchSnapshot();
-
-    callback.mockRestore();
+    expect(errback).not.toHaveBeenCalled();
+    await expect(callback.waitUntilCalledTimes(6)).resolves.toMatchSnapshot();
+    expect(errback).not.toHaveBeenCalled();
   });
 
   test('force-color off', async () => {
-    const { Level, Logger } = await import('../lib/logger.js');
+    const { createFileLoggerWithWaitableMock, Level } = await import(
+      './helpers.js'
+    );
     const { createCliTransformer } = await import('../lib/transformers/cli.js');
 
-    const logger = new Logger({
+    const [logger, callback, errback] = createFileLoggerWithWaitableMock({
       transformer: createCliTransformer({ color: false }),
-      destination: process.stdout,
       level: Level.Trace,
     });
-
-    // @ts-ignore
-    const callback = jest.spyOn(console._stdout, 'write').mockImplementation();
-
     logger.fatal(new Error('herp'));
     logger.error(new Error('hallo'));
     logger.info(new Error('hello'));
@@ -70,9 +64,8 @@ describe('CLI', () => {
 
     await logger.flush();
 
-    expect(callback).toHaveBeenCalledTimes(6);
-    expect(callback.mock.calls).toMatchSnapshot();
-
-    callback.mockRestore();
+    expect(errback).not.toHaveBeenCalled();
+    await expect(callback.waitUntilCalledTimes(6)).resolves.toMatchSnapshot();
+    expect(errback).not.toHaveBeenCalled();
   });
 });
