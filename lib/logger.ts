@@ -330,10 +330,17 @@ export class Logger implements LogMethods {
     arg2?: unknown,
     ...args: unknown[]
   ): void {
-    const log = Object.freeze(
-      withNullProto(toLogDescriptor(level, arg1, arg2, ...args), {
-        ...(this.#context && { ctx: this.#context }),
+    const alsContext = this.als.getStore();
+
+    const ctx = {
+      ...((this.#context || alsContext) && {
+        ...this.#context,
+        ...alsContext,
       }),
+    };
+
+    const log = Object.freeze(
+      Object.assign(toLogDescriptor(level, arg1, arg2, ...args, ctx)),
     );
 
     if (log.level >= this.level) {
