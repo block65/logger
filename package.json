@@ -61,9 +61,9 @@
   },
   "devDependencies": {
     "@bazel/bazelisk": "^1.11.0",
-    "@bazel/buildifier": "^5.0.1",
+    "@bazel/buildifier": "^5.1.0",
     "@bazel/ibazel": "^0.16.2",
-    "@bazel/typescript": "5.3.0",
+    "@bazel/typescript": "^5.4.0",
     "@block65/eslint-config": "^7.0.4",
     "@jest/globals": "^27.5.1",
     "@sentry/integrations": "^6.19.6",
