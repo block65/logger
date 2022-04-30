@@ -43,7 +43,7 @@
     "build:clean": "bazel clean",
     "build:watch": "ibazel build",
     "test": "bazel test //:unit",
-    "test:dev": "TEST_TARGET=DONOTUSE NODE_OPTIONS=--experimental-vm-modules jest --watchAll --runInBand",
+    "test:dev": "TEST_TARGET=DONOTUSE NODE_OPTIONS=--experimental-vm-modules jest --watch --runInBand",
     "test:dev:update": "TEST_TARGET=DONOTUSE NODE_OPTIONS=--experimental-vm-modules jest --runInBand --updateSnapshot",
     "test:update": "bazel run //:unit.update",
     "test:watch": "ibazel test //:unit"
