@@ -107,4 +107,40 @@ describe('Child Logger', () => {
     expect(errback).not.toBeCalled();
   });
 
+  test('child logger spam', async () => {
+    const { createLoggerWithWaitableMock } = await import('./helpers.js');
+
+    const [logger, callback, errback] = createLoggerWithWaitableMock({
+      level: Level.Trace,
+    });
+
+    const warningMock = jest.fn();
+
+    process.on('warning', (err) => {
+      console.warn(err);
+      warningMock(err);
+    });
+
+    const iterations = 500;
+
+    const autoEndMock = jest.fn(() => {});
+
+    // eslint-disable-next-line no-restricted-syntax
+    for await (const childIndex of [...Array(iterations)].map(
+      (_, idx) => idx,
+    )) {
+      const childLogger = logger.child({ childIndex });
+      childLogger.info(new Error('hello'));
+      childLogger.on('end', autoEndMock);
+    }
+
+    await logger.end();
+
+    await expect(callback.waitUntilCalledTimes(iterations));
+    expect(errback).not.toBeCalled();
+    expect(warningMock).not.toBeCalled();
+
+    // make sure each child was ended
+    expect(autoEndMock).toBeCalledTimes(iterations);
+  });
 });
