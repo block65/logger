@@ -19,6 +19,23 @@ describe('Context Wrapper', () => {
     jest.useRealTimers();
   });
 
+  test.only('Basic', async () => {
+    const { createLoggerWithWaitableMock } = await import('./helpers.js');
+
+    const [logger, callback, errback] = createLoggerWithWaitableMock({
+      context: {
+        name: 'CONTEXTNAME',
+      },
+    });
+
+    logger.info('hello');
+
+    await logger.end();
+
+    await expect(callback.waitUntilCalledTimes(1)).resolves.toMatchSnapshot();
+    expect(errback).not.toBeCalled();
+  });
+
   test('Lambda', async () => {
     const { withLambdaLoggerContextWrapper } = await import('../lib/lambda.js');
 

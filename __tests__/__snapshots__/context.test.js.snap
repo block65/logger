@@ -1,5 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Context Wrapper Basic 1`] = `
+Array [
+  Array [
+    Object {
+      "ctx": Object {
+        "name": "CONTEXTNAME",
+      },
+      "level": 30,
+      "msg": "hello",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+]
+`;
+
 exports[`Context Wrapper Lambda 1`] = `
 Array [
   Array [
