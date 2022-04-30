@@ -25,11 +25,12 @@ describe('Child Logger', () => {
 
     const childLogger = logger.child({ helloChildLogger: 'hello!' });
 
-    childLogger.error(new Error('hallo'));
-    childLogger.info(new Error('hello'));
-    childLogger.warn(new Error('halo'));
-    childLogger.debug(new Error('gday'));
-    childLogger.trace(new Error('nihao2'));
+    childLogger.fatal(new Error('fatal'));
+    childLogger.error(new Error('error'));
+    childLogger.info(new Error('info'));
+    childLogger.warn(new Error('warn'));
+    childLogger.debug(new Error('debug'));
+    childLogger.trace(new Error('trace'));
     await expect(callback.waitUntilCalledTimes(5)).resolves.toMatchSnapshot();
     expect(errback).not.toBeCalled();
   });
@@ -48,12 +49,12 @@ describe('Child Logger', () => {
       },
     );
 
-    childLogger.fatal(new Error('hallo'));
-    childLogger.error(new Error('hallo'));
-    childLogger.info(new Error('hello'));
-    childLogger.warn(new Error('halo'));
-    childLogger.debug(new Error('gday'));
-    childLogger.trace(new Error('nihao2'));
+    childLogger.fatal(new Error('fatal'));
+    childLogger.error(new Error('error'));
+    childLogger.info(new Error('info'));
+    childLogger.warn(new Error('warn'));
+    childLogger.debug(new Error('debug'));
+    childLogger.trace(new Error('trace'));
     await expect(callback.waitUntilCalledTimes(6)).resolves.toMatchSnapshot();
     expect(errback).not.toBeCalled();
   });
@@ -72,12 +73,12 @@ describe('Child Logger', () => {
       },
     );
 
-    childLogger.fatal(new Error('hallo'));
-    childLogger.error(new Error('hallo'));
-    childLogger.info(new Error('hello'));
-    childLogger.warn(new Error('halo'));
-    childLogger.debug(new Error('gday'));
-    childLogger.trace(new Error('nihao2'));
+    childLogger.fatal(new Error('fatal'));
+    childLogger.error(new Error('error'));
+    childLogger.info(new Error('info'));
+    childLogger.warn(new Error('warn'));
+    childLogger.debug(new Error('debug'));
+    childLogger.trace(new Error('trace'));
     await expect(callback.waitUntilCalledTimes(1)).resolves.toMatchSnapshot();
     expect(errback).not.toBeCalled();
   });
@@ -96,13 +97,14 @@ describe('Child Logger', () => {
       },
     );
 
-    childLogger.fatal(new Error('hallo'));
-    childLogger.error(new Error('hallo'));
-    childLogger.info(new Error('hello'));
-    childLogger.warn(new Error('halo'));
-    childLogger.debug(new Error('gday'));
-    childLogger.trace(new Error('nihao2'));
+    childLogger.fatal(new Error('fatal'));
+    childLogger.error(new Error('error'));
+    childLogger.info(new Error('info'));
+    childLogger.warn(new Error('warn'));
+    childLogger.debug(new Error('debug'));
+    childLogger.trace(new Error('trace'));
     await expect(callback.waitUntilCalledTimes(1)).resolves.toMatchSnapshot();
     expect(errback).not.toBeCalled();
   });
+
 });
