@@ -193,16 +193,16 @@ Array [
           "message": "Before 1",
           "name": "Error",
           "stack": "Error: Before 1
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/index.test.js:173:22)
-    at Promise.then.completed (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)
+    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/index.test.js:172:22)
+    at Promise.then.completed (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/utils.js:323:28)
     at new Promise (<anonymous>)
-    at callAsyncCircusFn (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:316:10)
-    at _callCircusTest (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:218:40)
+    at callAsyncCircusFn (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/utils.js:249:10)
+    at _callCircusTest (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/run.js:276:40)
     at processTicksAndRejections (node:internal/process/task_queues:96:5)
-    at _runTest (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:155:3)
-    at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:66:9)
-    at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:60:9)
-    at run (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:25:3)",
+    at _runTest (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/run.js:208:3)
+    at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/run.js:96:9)
+    at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/run.js:90:9)
+    at run (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/run.js:31:3)",
         },
       },
       "err": [Error: Before 1],
@@ -218,16 +218,16 @@ Array [
           "message": "Before 2",
           "name": "Error",
           "stack": "Error: Before 2
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/index.test.js:174:22)
-    at Promise.then.completed (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)
+    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/index.test.js:173:22)
+    at Promise.then.completed (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/utils.js:323:28)
     at new Promise (<anonymous>)
-    at callAsyncCircusFn (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:316:10)
-    at _callCircusTest (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:218:40)
+    at callAsyncCircusFn (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/utils.js:249:10)
+    at _callCircusTest (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/run.js:276:40)
     at processTicksAndRejections (node:internal/process/task_queues:96:5)
-    at _runTest (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:155:3)
-    at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:66:9)
-    at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:60:9)
-    at run (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:25:3)",
+    at _runTest (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/run.js:208:3)
+    at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/run.js:96:9)
+    at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/run.js:90:9)
+    at run (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/run.js:31:3)",
         },
       },
       "err": [Error: Before 2],
@@ -243,7 +243,7 @@ Array [
           "message": "After 1",
           "name": "Error",
           "stack": "Error: After 1
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/index.test.js:176:22)
+    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/index.test.js:175:22)
     at processTicksAndRejections (node:internal/process/task_queues:96:5)",
         },
       },
@@ -260,7 +260,7 @@ Array [
           "message": "After 2",
           "name": "Error",
           "stack": "Error: After 2
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/index.test.js:177:22)
+    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/index.test.js:176:22)
     at processTicksAndRejections (node:internal/process/task_queues:96:5)",
         },
       },
@@ -282,16 +282,16 @@ Array [
           "message": "Fake",
           "name": "Error",
           "stack": "Error: Fake
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/index.test.js:165:22)
-    at Promise.then.completed (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)
+    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/index.test.js:164:22)
+    at Promise.then.completed (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/utils.js:323:28)
     at new Promise (<anonymous>)
-    at callAsyncCircusFn (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:316:10)
-    at _callCircusTest (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:218:40)
+    at callAsyncCircusFn (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/utils.js:249:10)
+    at _callCircusTest (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/run.js:276:40)
     at processTicksAndRejections (node:internal/process/task_queues:96:5)
-    at _runTest (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:155:3)
-    at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:66:9)
-    at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:60:9)
-    at run (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:25:3)",
+    at _runTest (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/run.js:208:3)
+    at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/run.js:96:9)
+    at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/run.js:90:9)
+    at run (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/run.js:31:3)",
         },
       },
       "err": [Error: Fake],
@@ -307,16 +307,16 @@ Array [
           "message": "Fake",
           "name": "Error",
           "stack": "Error: Fake
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/index.test.js:166:22)
-    at Promise.then.completed (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)
+    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/index.test.js:165:22)
+    at Promise.then.completed (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/utils.js:323:28)
     at new Promise (<anonymous>)
-    at callAsyncCircusFn (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:316:10)
-    at _callCircusTest (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:218:40)
+    at callAsyncCircusFn (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/utils.js:249:10)
+    at _callCircusTest (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/run.js:276:40)
     at processTicksAndRejections (node:internal/process/task_queues:96:5)
-    at _runTest (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:155:3)
-    at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:66:9)
-    at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:60:9)
-    at run (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:25:3)",
+    at _runTest (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/run.js:208:3)
+    at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/run.js:96:9)
+    at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/run.js:90:9)
+    at run (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/run.js:31:3)",
         },
       },
       "err": [Error: Fake],
@@ -358,16 +358,16 @@ Array [
           "message": "Warn",
           "name": "Error",
           "stack": "Error: Warn
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/index.test.js:188:21)
-    at Promise.then.completed (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)
+    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/index.test.js:187:21)
+    at Promise.then.completed (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/utils.js:323:28)
     at new Promise (<anonymous>)
-    at callAsyncCircusFn (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:316:10)
-    at _callCircusTest (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:218:40)
+    at callAsyncCircusFn (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/utils.js:249:10)
+    at _callCircusTest (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/run.js:276:40)
     at processTicksAndRejections (node:internal/process/task_queues:96:5)
-    at _runTest (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:155:3)
-    at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:66:9)
-    at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:60:9)
-    at run (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:25:3)",
+    at _runTest (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/run.js:208:3)
+    at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/run.js:96:9)
+    at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/run.js:90:9)
+    at run (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/run.js:31:3)",
         },
       },
       "err": [Error: Warn],
@@ -383,16 +383,16 @@ Array [
           "message": "Its an error",
           "name": "Error",
           "stack": "Error: Its an error
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/index.test.js:189:22)
-    at Promise.then.completed (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)
+    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/index.test.js:188:22)
+    at Promise.then.completed (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/utils.js:323:28)
     at new Promise (<anonymous>)
-    at callAsyncCircusFn (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:316:10)
-    at _callCircusTest (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:218:40)
+    at callAsyncCircusFn (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/utils.js:249:10)
+    at _callCircusTest (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/run.js:276:40)
     at processTicksAndRejections (node:internal/process/task_queues:96:5)
-    at _runTest (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:155:3)
-    at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:66:9)
-    at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:60:9)
-    at run (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:25:3)",
+    at _runTest (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/run.js:208:3)
+    at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/run.js:96:9)
+    at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/run.js:90:9)
+    at run (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/run.js:31:3)",
         },
       },
       "err": [Error: Its an error],
@@ -408,16 +408,16 @@ Array [
           "message": "OMG fatal",
           "name": "Error",
           "stack": "Error: OMG fatal
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/index.test.js:190:22)
-    at Promise.then.completed (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)
+    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/index.test.js:189:22)
+    at Promise.then.completed (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/utils.js:323:28)
     at new Promise (<anonymous>)
-    at callAsyncCircusFn (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:316:10)
-    at _callCircusTest (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:218:40)
+    at callAsyncCircusFn (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/utils.js:249:10)
+    at _callCircusTest (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/run.js:276:40)
     at processTicksAndRejections (node:internal/process/task_queues:96:5)
-    at _runTest (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:155:3)
-    at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:66:9)
-    at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:60:9)
-    at run (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:25:3)",
+    at _runTest (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/run.js:208:3)
+    at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/run.js:96:9)
+    at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/run.js:90:9)
+    at run (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/run.js:31:3)",
         },
       },
       "err": [Error: OMG fatal],
@@ -437,16 +437,16 @@ Array [
         "message": "OMG fatal",
         "name": "Error",
         "stack": "Error: OMG fatal
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/index.test.js:205:22)
-    at Promise.then.completed (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:391:28)
+    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/index.test.js:204:22)
+    at Promise.then.completed (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/utils.js:323:28)
     at new Promise (<anonymous>)
-    at callAsyncCircusFn (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/utils.js:316:10)
-    at _callCircusTest (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:218:40)
+    at callAsyncCircusFn (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/utils.js:249:10)
+    at _callCircusTest (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/run.js:276:40)
     at processTicksAndRejections (node:internal/process/task_queues:96:5)
-    at _runTest (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:155:3)
-    at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:66:9)
-    at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:60:9)
-    at run (~/block65_logger/bazel-out/k8-fastbuild/~/npm/node_modules/jest-circus/build/run.js:25:3)",
+    at _runTest (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/run.js:208:3)
+    at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/run.js:96:9)
+    at _runTestsForDescribeBlock (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/run.js:90:9)
+    at run (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/node_modules/jest-circus/build/run.js:31:3)",
       },
     },
     "err": [Error: OMG fatal],

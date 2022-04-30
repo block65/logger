@@ -9,7 +9,7 @@ Array [
         "message": "hallo",
         "name": "Error",
         "stack": "Error: hallo
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/control.test.js:13:36)",
+    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/control.test.js:12:36)",
       },
     },
     "err": [Error: hallo],
@@ -28,7 +28,7 @@ Array [
         "message": "hallo",
         "name": "Error",
         "stack": "Error: hallo
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/control.test.js:20:21)
+    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/control.test.js:19:21)
     at processTicksAndRejections (node:internal/process/task_queues:96:5)",
       },
     },

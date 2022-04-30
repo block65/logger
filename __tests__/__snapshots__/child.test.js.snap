@@ -9,7 +9,7 @@ Array [
           "message": "hallo",
           "name": "Error",
           "stack": "Error: hallo
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:16:27)",
+    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:15:27)",
         },
         "helloChildLogger": "hello!",
       },
@@ -26,7 +26,7 @@ Array [
           "message": "hello",
           "name": "Error",
           "stack": "Error: hello
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:17:26)",
+    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:16:26)",
         },
         "helloChildLogger": "hello!",
       },
@@ -43,7 +43,7 @@ Array [
           "message": "halo",
           "name": "Error",
           "stack": "Error: halo
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:18:26)",
+    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:17:26)",
         },
         "helloChildLogger": "hello!",
       },
@@ -60,7 +60,7 @@ Array [
           "message": "gday",
           "name": "Error",
           "stack": "Error: gday
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:19:27)",
+    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:18:27)",
         },
         "helloChildLogger": "hello!",
       },
@@ -77,7 +77,7 @@ Array [
           "message": "nihao2",
           "name": "Error",
           "stack": "Error: nihao2
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:20:27)",
+    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:19:27)",
         },
         "helloChildLogger": "hello!",
       },
@@ -99,7 +99,7 @@ Array [
           "message": "hallo",
           "name": "Error",
           "stack": "Error: hallo
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:66:27)
+    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:65:27)
     at processTicksAndRejections (node:internal/process/task_queues:96:5)",
         },
         "helloChildLogger": "hello!",
@@ -122,7 +122,7 @@ Array [
           "message": "hallo",
           "name": "Error",
           "stack": "Error: hallo
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:49:27)
+    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:48:27)
     at processTicksAndRejections (node:internal/process/task_queues:96:5)",
         },
         "helloChildLogger": "hello!",
