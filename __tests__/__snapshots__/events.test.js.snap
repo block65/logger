@@ -93,11 +93,3 @@ Array [
   ],
 ]
 `;
-
-exports[`Events logger.end 3`] = `
-Array [
-  Array [
-    [Error: Input stream is not writeable],
-  ],
-]
-`;
