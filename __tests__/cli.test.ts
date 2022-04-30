@@ -20,12 +20,12 @@ describe('CLI', () => {
   });
 
   test('force-color on', async () => {
-    const { createFileLoggerWithWaitableMock, Level } = await import(
+    const { createLoggerWithWaitableMock, Level } = await import(
       './helpers.js'
     );
     const { createCliTransformer } = await import('../lib/transformers/cli.js');
 
-    const [logger, callback, errback] = createFileLoggerWithWaitableMock({
+    const [logger, callback, errback] = createLoggerWithWaitableMock({
       transformer: createCliTransformer({ color: true }),
       level: Level.Trace,
     });
@@ -45,12 +45,12 @@ describe('CLI', () => {
   });
 
   test('force-color off', async () => {
-    const { createFileLoggerWithWaitableMock, Level } = await import(
+    const { createLoggerWithWaitableMock, Level } = await import(
       './helpers.js'
     );
     const { createCliTransformer } = await import('../lib/transformers/cli.js');
 
-    const [logger, callback, errback] = createFileLoggerWithWaitableMock({
+    const [logger, callback, errback] = createLoggerWithWaitableMock({
       transformer: createCliTransformer({ color: false }),
       level: Level.Trace,
     });
