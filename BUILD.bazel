@@ -69,8 +69,7 @@ jest_test(
         "NODE_OPTIONS": "--stack-trace-limit=3",
     },
     snapshots = TEST_SNAPSHOT_SRCS,
-    deps = DEPS + TEST_DEPS,
-     tags = [
+    tags = [
         # Need to set the pwd to avoid jest needing a runfiles helper
         # Windows users with permissions can use --enable_runfiles
         # to make this test work
@@ -78,6 +77,7 @@ jest_test(
         # TODO: why does this fail almost all the time, but pass on local Mac?
         "no-bazelci-mac",
     ],
+    deps = DEPS + TEST_DEPS,
 )
 
 js_library(
