@@ -1,5 +1,6 @@
 import Emittery from 'emittery';
 import { AsyncLocalStorage } from 'node:async_hooks';
+import { EventEmitter } from 'node:events';
 import { WriteStream } from 'node:fs';
 import { PassThrough, Writable } from 'node:stream';
 import { WriteStream as TtyWriteStream } from 'node:tty';
@@ -370,10 +371,22 @@ export class Logger implements LogMethods {
     }
   }
 
+  #updateMaxListeners(num: number) {
+    this.#inputStream.setMaxListeners(
+      Math.max(num, EventEmitter.defaultMaxListeners),
+    );
+  }
+
   public child(
     data: JsonObjectExtended,
     options: Pick<LoggerOptions, 'level' | 'context' | 'processors'> = {},
   ) {
+    // this prevents a MaxListenersExceededWarning when we create the new logger
+    // +2 because it has 1 listener by default and as we are
+    // pre-emptively increasing it *before* we create the new logger, that
+    // makes the other +1
+    this.#updateMaxListeners(this.#childLoggers.size + 2);
+
     const child = new Logger({
       level: this.level,
       destination: this.#inputStream,
@@ -396,6 +409,8 @@ export class Logger implements LogMethods {
 
     child.on('end', () => {
       this.#childLoggers.delete(child);
+      // +1 because it already has a listener by default
+      this.#updateMaxListeners(this.#childLoggers.size + 1);
     });
 
     return child;
