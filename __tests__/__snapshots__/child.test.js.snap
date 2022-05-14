@@ -6,16 +6,33 @@ Array [
     Object {
       "data": Object {
         "err": Object {
-          "message": "hallo",
+          "message": "fatal",
           "name": "Error",
-          "stack": "Error: hallo
+          "stack": "Error: fatal
+    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:15:27)",
+        },
+        "helloChildLogger": "hello!",
+      },
+      "err": [Error: fatal],
+      "level": 60,
+      "msg": "fatal",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+  Array [
+    Object {
+      "data": Object {
+        "err": Object {
+          "message": "error",
+          "name": "Error",
+          "stack": "Error: error
     at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:16:27)",
         },
         "helloChildLogger": "hello!",
       },
-      "err": [Error: hallo],
+      "err": [Error: error],
       "level": 50,
-      "msg": "hallo",
+      "msg": "error",
       "time": 2009-02-13T23:31:30.000Z,
     },
   ],
@@ -23,16 +40,16 @@ Array [
     Object {
       "data": Object {
         "err": Object {
-          "message": "hello",
+          "message": "info",
           "name": "Error",
-          "stack": "Error: hello
+          "stack": "Error: info
     at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:17:26)",
         },
         "helloChildLogger": "hello!",
       },
-      "err": [Error: hello],
+      "err": [Error: info],
       "level": 30,
-      "msg": "hello",
+      "msg": "info",
       "time": 2009-02-13T23:31:30.000Z,
     },
   ],
@@ -40,16 +57,16 @@ Array [
     Object {
       "data": Object {
         "err": Object {
-          "message": "halo",
+          "message": "warn",
           "name": "Error",
-          "stack": "Error: halo
+          "stack": "Error: warn
     at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:18:26)",
         },
         "helloChildLogger": "hello!",
       },
-      "err": [Error: halo],
+      "err": [Error: warn],
       "level": 40,
-      "msg": "halo",
+      "msg": "warn",
       "time": 2009-02-13T23:31:30.000Z,
     },
   ],
@@ -57,16 +74,16 @@ Array [
     Object {
       "data": Object {
         "err": Object {
-          "message": "gday",
+          "message": "debug",
           "name": "Error",
-          "stack": "Error: gday
+          "stack": "Error: debug
     at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:19:27)",
         },
         "helloChildLogger": "hello!",
       },
-      "err": [Error: gday],
+      "err": [Error: debug],
       "level": 20,
-      "msg": "gday",
+      "msg": "debug",
       "time": 2009-02-13T23:31:30.000Z,
     },
   ],
@@ -74,18 +91,39 @@ Array [
     Object {
       "data": Object {
         "err": Object {
-          "message": "nihao2",
+          "message": "trace",
           "name": "Error",
-          "stack": "Error: nihao2
+          "stack": "Error: trace
     at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:20:27)",
         },
         "helloChildLogger": "hello!",
       },
-      "err": [Error: nihao2],
+      "err": [Error: trace],
       "level": 10,
-      "msg": "nihao2",
+      "msg": "trace",
       "time": 2009-02-13T23:31:30.000Z,
     },
+  ],
+]
+`;
+
+exports[`Child Logger Lambda Context wrapper with child 1`] = `
+Array [
+  Array [
+    "2009-02-13T23:31:30.000Z		INFO	logger outside before	{\\"level\\":30}
+",
+  ],
+  Array [
+    "2009-02-13T23:31:30.000Z		INFO	logger inside	{\\"level\\":30}
+",
+  ],
+  Array [
+    "2009-02-13T23:31:30.000Z	fake-request-id1	INFO	childLogger inside	{\\"level\\":30,\\"childData\\":\\"1\\",\\"ctx\\":{\\"context\\":{\\"functionVersion\\":\\"999\\"},\\"childCtx\\":\\"1\\"}}
+",
+  ],
+  Array [
+    "2009-02-13T23:31:30.000Z		INFO	logger outside after	{\\"level\\":30}
+",
   ],
 ]
 `;
@@ -96,17 +134,17 @@ Array [
     Object {
       "data": Object {
         "err": Object {
-          "message": "hallo",
+          "message": "fatal",
           "name": "Error",
-          "stack": "Error: hallo
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:66:27)
+          "stack": "Error: fatal
+    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:72:27)
     at processTicksAndRejections (node:internal/process/task_queues:96:5)",
         },
         "helloChildLogger": "hello!",
       },
-      "err": [Error: hallo],
+      "err": [Error: fatal],
       "level": 60,
-      "msg": "hallo",
+      "msg": "fatal",
       "time": 2009-02-13T23:31:30.000Z,
     },
   ],
@@ -117,19 +155,37 @@ exports[`Child Logger level changes parent > child 1`] = `
 Array [
   Array [
     Object {
-      "data": Object {
-        "err": Object {
-          "message": "hallo",
-          "name": "Error",
-          "stack": "Error: hallo
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:49:27)
-    at processTicksAndRejections (node:internal/process/task_queues:96:5)",
-        },
-        "helloChildLogger": "hello!",
+      "ctx": Object {
+        "parent": "test",
       },
-      "err": [Error: hallo],
       "level": 60,
-      "msg": "hallo",
+      "msg": "fatal",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+  Array [
+    Object {
+      "ctx": Object {
+        "extraChildContext": "hello!",
+      },
+      "data": Object {
+        "extraChildData": "hello!",
+      },
+      "level": 60,
+      "msg": "fatal",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+  Array [
+    Object {
+      "ctx": Object {
+        "extraChildContext": "hello!",
+      },
+      "data": Object {
+        "extraChildData": "hello!",
+      },
+      "level": 60,
+      "msg": "fatal",
       "time": 2009-02-13T23:31:30.000Z,
     },
   ],
@@ -139,27 +195,27 @@ Array [
 exports[`Child Logger with context + cli 1`] = `
 Array [
   Array [
-    "2009-02-13T23:31:30.000Z FATAL  (CHILDLOGGER) hallo { err: { message: 'hallo', name: 'Error', stack: 'Error: hallo\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:32:27)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)' }, helloChildLogger: 'hello!' }
+    "2009-02-13T23:31:30.000Z FATAL  (CHILDLOGGER) fatal { err: { message: 'fatal', name: 'Error', stack: 'Error: fatal\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:32:27)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)' }, helloChildLogger: 'hello!' }
 ",
   ],
   Array [
-    "2009-02-13T23:31:30.000Z ERROR  (CHILDLOGGER) hallo { err: { message: 'hallo', name: 'Error', stack: 'Error: hallo\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:33:27)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)' }, helloChildLogger: 'hello!' }
+    "2009-02-13T23:31:30.000Z ERROR  (CHILDLOGGER) error { err: { message: 'error', name: 'Error', stack: 'Error: error\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:33:27)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)' }, helloChildLogger: 'hello!' }
 ",
   ],
   Array [
-    "2009-02-13T23:31:30.000Z INFO   (CHILDLOGGER) hello { err: { message: 'hello', name: 'Error', stack: 'Error: hello\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:34:26)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)' }, helloChildLogger: 'hello!' }
+    "2009-02-13T23:31:30.000Z INFO   (CHILDLOGGER) info { err: { message: 'info', name: 'Error', stack: 'Error: info\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:34:26)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)' }, helloChildLogger: 'hello!' }
 ",
   ],
   Array [
-    "2009-02-13T23:31:30.000Z WARN   (CHILDLOGGER) halo { err: { message: 'halo', name: 'Error', stack: 'Error: halo\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:35:26)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)' }, helloChildLogger: 'hello!' }
+    "2009-02-13T23:31:30.000Z WARN   (CHILDLOGGER) warn { err: { message: 'warn', name: 'Error', stack: 'Error: warn\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:35:26)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)' }, helloChildLogger: 'hello!' }
 ",
   ],
   Array [
-    "2009-02-13T23:31:30.000Z DEBUG  (CHILDLOGGER) gday { err: { message: 'gday', name: 'Error', stack: 'Error: gday\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:36:27)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)' }, helloChildLogger: 'hello!' }
+    "2009-02-13T23:31:30.000Z DEBUG  (CHILDLOGGER) debug { err: { message: 'debug', name: 'Error', stack: 'Error: debug\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:36:27)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)' }, helloChildLogger: 'hello!' }
 ",
   ],
   Array [
-    "2009-02-13T23:31:30.000Z TRACE  (CHILDLOGGER) nihao2 { err: { message: 'nihao2', name: 'Error', stack: 'Error: nihao2\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:37:27)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)' }, helloChildLogger: 'hello!' }
+    "2009-02-13T23:31:30.000Z TRACE  (CHILDLOGGER) trace { err: { message: 'trace', name: 'Error', stack: 'Error: trace\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/child.test.js:37:27)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)' }, helloChildLogger: 'hello!' }
 ",
   ],
 ]

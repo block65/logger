@@ -47,7 +47,7 @@ function internalCreateLogger(
   }
 
   // ECS
-  if (process.env.ECS_AVAILABLE_LOGGING_DRIVERS?.includes('aws-logs')) {
+  if (process.env.ECS_AVAILABLE_LOGGING_DRIVERS?.includes('awslogs')) {
     return new Logger({
       level,
       destination,
@@ -97,11 +97,6 @@ function internalCreateLogger(
     destination,
     transformer: jsonTransformer,
     ...options,
-    context: {
-      ...options.context,
-      pid: process.pid,
-      hostname: hostname(),
-    },
   });
 }
 

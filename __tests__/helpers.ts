@@ -10,19 +10,24 @@ import {
   Logger,
 } from '../lib/logger.js';
 
-interface WaitableMock<Y extends unknown[] = unknown[]> extends Mock<void, Y> {
-  waitUntilCalled(): Promise<Y>;
+interface WaitableMock<TArgs extends unknown[] = unknown[]>
+  extends Mock<(...args: TArgs) => void> {
+  waitUntilCalled(): Promise<TArgs>;
 
-  waitUntilCalledTimes(times: number): Promise<Y[]>;
+  waitUntilCalledTimes(times: number): Promise<TArgs[]>;
 }
 
+// helper only, might save import
+export { Level };
+
 export function waitableJestFn<
-  Y extends unknown[] = unknown[],
->(): WaitableMock<Y> {
-  const emitter = new Emittery<{ call: Y }>();
+  TArgs extends unknown[] = unknown[],
+>(): WaitableMock<TArgs> {
+  const emitter = new Emittery<{ call: TArgs }>();
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const fn = jest.fn((...args: Y): void => {
+  const fn = jest.fn((...args: TArgs): void => {
+    // console.log('waitableJestFn called with', { args });
     emitter.emit('call', args).catch((err) => {
       console.warn(err);
       process.exitCode = 1;
@@ -30,7 +35,7 @@ export function waitableJestFn<
   });
 
   const waitUntilCalledTimes = (times: number) => {
-    return new Promise<Y[]>((resolve) => {
+    return new Promise<TArgs[]>((resolve) => {
       const maybeResolve = () => {
         if (fn.mock.calls.length >= times) {
           emitter.clearListeners();
@@ -42,7 +47,7 @@ export function waitableJestFn<
     });
   };
 
-  const waitUntilCalled = async (): Promise<Y> => {
+  const waitUntilCalled = async (): Promise<TArgs> => {
     const [call] = await waitUntilCalledTimes(1);
     if (!call) {
       throw new Error('Falsy call found. This is most likely a bug');
@@ -63,7 +68,7 @@ export function promiseWait(ms: number): Promise<void> {
 
 export function createLoggerWithWaitableMock(
   options: Omit<CreateLoggerOptions, 'destination'> = {},
-): [Logger, WaitableMock<[LogDescriptor]>, Mock<void>] {
+): [Logger, WaitableMock<[LogDescriptor]>, Mock] {
   const destination = new PassThrough({ objectMode: true });
   const writeCallback = waitableJestFn<[LogDescriptor]>();
   const errBack = jest.fn((err) => {
@@ -85,7 +90,7 @@ export function createLoggerWithWaitableMock(
 
 export function createAutoConfiguredLoggerWithWaitableMock(
   options: Omit<CreateLoggerOptions, 'destination'> = {},
-): [Logger, WaitableMock<[string]>, Mock<void>] {
+): [Logger, WaitableMock<[string]>, Mock] {
   const destination = new PassThrough({ objectMode: true });
   const writeCallback = waitableJestFn<[string]>();
   const errBack = jest.fn((err) => {

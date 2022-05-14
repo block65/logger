@@ -1,14 +1,13 @@
 import Emittery from 'emittery';
 import { AsyncLocalStorage } from 'node:async_hooks';
+import { EventEmitter } from 'node:events';
 import { WriteStream } from 'node:fs';
 import { PassThrough, Writable } from 'node:stream';
-import { finished } from 'node:stream/promises';
 import { WriteStream as TtyWriteStream } from 'node:tty';
 import format from 'quick-format-unescaped';
 import { ErrorObject, serializeError } from 'serialize-error';
 import Chain from 'stream-chain';
 import type { JsonPrimitive } from 'type-fest';
-import { asyncLocalStorageProcessor } from './processors/als.js';
 import { isPlainObject, safeStringify } from './utils.js';
 
 // we support an extended set of values, as each have a toJSON method and
@@ -135,7 +134,7 @@ function isLogDescriptor(log: LogDescriptor | Symbol): log is LogDescriptor {
 }
 
 /**
- * Arguments are all set to unknown as we really cant trust the user
+ * Arguments are all set to unknown as we really can't trust the user
  */
 function toLogDescriptor(
   level: Level,
@@ -222,8 +221,6 @@ function toLogDescriptor(
   };
 }
 
-const pipeCleaner = Symbol('pipe-cleaner');
-
 export class Logger implements LogMethods {
   #inputStream = new PassThrough({
     objectMode: true,
@@ -234,21 +231,26 @@ export class Logger implements LogMethods {
 
   public level: Level;
 
-  public destination: Writable | WriteStream | TtyWriteStream;
+  public readonly destination: Writable | WriteStream | TtyWriteStream;
 
-  #emitter = new Emittery<{
+  readonly #emitter = new Emittery<{
     log: LogDescriptor;
     error: unknown;
     flush: undefined;
+    end: undefined;
   }>();
 
-  #processorChain: Chain;
+  readonly #processorChain: Chain;
 
-  #context: LogData | undefined;
+  readonly #context: LogData | undefined;
+
+  readonly #pipeCleanerChain: Chain;
 
   public setLevel(level: Level) {
     this.level = level;
   }
+
+  #childLoggers = new Set<Logger>();
 
   /**
    *
@@ -269,7 +271,9 @@ export class Logger implements LogMethods {
 
     this.level = level;
 
-    // TODO: validate decorators here
+    this.destination = destination;
+
+    // TODO: validate processors here
     // validate transformer also
 
     const processorWrapper = (
@@ -295,33 +299,36 @@ export class Logger implements LogMethods {
     };
 
     this.#processorChain = Chain.chain([
-      ...[
-        asyncLocalStorageProcessor,
-        ...processors,
-        ...(transformer ? [transformer.bind(this)] : []),
-      ].map((processor) => processorWrapper(processor)),
+      (log) => log,
+      ...[...processors, ...(transformer ? [transformer.bind(this)] : [])].map(
+        (processor) => processorWrapper(processor),
+      ),
     ]);
 
-    this.destination = destination;
+    this.#inputStream.on('error', (err) => this.#emitter.emit('error', err));
+    this.#processorChain.on('error', (err) => this.#emitter.emit('error', err));
 
-    this.destination.on('error', (err) => this.#emitter.emit('error', err));
+    this.#inputStream.pipe(this.#processorChain);
 
-    const pipeline = this.#inputStream.pipe(this.#processorChain).pipe(
-      // ignore the pipe cleaner
-      Chain.chain([(obj) => (obj === pipeCleaner ? null : obj)]),
+    // a chain to ignore the pipe cleaner symbol
+    this.#pipeCleanerChain = Chain.chain([
+      (obj) => (typeof obj === 'symbol' ? null : obj),
+    ]);
+    this.#pipeCleanerChain.on('error', (err) =>
+      this.#emitter.emit('error', err),
     );
 
+    this.#processorChain.pipe(this.#pipeCleanerChain);
+
     if (this.destination.writable) {
-      pipeline.pipe(this.destination);
+      this.#pipeCleanerChain.pipe(this.destination);
     } else {
       this.#emitter.emit('error', new Error('Destination is not writeable'));
     }
 
     this.destination.on('end', () => {
-      pipeline.unpipe(this.destination);
+      this.#pipeCleanerChain.unpipe(this.destination);
     });
-
-    pipeline.on('error', (err) => this.#emitter.emit('error', err));
   }
 
   #write(
@@ -330,10 +337,22 @@ export class Logger implements LogMethods {
     arg2?: unknown,
     ...args: unknown[]
   ): void {
+    const alsContext = this.als.getStore();
+
+    const hasAnyContext = !!this.#context || !!alsContext;
+
+    const ctx = hasAnyContext
+      ? {
+          ...alsContext,
+          ...this.#context,
+        }
+      : undefined;
+
     const log = Object.freeze(
-      withNullProto(toLogDescriptor(level, arg1, arg2, ...args), {
-        ...(this.#context && { ctx: this.#context }),
-      }),
+      Object.assign(
+        toLogDescriptor(level, arg1, arg2, ...args),
+        ctx && { ctx },
+      ),
     );
 
     if (log.level >= this.level) {
@@ -356,11 +375,23 @@ export class Logger implements LogMethods {
     }
   }
 
+  #updateMaxListeners(num: number) {
+    this.#inputStream.setMaxListeners(
+      Math.max(num, EventEmitter.defaultMaxListeners),
+    );
+  }
+
   public child(
     data: JsonObjectExtended,
     options: Pick<LoggerOptions, 'level' | 'context' | 'processors'> = {},
   ) {
-    return new Logger({
+    // this prevents a MaxListenersExceededWarning when we create the new logger
+    // +2 because it has 1 listener by default and as we are
+    // pre-emptively increasing it *before* we create the new logger, that
+    // makes the other +1
+    this.#updateMaxListeners(this.#childLoggers.size + 2);
+
+    const child = new Logger({
       level: this.level,
       destination: this.#inputStream,
       processors: [
@@ -377,6 +408,16 @@ export class Logger implements LogMethods {
       ],
       ...options,
     });
+
+    this.#childLoggers.add(child);
+
+    child.on('end', () => {
+      this.#childLoggers.delete(child);
+      // +1 because it already has a listener by default
+      this.#updateMaxListeners(this.#childLoggers.size + 1);
+    });
+
+    return child;
   }
 
   // https://github.com/microsoft/TypeScript/issues/10570
@@ -487,6 +528,13 @@ export class Logger implements LogMethods {
   }
 
   public async flush() {
+    // eslint-disable-next-line no-restricted-syntax
+    for await (const child of this.#childLoggers) {
+      await child.flush();
+    }
+
+    const pipeCleaner = Symbol('pipe-cleaner');
+
     await new Promise<void>((resolve, reject) => {
       let t: NodeJS.Timeout | undefined;
 
@@ -526,24 +574,49 @@ export class Logger implements LogMethods {
   }
 
   public async end() {
+    // eslint-disable-next-line no-restricted-syntax
+    for await (const child of this.#childLoggers) {
+      await child.end();
+    }
+
     await this.flush();
-    this.#inputStream.end();
-    await finished(this.destination);
+
+    [this.#inputStream, this.#processorChain, this.#pipeCleanerChain].forEach(
+      (stream) => {
+        stream.destroy().unpipe().removeAllListeners();
+      },
+    );
+
+    await this.#emitter
+      .emit('end')
+      .catch((err) => this.#emitter.emit('error', err));
+
+    this.#emitter.clearListeners();
   }
 
-  public on<Name extends 'log' | 'error' | 'flush'>(
+  public on<Name extends 'log' | 'error' | 'flush' | 'end'>(
     event: Name | Name[],
     fn: (
-      eventData: { log: LogDescriptor; error: unknown; flush: undefined }[Name],
+      eventData: {
+        log: LogDescriptor;
+        error: unknown;
+        flush: undefined;
+        end: undefined;
+      }[Name],
     ) => void | Promise<void>,
   ): Emittery.UnsubscribeFn {
     return this.#emitter.on(event, fn);
   }
 
-  public off<Name extends 'log' | 'error' | 'flush'>(
+  public off<Name extends 'log' | 'error' | 'flush' | 'end'>(
     event: Name | Name[],
     fn: (
-      eventData: { log: LogDescriptor; error: unknown; flush: undefined }[Name],
+      eventData: {
+        log: LogDescriptor;
+        error: unknown;
+        flush: undefined;
+        end: undefined;
+      }[Name],
     ) => void | Promise<void>,
   ): void {
     return this.#emitter.off(event, fn);

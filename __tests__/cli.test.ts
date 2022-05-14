@@ -11,8 +11,7 @@ describe('CLI', () => {
   const initialEnv = process.env;
   beforeEach(() => {
     // jest.clearAllMocks();
-    jest.useFakeTimers('modern');
-    jest.setSystemTime(new Date('2009-02-13T23:31:30.000Z'));
+    jest.useFakeTimers({ now: new Date('2009-02-13T23:31:30.000Z') });
   });
 
   afterEach(() => {
@@ -21,17 +20,15 @@ describe('CLI', () => {
   });
 
   test('force-color on', async () => {
-    const { Level, Logger } = await import('../lib/logger.js');
+    const { createLoggerWithWaitableMock, Level } = await import(
+      './helpers.js'
+    );
     const { createCliTransformer } = await import('../lib/transformers/cli.js');
 
-    const logger = new Logger({
+    const [logger, callback, errback] = createLoggerWithWaitableMock({
       transformer: createCliTransformer({ color: true }),
-      destination: process.stdout,
       level: Level.Trace,
     });
-
-    // @ts-ignore
-    const callback = jest.spyOn(console._stdout, 'write').mockImplementation();
 
     logger.fatal(new Error('herp'));
     logger.error(new Error('hallo'));
@@ -42,25 +39,21 @@ describe('CLI', () => {
 
     await logger.flush();
 
-    expect(callback).toHaveBeenCalledTimes(6);
-    expect(callback.mock.calls).toMatchSnapshot();
-
-    callback.mockRestore();
+    expect(errback).not.toHaveBeenCalled();
+    await expect(callback.waitUntilCalledTimes(6)).resolves.toMatchSnapshot();
+    expect(errback).not.toHaveBeenCalled();
   });
 
   test('force-color off', async () => {
-    const { Level, Logger } = await import('../lib/logger.js');
+    const { createLoggerWithWaitableMock, Level } = await import(
+      './helpers.js'
+    );
     const { createCliTransformer } = await import('../lib/transformers/cli.js');
 
-    const logger = new Logger({
+    const [logger, callback, errback] = createLoggerWithWaitableMock({
       transformer: createCliTransformer({ color: false }),
-      destination: process.stdout,
       level: Level.Trace,
     });
-
-    // @ts-ignore
-    const callback = jest.spyOn(console._stdout, 'write').mockImplementation();
-
     logger.fatal(new Error('herp'));
     logger.error(new Error('hallo'));
     logger.info(new Error('hello'));
@@ -70,9 +63,8 @@ describe('CLI', () => {
 
     await logger.flush();
 
-    expect(callback).toHaveBeenCalledTimes(6);
-    expect(callback.mock.calls).toMatchSnapshot();
-
-    callback.mockRestore();
+    expect(errback).not.toHaveBeenCalled();
+    await expect(callback.waitUntilCalledTimes(6)).resolves.toMatchSnapshot();
+    expect(errback).not.toHaveBeenCalled();
   });
 });

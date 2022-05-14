@@ -7,15 +7,11 @@ Array [
 ",
   ],
   Array [
-    "2009-02-13T23:31:30.000Z		ERROR	bad stuff	{\\"level\\":50,\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"bad stuff\\",\\"stack\\":\\"Error: bad stuff\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/auto.test.js:30:22)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)\\"},\\"ctx\\":{\\"pid\\":1337,\\"hostname\\":\\"testhost\\"}}
+    "2009-02-13T23:31:30.000Z		ERROR	bad stuff	{\\"level\\":50,\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"bad stuff\\",\\"stack\\":\\"Error: bad stuff\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/auto.test.js:28:22)\\\\n    at runMicrotasks (<anonymous>)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)\\"},\\"ctx\\":{\\"pid\\":1337,\\"hostname\\":\\"testhost\\"}}
 ",
   ],
   Array [
-    "2009-02-13T23:31:30.000Z		WARN	bad stuff	{\\"level\\":40,\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"bad stuff\\",\\"stack\\":\\"Error: bad stuff\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/auto.test.js:31:21)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)\\"},\\"ctx\\":{\\"pid\\":1337,\\"hostname\\":\\"testhost\\"}}
-",
-  ],
-  Array [
-    "2009-02-13T23:31:30.000Z		WARN	bad stuff	{\\"level\\":40,\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"bad stuff\\",\\"stack\\":\\"Error: bad stuff\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/auto.test.js:32:28)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)\\"},\\"ctx\\":{\\"pid\\":1337,\\"hostname\\":\\"testhost\\"}}
+    "2009-02-13T23:31:30.000Z		WARN	bad stuff	{\\"level\\":40,\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"bad stuff\\",\\"stack\\":\\"Error: bad stuff\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/auto.test.js:29:21)\\\\n    at runMicrotasks (<anonymous>)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)\\"},\\"ctx\\":{\\"pid\\":1337,\\"hostname\\":\\"testhost\\"}}
 ",
   ],
 ]
@@ -28,15 +24,11 @@ Array [
 ",
   ],
   Array [
-    "2009-02-13T23:31:30.000Z		ERROR	bad stuff	{\\"level\\":50,\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"bad stuff\\",\\"stack\\":\\"Error: bad stuff\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/auto.test.js:41:22)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)\\"}}
+    "2009-02-13T23:31:30.000Z		ERROR	bad stuff	{\\"level\\":50,\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"bad stuff\\",\\"stack\\":\\"Error: bad stuff\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/auto.test.js:38:22)\\\\n    at runMicrotasks (<anonymous>)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)\\"}}
 ",
   ],
   Array [
-    "2009-02-13T23:31:30.000Z		WARN	bad stuff	{\\"level\\":40,\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"bad stuff\\",\\"stack\\":\\"Error: bad stuff\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/auto.test.js:42:21)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)\\"}}
-",
-  ],
-  Array [
-    "2009-02-13T23:31:30.000Z		WARN	bad stuff	{\\"level\\":40,\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"bad stuff\\",\\"stack\\":\\"Error: bad stuff\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/auto.test.js:43:28)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)\\"}}
+    "2009-02-13T23:31:30.000Z		WARN	bad stuff	{\\"level\\":40,\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"bad stuff\\",\\"stack\\":\\"Error: bad stuff\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/auto.test.js:39:21)\\\\n    at runMicrotasks (<anonymous>)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)\\"}}
 ",
   ],
 ]
@@ -49,15 +41,11 @@ Array [
 ",
   ],
   Array [
-    "{\\"severity\\":\\"ERROR\\",\\"time\\":\\"2009-02-13T23:31:30.000Z\\",\\"message\\":\\"Unknown SmallInt\\",\\"@type\\":\\"type.googleapis.com~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/auto.test.js:19:22)\\",\\"name\\":\\"TypeError\\",\\"ctx\\":{\\"pid\\":1337,\\"hostname\\":\\"testhost\\"}}
+    "{\\"severity\\":\\"ERROR\\",\\"time\\":\\"2009-02-13T23:31:30.000Z\\",\\"message\\":\\"Unknown SmallInt\\",\\"@type\\":\\"type.googleapis.com~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/auto.test.js:18:22)\\",\\"name\\":\\"TypeError\\",\\"ctx\\":{\\"pid\\":1337,\\"hostname\\":\\"testhost\\"}}
 ",
   ],
   Array [
-    "{\\"severity\\":\\"WARNING\\",\\"time\\":\\"2009-02-13T23:31:30.000Z\\",\\"message\\":\\"this code stinks\\",\\"err\\":{\\"name\\":\\"SyntaxError\\",\\"message\\":\\"this code stinks\\",\\"stack\\":\\"SyntaxError: this code stinks\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/auto.test.js:20:21)\\"},\\"ctx\\":{\\"pid\\":1337,\\"hostname\\":\\"testhost\\"}}
-",
-  ],
-  Array [
-    "{\\"severity\\":\\"WARNING\\",\\"time\\":\\"2009-02-13T23:31:30.000Z\\",\\"message\\":\\"Connection refused\\",\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"Connection refused\\",\\"stack\\":\\"Error: Connection refused\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/auto.test.js:21:28)\\"},\\"ctx\\":{\\"pid\\":1337,\\"hostname\\":\\"testhost\\"}}
+    "{\\"severity\\":\\"WARNING\\",\\"time\\":\\"2009-02-13T23:31:30.000Z\\",\\"message\\":\\"this code stinks\\",\\"err\\":{\\"name\\":\\"SyntaxError\\",\\"message\\":\\"this code stinks\\",\\"stack\\":\\"SyntaxError: this code stinks\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/auto.test.js:19:21)\\"},\\"ctx\\":{\\"pid\\":1337,\\"hostname\\":\\"testhost\\"}}
 ",
   ],
 ]
