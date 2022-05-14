@@ -220,8 +220,6 @@ function toLogDescriptor(
   };
 }
 
-const pipeCleaner = Symbol('pipe-cleaner');
-
 export class Logger implements LogMethods {
   #inputStream = new PassThrough({
     objectMode: true,
@@ -515,6 +513,8 @@ export class Logger implements LogMethods {
     for await (const child of this.#childLoggers) {
       await child.flush();
     }
+
+    const pipeCleaner = Symbol('pipe-cleaner');
 
     await new Promise<void>((resolve, reject) => {
       let t: NodeJS.Timeout | undefined;
