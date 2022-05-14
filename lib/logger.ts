@@ -243,6 +243,7 @@ export class Logger implements LogMethods {
 
   readonly #processorChain: Chain;
 
+  readonly #context: LogData | undefined;
 
   readonly #pipeCleanerChain: Chain;
 
@@ -335,15 +336,20 @@ export class Logger implements LogMethods {
   ): void {
     const alsContext = this.als.getStore();
 
-    const ctx = {
-      ...((this.#context || alsContext) && {
-        ...this.#context,
-        ...alsContext,
-      }),
-    };
+    const hasAnyContext = !!this.#context || !!alsContext;
+
+    const ctx = hasAnyContext
+      ? {
+          ...alsContext,
+          ...this.#context,
+        }
+      : undefined;
 
     const log = Object.freeze(
-      Object.assign(toLogDescriptor(level, arg1, arg2, ...args, ctx)),
+      Object.assign(
+        toLogDescriptor(level, arg1, arg2, ...args),
+        ctx && { ctx },
+      ),
     );
 
     if (log.level >= this.level) {
