@@ -14,24 +14,3 @@ Array [
   ],
 ]
 `;
-
-exports[`Context Wrapper Lambda 1`] = `
-Array [
-  Array [
-    "2009-02-13T23:31:30.000Z		INFO	logger outside before	{\\"level\\":30}
-",
-  ],
-  Array [
-    "2009-02-13T23:31:30.000Z		INFO	logger inside	{\\"level\\":30}
-",
-  ],
-  Array [
-    "2009-02-13T23:31:30.000Z		INFO	logger outside after	{\\"level\\":30}
-",
-  ],
-  Array [
-    "2009-02-13T23:31:30.000Z		INFO	childLogger inside	{\\"level\\":30,\\"childData\\":\\"1\\"}
-",
-  ],
-]
-`;
