@@ -2,7 +2,6 @@ import Emittery from 'emittery';
 import { AsyncLocalStorage } from 'node:async_hooks';
 import { WriteStream } from 'node:fs';
 import { PassThrough, Writable } from 'node:stream';
-import { finished } from 'node:stream/promises';
 import { WriteStream as TtyWriteStream } from 'node:tty';
 import format from 'quick-format-unescaped';
 import { ErrorObject, serializeError } from 'serialize-error';
@@ -234,17 +233,19 @@ export class Logger implements LogMethods {
 
   public level: Level;
 
-  public destination: Writable | WriteStream | TtyWriteStream;
+  public readonly destination: Writable | WriteStream | TtyWriteStream;
 
-  #emitter = new Emittery<{
+  readonly #emitter = new Emittery<{
     log: LogDescriptor;
     error: unknown;
     flush: undefined;
+    end: undefined;
   }>();
 
-  #processorChain: Chain;
+  readonly #processorChain: Chain;
 
-  #context: LogData | undefined;
+
+  readonly #pipeCleanerChain: Chain;
 
   public setLevel(level: Level) {
     this.level = level;
@@ -271,7 +272,9 @@ export class Logger implements LogMethods {
 
     this.level = level;
 
-    // TODO: validate decorators here
+    this.destination = destination;
+
+    // TODO: validate processors here
     // validate transformer also
 
     const processorWrapper = (
@@ -304,26 +307,26 @@ export class Logger implements LogMethods {
       ].map((processor) => processorWrapper(processor)),
     ]);
 
-    this.destination = destination;
+    this.#inputStream.on('error', (err) => this.#emitter.emit('error', err));
+    this.#processorChain.on('error', (err) => this.#emitter.emit('error', err));
 
-    this.destination.on('error', (err) => this.#emitter.emit('error', err));
+    this.#inputStream.pipe(this.#processorChain);
 
-    const pipeline = this.#inputStream.pipe(this.#processorChain).pipe(
-      // ignore the pipe cleaner
-      Chain.chain([(obj) => (obj === pipeCleaner ? null : obj)]),
+    // a chain to ignore the pipe cleaner symbol
+    this.#pipeCleanerChain = Chain.chain([
+      (obj) => (typeof obj === 'symbol' ? null : obj),
+    ]);
+    this.#pipeCleanerChain.on('error', (err) =>
+      this.#emitter.emit('error', err),
     );
 
+    this.#processorChain.pipe(this.#pipeCleanerChain);
+
     if (this.destination.writable) {
-      pipeline.pipe(this.destination);
+      this.#pipeCleanerChain.pipe(this.destination);
     } else {
       this.#emitter.emit('error', new Error('Destination is not writeable'));
     }
-
-    this.destination.on('end', () => {
-      pipeline.unpipe(this.destination);
-    });
-
-    pipeline.on('error', (err) => this.#emitter.emit('error', err));
   }
 
   #write(
@@ -554,8 +557,18 @@ export class Logger implements LogMethods {
     }
 
     await this.flush();
-    this.#inputStream.end();
-    await finished(this.destination);
+
+    [this.#inputStream, this.#processorChain, this.#pipeCleanerChain].forEach(
+      (stream) => {
+        stream.destroy().unpipe().removeAllListeners();
+      },
+    );
+
+    await this.#emitter
+      .emit('end')
+      .catch((err) => this.#emitter.emit('error', err));
+
+    this.#emitter.clearListeners();
   }
 
   public on<Name extends 'log' | 'error' | 'flush'>(
