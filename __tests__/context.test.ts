@@ -37,6 +37,8 @@ describe('Context Wrapper', () => {
   });
 
   test('Lambda', async () => {
+    process.env.AWS_LAMBDA_FUNCTION_VERSION = '$LATEST';
+
     const { withLambdaLoggerContextWrapper } = await import('../lib/lambda.js');
 
     const { createAutoConfiguredLoggerWithWaitableMock } = await import(
