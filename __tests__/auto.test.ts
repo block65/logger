@@ -34,9 +34,8 @@ describe('Auto Logger', () => {
     logger.info('woo yeah!!!');
     logger.error(new TypeError('Unknown SmallInt'));
     logger.warn(new SyntaxError('this code stinks'));
-    logger.warn({ err: new Error('Connection refused') });
 
-    await expect(callback.waitUntilCalledTimes(1)).resolves.toMatchSnapshot();
+    await expect(callback.waitUntilCalledTimes(3)).resolves.toMatchSnapshot();
     expect(errback).not.toBeCalled();
   });
 
@@ -53,9 +52,8 @@ describe('Auto Logger', () => {
     logger.info('woo yeah!!!');
     logger.error(new Error('bad stuff'));
     logger.warn(new Error('bad stuff'));
-    logger.warn({ err: new Error('bad stuff') });
 
-    await expect(callback.waitUntilCalledTimes(1)).resolves.toMatchSnapshot();
+    await expect(callback.waitUntilCalledTimes(3)).resolves.toMatchSnapshot();
     expect(errback).not.toBeCalled();
   });
 
@@ -70,9 +68,8 @@ describe('Auto Logger', () => {
     logger.info('woo yeah!!!');
     logger.error(new Error('bad stuff'));
     logger.warn(new Error('bad stuff'));
-    logger.warn({ err: new Error('bad stuff') });
 
-    await expect(callback.waitUntilCalledTimes(1)).resolves.toMatchSnapshot();
+    await expect(callback.waitUntilCalledTimes(3)).resolves.toMatchSnapshot();
     expect(errback).not.toBeCalled();
   });
 });
