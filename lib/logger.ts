@@ -325,6 +325,10 @@ export class Logger implements LogMethods {
     } else {
       this.#emitter.emit('error', new Error('Destination is not writeable'));
     }
+
+    this.destination.on('end', () => {
+      this.#pipeCleanerChain.unpipe(this.destination);
+    });
   }
 
   #write(
