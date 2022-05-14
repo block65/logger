@@ -22,8 +22,6 @@ export function withLambdaLoggerContextWrapper<T>(
       id: lambdaContext.awsRequestId,
       ...(!isEmptyObject(context) && { context }),
     },
-    () => {
-      return fn();
-    },
+    () => fn().finally(() => logger.flush()),
   );
 }
