@@ -575,19 +575,29 @@ export class Logger implements LogMethods {
     this.#emitter.clearListeners();
   }
 
-  public on<Name extends 'log' | 'error' | 'flush'>(
+  public on<Name extends 'log' | 'error' | 'flush' | 'end'>(
     event: Name | Name[],
     fn: (
-      eventData: { log: LogDescriptor; error: unknown; flush: undefined }[Name],
+      eventData: {
+        log: LogDescriptor;
+        error: unknown;
+        flush: undefined;
+        end: undefined;
+      }[Name],
     ) => void | Promise<void>,
   ): Emittery.UnsubscribeFn {
     return this.#emitter.on(event, fn);
   }
 
-  public off<Name extends 'log' | 'error' | 'flush'>(
+  public off<Name extends 'log' | 'error' | 'flush' | 'end'>(
     event: Name | Name[],
     fn: (
-      eventData: { log: LogDescriptor; error: unknown; flush: undefined }[Name],
+      eventData: {
+        log: LogDescriptor;
+        error: unknown;
+        flush: undefined;
+        end: undefined;
+      }[Name],
     ) => void | Promise<void>,
   ): void {
     return this.#emitter.off(event, fn);
