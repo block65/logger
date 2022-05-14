@@ -19,7 +19,7 @@ describe('Context Wrapper', () => {
     jest.useRealTimers();
   });
 
-  test.only('Basic', async () => {
+  test('Basic', async () => {
     const { createLoggerWithWaitableMock } = await import('./helpers.js');
 
     const [logger, callback, errback] = createLoggerWithWaitableMock({
