@@ -23,36 +23,7 @@ describe('Events', () => {
     logger.info('Hello');
     await logger.flush();
     logger.info('Hello');
-  });
-
-  test.skip('destination.end', async () => {
-    const { createLogger } = await import('../lib/index.js');
-
-    const destination = createWriteStream('/dev/null');
-
-    const logger = createLogger({
-      destination,
-    });
-
-    const callback = jest.fn((err) => err);
-    logger.on('log', (err) => {
-      callback(err);
-    });
-
-    const errback = jest.fn((err) => err);
-    logger.on('error', (err) => {
-      errback(err);
-    });
-
-    destination.end();
-
-    logger.info('Hello');
-    logger.info('Hello');
-
-    await logger.end();
-
-    expect(errback).toHaveBeenCalledTimes(2);
-    expect(errback.mock.calls).toMatchSnapshot();
+    await logger.flush();
   });
 
   test('logger.end', async () => {
@@ -91,6 +62,11 @@ describe('Events', () => {
 
     await logger.end();
 
+    logger.info('Hello');
+    logger.info('Hello');
+    logger.info('Hello');
+    logger.info('Hello');
+    logger.info('Hello');
     logger.info('Hello');
 
     await logger.flush();
