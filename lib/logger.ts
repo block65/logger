@@ -133,7 +133,7 @@ function isLogDescriptor(log: LogDescriptor | Symbol): log is LogDescriptor {
 }
 
 /**
- * Arguments are all set to unknown as we really cant trust the user
+ * Arguments are all set to unknown as we really can't trust the user
  */
 function toLogDescriptor(
   level: Level,
