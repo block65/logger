@@ -64,24 +64,33 @@ describe('Child Logger', () => {
 
     const [logger, callback, errback] = createLoggerWithWaitableMock({
       level: Level.Fatal,
+      context: { parent: 'test' },
     });
 
     const childLogger = logger.child(
-      { helloChildLogger: 'hello!' },
+      { extraChildData: 'hello!' },
       {
         level: Level.Trace,
+        context: {
+          extraChildContext: 'hello!',
+        },
       },
     );
 
-    childLogger.fatal(new Error('fatal'));
-    childLogger.error(new Error('error'));
-    childLogger.info(new Error('info'));
-    childLogger.warn(new Error('warn'));
-    childLogger.debug(new Error('debug'));
-    childLogger.trace(new Error('trace'));
-    await expect(callback.waitUntilCalledTimes(1)).resolves.toMatchSnapshot();
+    // logger.on('log', console.error);
+
+    logger.fatal('fatal');
+    childLogger.fatal('fatal');
+    childLogger.fatal('fatal');
+    childLogger.error('error');
+    childLogger.info('info');
+    childLogger.warn('warn');
+    childLogger.debug('debug');
+    childLogger.trace('trace');
+
+    await expect(callback.waitUntilCalledTimes(2)).resolves.toMatchSnapshot();
     expect(errback).not.toBeCalled();
-  });
+  }, 10000);
 
   test('level changes child > parent', async () => {
     const { createLoggerWithWaitableMock } = await import('./helpers.js');
@@ -136,7 +145,8 @@ describe('Child Logger', () => {
 
     await logger.end();
 
-    await expect(callback.waitUntilCalledTimes(iterations));
+    await callback.waitUntilCalledTimes(iterations);
+
     expect(errback).not.toBeCalled();
     expect(warningMock).not.toBeCalled();
 
@@ -144,7 +154,7 @@ describe('Child Logger', () => {
     expect(autoEndMock).toBeCalledTimes(iterations);
   });
 
-  test.only('Lambda Context wrapper with child', async () => {
+  test('Lambda Context wrapper with child', async () => {
     process.env.AWS_LAMBDA_FUNCTION_VERSION = '$LATEST';
 
     const { withLambdaLoggerContextWrapper } = await import('../lib/lambda.js');
