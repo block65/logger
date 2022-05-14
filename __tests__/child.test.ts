@@ -143,4 +143,50 @@ describe('Child Logger', () => {
     // make sure each child was ended
     expect(autoEndMock).toBeCalledTimes(iterations);
   });
+
+  test.only('Lambda Context wrapper with child', async () => {
+    process.env.AWS_LAMBDA_FUNCTION_VERSION = '$LATEST';
+
+    const { withLambdaLoggerContextWrapper } = await import('../lib/lambda.js');
+
+    const { createAutoConfiguredLoggerWithWaitableMock } = await import(
+      './helpers.js'
+    );
+
+    const [logger, callback, errback] =
+      createAutoConfiguredLoggerWithWaitableMock();
+
+    logger.info('logger outside before');
+
+    const childLogger = logger.child(
+      {
+        childData: '1',
+      },
+      {
+        context: {
+          childCtx: '1',
+        },
+      },
+    );
+
+    await withLambdaLoggerContextWrapper(
+      childLogger,
+      {
+        awsRequestId: 'fake-request-id1',
+        functionVersion: '999',
+      },
+      async () => {
+        logger.info('logger inside');
+        childLogger.info('childLogger inside');
+      },
+    );
+
+    logger.info('logger outside after');
+
+    await logger.end();
+
+    await expect(callback.waitUntilCalledTimes(4)).resolves.toMatchSnapshot();
+
+    expect(errback).not.toBeCalled();
+  });
 });

@@ -107,6 +107,27 @@ Array [
 ]
 `;
 
+exports[`Child Logger Lambda Context wrapper with child 1`] = `
+Array [
+  Array [
+    "2009-02-13T23:31:30.000Z		INFO	logger outside before	{\\"level\\":30}
+",
+  ],
+  Array [
+    "2009-02-13T23:31:30.000Z		INFO	logger inside	{\\"level\\":30}
+",
+  ],
+  Array [
+    "2009-02-13T23:31:30.000Z	fake-request-id1	INFO	childLogger inside	{\\"level\\":30,\\"childData\\":\\"1\\",\\"ctx\\":{\\"context\\":{\\"functionVersion\\":\\"999\\"},\\"childCtx\\":\\"1\\"}}
+",
+  ],
+  Array [
+    "2009-02-13T23:31:30.000Z		INFO	logger outside after	{\\"level\\":30}
+",
+  ],
+]
+`;
+
 exports[`Child Logger level changes child > parent 1`] = `
 Array [
   Array [
