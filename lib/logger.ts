@@ -250,6 +250,8 @@ export class Logger implements LogMethods {
     this.level = level;
   }
 
+  #childLoggers = new Set<Logger>();
+
   /**
    *
    * @param options {LoggerOptions}
@@ -367,7 +369,7 @@ export class Logger implements LogMethods {
     data: JsonObjectExtended,
     options: Pick<LoggerOptions, 'level' | 'context' | 'processors'> = {},
   ) {
-    return new Logger({
+    const child = new Logger({
       level: this.level,
       destination: this.#inputStream,
       processors: [
@@ -384,6 +386,14 @@ export class Logger implements LogMethods {
       ],
       ...options,
     });
+
+    this.#childLoggers.add(child);
+
+    child.on('end', () => {
+      this.#childLoggers.delete(child);
+    });
+
+    return child;
   }
 
   // https://github.com/microsoft/TypeScript/issues/10570
@@ -494,6 +504,11 @@ export class Logger implements LogMethods {
   }
 
   public async flush() {
+    // eslint-disable-next-line no-restricted-syntax
+    for await (const child of this.#childLoggers) {
+      await child.flush();
+    }
+
     await new Promise<void>((resolve, reject) => {
       let t: NodeJS.Timeout | undefined;
 
@@ -533,6 +548,11 @@ export class Logger implements LogMethods {
   }
 
   public async end() {
+    // eslint-disable-next-line no-restricted-syntax
+    for await (const child of this.#childLoggers) {
+      await child.end();
+    }
+
     await this.flush();
     this.#inputStream.end();
     await finished(this.destination);
