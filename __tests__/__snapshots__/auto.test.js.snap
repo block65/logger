@@ -7,11 +7,11 @@ Array [
 ",
   ],
   Array [
-    "2009-02-13T23:31:30.000Z		ERROR	bad stuff	{\\"level\\":50,\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"bad stuff\\",\\"stack\\":\\"Error: bad stuff\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/auto.test.js:28:22)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)\\"},\\"ctx\\":{\\"pid\\":1337,\\"hostname\\":\\"testhost\\"}}
+    "2009-02-13T23:31:30.000Z		ERROR	bad stuff	{\\"level\\":50,\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"bad stuff\\",\\"stack\\":\\"Error: bad stuff\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/auto.test.js:28:22)\\\\n    at runMicrotasks (<anonymous>)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)\\"},\\"ctx\\":{\\"pid\\":1337,\\"hostname\\":\\"testhost\\"}}
 ",
   ],
   Array [
-    "2009-02-13T23:31:30.000Z		WARN	bad stuff	{\\"level\\":40,\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"bad stuff\\",\\"stack\\":\\"Error: bad stuff\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/auto.test.js:29:21)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)\\"},\\"ctx\\":{\\"pid\\":1337,\\"hostname\\":\\"testhost\\"}}
+    "2009-02-13T23:31:30.000Z		WARN	bad stuff	{\\"level\\":40,\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"bad stuff\\",\\"stack\\":\\"Error: bad stuff\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/auto.test.js:29:21)\\\\n    at runMicrotasks (<anonymous>)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)\\"},\\"ctx\\":{\\"pid\\":1337,\\"hostname\\":\\"testhost\\"}}
 ",
   ],
 ]
@@ -24,11 +24,11 @@ Array [
 ",
   ],
   Array [
-    "2009-02-13T23:31:30.000Z		ERROR	bad stuff	{\\"level\\":50,\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"bad stuff\\",\\"stack\\":\\"Error: bad stuff\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/auto.test.js:38:22)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)\\"}}
+    "2009-02-13T23:31:30.000Z		ERROR	bad stuff	{\\"level\\":50,\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"bad stuff\\",\\"stack\\":\\"Error: bad stuff\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/auto.test.js:38:22)\\\\n    at runMicrotasks (<anonymous>)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)\\"}}
 ",
   ],
   Array [
-    "2009-02-13T23:31:30.000Z		WARN	bad stuff	{\\"level\\":40,\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"bad stuff\\",\\"stack\\":\\"Error: bad stuff\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/auto.test.js:39:21)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)\\"}}
+    "2009-02-13T23:31:30.000Z		WARN	bad stuff	{\\"level\\":40,\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"bad stuff\\",\\"stack\\":\\"Error: bad stuff\\\\n    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/auto.test.js:39:21)\\\\n    at runMicrotasks (<anonymous>)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)\\"}}
 ",
   ],
 ]
