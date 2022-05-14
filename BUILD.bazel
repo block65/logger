@@ -22,7 +22,7 @@ SRCS = glob(
 )
 
 TEST_SRCS = glob(
-    ["__tests__/**/*"],
+    ["__tests__/**/*", "__tests__/**/helper*"],
     exclude = ["__tests__/__snapshots__/*.snap"],
 )
 
