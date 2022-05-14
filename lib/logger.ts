@@ -7,7 +7,6 @@ import format from 'quick-format-unescaped';
 import { ErrorObject, serializeError } from 'serialize-error';
 import Chain from 'stream-chain';
 import type { JsonPrimitive } from 'type-fest';
-import { asyncLocalStorageProcessor } from './processors/als.js';
 import { isPlainObject, safeStringify } from './utils.js';
 
 // we support an extended set of values, as each have a toJSON method and
@@ -300,11 +299,10 @@ export class Logger implements LogMethods {
     };
 
     this.#processorChain = Chain.chain([
-      ...[
-        asyncLocalStorageProcessor,
-        ...processors,
-        ...(transformer ? [transformer.bind(this)] : []),
-      ].map((processor) => processorWrapper(processor)),
+      (log) => log,
+      ...[...processors, ...(transformer ? [transformer.bind(this)] : [])].map(
+        (processor) => processorWrapper(processor),
+      ),
     ]);
 
     this.#inputStream.on('error', (err) => this.#emitter.emit('error', err));
