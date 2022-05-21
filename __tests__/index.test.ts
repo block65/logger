@@ -41,7 +41,6 @@ describe('Basic', () => {
 
   test('String, Object = Object ignored', async () => {
     const [logger, callback, errback] = createLoggerWithWaitableMock();
-    // @ts-expect-error
     logger.warn('hello', { omg: true });
     await logger.end();
     expect(callback.mock.calls).toMatchSnapshot();
@@ -50,7 +49,6 @@ describe('Basic', () => {
 
   test('String Format, Object', async () => {
     const [logger, callback, errback] = createLoggerWithWaitableMock();
-    // @ts-expect-error
     logger.warn('hello %j spleen!', { omg: true });
     await logger.end();
     expect(callback.mock.calls).toMatchSnapshot();
@@ -294,5 +292,28 @@ describe('Basic', () => {
 
     await callback.waitUntilCalledTimes(2);
     expect(callback).toHaveBeenCalledTimes(2);
+  });
+
+  test('all log methods are bound to logger', async () => {
+    const [logger] = createLoggerWithWaitableMock();
+
+    await expect(Promise.resolve('test').then(logger.trace)).resolves.toBe(
+      undefined,
+    );
+    await expect(Promise.resolve('test').then(logger.debug)).resolves.toBe(
+      undefined,
+    );
+    await expect(Promise.resolve('test').then(logger.info)).resolves.toBe(
+      undefined,
+    );
+    await expect(Promise.resolve('test').then(logger.warn)).resolves.toBe(
+      undefined,
+    );
+    await expect(Promise.resolve('test').then(logger.error)).resolves.toBe(
+      undefined,
+    );
+    await expect(Promise.resolve('test').then(logger.fatal)).resolves.toBe(
+      undefined,
+    );
   });
 });
