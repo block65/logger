@@ -89,23 +89,15 @@ export interface LogDescriptor {
   err?: Error | unknown;
 }
 
-export type LogMethod =
-  | ((err: Error | unknown, str?: JsonPrimitive, ...args: unknown[]) => void)
-  | ((
-      data: JsonObjectExtendedWithError,
-      str?: JsonPrimitive,
-      ...args: unknown[]
-    ) => void)
-  | ((str: JsonPrimitive) => void);
-
-interface LogMethods {
-  trace: LogMethod;
-  debug: LogMethod;
-  info: LogMethod;
-  warn: LogMethod;
-  error: LogMethod;
-  fatal: LogMethod;
-}
+export type LogMethod = {
+  (err: Error | unknown, str?: JsonPrimitive, ...args: unknown[]): void;
+  (
+    data: JsonObjectExtendedWithError,
+    str?: JsonPrimitive,
+    ...args: unknown[]
+  ): void;
+  (str: JsonPrimitive, ...args: unknown[]): void;
+};
 
 export interface AlsContext {
   id: string;
@@ -221,7 +213,7 @@ function toLogDescriptor(
   };
 }
 
-export class Logger implements LogMethods {
+export class Logger {
   #inputStream = new PassThrough({
     objectMode: true,
     autoDestroy: true,
@@ -420,113 +412,6 @@ export class Logger implements LogMethods {
     return child;
   }
 
-  // https://github.com/microsoft/TypeScript/issues/10570
-  public trace(
-    err: Error | unknown,
-    str?: JsonPrimitive,
-    ...args: unknown[]
-  ): void;
-  public trace(
-    data: JsonObjectExtendedWithError,
-    str?: JsonPrimitive,
-    ...args: unknown[]
-  ): void;
-  public trace(str: JsonPrimitive, ...args: unknown[]): void;
-  // @ts-expect-error
-  public trace(...args) {
-    // @ts-expect-error
-    this.#write(Level.Trace, ...args);
-  }
-
-  // https://github.com/microsoft/TypeScript/issues/10570
-  public debug(
-    err: Error | unknown,
-    str?: JsonPrimitive,
-    ...args: unknown[]
-  ): void;
-  public debug(
-    data: JsonObjectExtendedWithError,
-    str?: JsonPrimitive,
-    ...args: unknown[]
-  ): void;
-  public debug(str: JsonPrimitive, ...args: unknown[]): void;
-  // @ts-expect-error
-  public debug(...args) {
-    // @ts-expect-error
-    this.#write(Level.Debug, ...args);
-  }
-
-  // https://github.com/microsoft/TypeScript/issues/10570
-  public info(
-    err: Error | unknown,
-    str?: JsonPrimitive,
-    ...args: unknown[]
-  ): void;
-  public info(
-    data: JsonObjectExtendedWithError,
-    str?: JsonPrimitive,
-    ...args: unknown[]
-  ): void;
-  public info(str: JsonPrimitive): void;
-  // @ts-expect-error
-  public info(...args) {
-    // @ts-expect-error
-    this.#write(Level.Info, ...args);
-  }
-
-  // https://github.com/microsoft/TypeScript/issues/10570
-  public warn(
-    err: Error | unknown,
-    str?: JsonPrimitive,
-    ...args: unknown[]
-  ): void;
-  public warn(
-    data: JsonObjectExtendedWithError,
-    str?: JsonPrimitive,
-    ...args: unknown[]
-  ): void;
-  public warn(str: JsonPrimitive): void;
-  // @ts-expect-error
-  public warn(...args) {
-    // @ts-expect-error
-    this.#write(Level.Warn, ...args);
-  }
-
-  // https://github.com/microsoft/TypeScript/issues/10570
-  public error(
-    err: Error | unknown,
-    str?: JsonPrimitive,
-    ...args: unknown[]
-  ): void;
-  public error(
-    data: JsonObjectExtendedWithError,
-    str?: JsonPrimitive,
-    ...args: unknown[]
-  ): void;
-  public error(str: JsonPrimitive): void;
-  // @ts-expect-error
-  public error(...args) {
-    // @ts-expect-error
-    this.#write(Level.Error, ...args);
-  }
-
-  public fatal(
-    err: Error | unknown,
-    str?: JsonPrimitive,
-    ...args: unknown[]
-  ): void;
-  public fatal(
-    data: JsonObjectExtendedWithError,
-    str?: JsonPrimitive,
-    ...args: unknown[]
-  ): void;
-  public fatal(str: JsonPrimitive): void;
-  // @ts-expect-error
-  public fatal(...args) {
-    // @ts-expect-error
-    this.#write(Level.Fatal, ...args);
-  }
-
   public async flush() {
     // eslint-disable-next-line no-restricted-syntax
     for await (const child of this.#childLoggers) {
@@ -621,4 +506,28 @@ export class Logger implements LogMethods {
   ): void {
     return this.#emitter.off(event, fn);
   }
+
+  public trace: LogMethod = (...args) => {
+    this.#write(Level.Trace, ...args);
+  };
+
+  public debug: LogMethod = (...args) => {
+    this.#write(Level.Debug, ...args);
+  };
+
+  public info: LogMethod = (...args) => {
+    this.#write(Level.Info, ...args);
+  };
+
+  public warn: LogMethod = (...args) => {
+    this.#write(Level.Warn, ...args);
+  };
+
+  public error: LogMethod = (...args) => {
+    this.#write(Level.Error, ...args);
+  };
+
+  public fatal: LogMethod = (...args) => {
+    this.#write(Level.Fatal, ...args);
+  };
 }
