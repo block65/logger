@@ -1,4 +1,9 @@
-import { addBreadcrumb, captureException, flush, Severity } from '@sentry/node';
+import {
+  addBreadcrumb,
+  captureException,
+  flush,
+  SeverityLevel,
+} from '@sentry/node';
 import type { ScopeContext } from '@sentry/types';
 import { Level, LogDescriptor, Logger } from '../logger.js';
 
@@ -7,18 +12,18 @@ export interface SentryListenerOptions {
   context?: Partial<Omit<ScopeContext, 'extra'>>;
 }
 
-const sentrySeverityMap = new Map<Level, Severity>([
-  [Level.Fatal, Severity.Fatal],
-  [Level.Error, Severity.Error],
-  [Level.Warn, Severity.Warning],
-  [Level.Info, Severity.Info],
-  [Level.Debug, Severity.Debug],
-  [Level.Trace, Severity.Debug],
+const sentrySeverityMap = new Map<Level, SeverityLevel>([
+  [Level.Fatal, 'fatal'],
+  [Level.Error, 'error'],
+  [Level.Warn, 'warning'],
+  [Level.Info, 'info'],
+  [Level.Debug, 'debug'],
+  [Level.Trace, 'debug'],
 ]);
 
 function sentryCaptureLog(log: LogDescriptor, options: SentryListenerOptions) {
   const context: Partial<ScopeContext> = {
-    level: sentrySeverityMap.get(log.level) || Severity.Log,
+    level: sentrySeverityMap.get(log.level) || 'log',
     ...options.context,
   };
 
@@ -29,7 +34,7 @@ export function createSentryListener(options: SentryListenerOptions = {}) {
   return (log: LogDescriptor): LogDescriptor => {
     if (log.level < Level.Error) {
       addBreadcrumb({
-        level: sentrySeverityMap.get(log.level) || Severity.Log,
+        level: sentrySeverityMap.get(log.level) || 'log',
         message: log.msg?.toLocaleString(),
         data: log.data,
         timestamp: log.time.getTime(),
