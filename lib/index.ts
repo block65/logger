@@ -30,7 +30,7 @@ function internalCreateLogger(
 
   const level =
     options.level ||
-    stringLogLevelMap.get(process.env.LOG_LEVEL) ||
+    stringLogLevelMap.get(process.env.LOG_LEVEL?.toLocaleLowerCase()) ||
     (process.env.NODE_ENV === 'development' ? Level.Trace : undefined);
 
   const destination = options.destination || process.stdout;
