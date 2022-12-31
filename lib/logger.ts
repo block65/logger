@@ -123,7 +123,7 @@ function isPrimitive(value: unknown): value is JsonPrimitive {
   );
 }
 
-function isLogDescriptor(log: LogDescriptor | Symbol): log is LogDescriptor {
+function isLogDescriptor(log: LogDescriptor | symbol): log is LogDescriptor {
   return isPlainObject(log);
 }
 
@@ -271,10 +271,10 @@ export class Logger {
     // validate transformer also
 
     const processorWrapper = (
-      processor: Processor<LogDescriptor | Symbol> | Transformer,
-    ): Processor<LogDescriptor | Symbol> | Transformer => {
+      processor: Processor<LogDescriptor | symbol> | Transformer,
+    ): Processor<LogDescriptor | symbol> | Transformer => {
       if (typeof processor === 'function') {
-        return async (log: LogDescriptor | Symbol) => {
+        return async (log: LogDescriptor | symbol) => {
           // run the processor on anything log descriptory
           if (isLogDescriptor(log)) {
             try {
@@ -425,7 +425,7 @@ export class Logger {
     await new Promise<void>((resolve, reject) => {
       let t: NodeJS.Timeout | undefined;
 
-      const detectPipeCleaner = (obj: LogDescriptor | Symbol) => {
+      const detectPipeCleaner = (obj: LogDescriptor | symbol) => {
         if (obj === pipeCleaner) {
           this.#processorChain.off('data', detectPipeCleaner);
           this.#processorChain.off('error', reject);
