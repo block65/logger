@@ -414,7 +414,7 @@ export class Logger {
     return child;
   }
 
-  public async flush() {
+  public flush = async () => {
     // eslint-disable-next-line no-restricted-syntax
     for await (const child of this.#childLoggers) {
       await child.flush();
@@ -460,7 +460,7 @@ export class Logger {
       .catch((err) => this.#emitter.emit('error', err));
   }
 
-  public async end() {
+  public end = async () => {
     // eslint-disable-next-line no-restricted-syntax
     for await (const child of this.#childLoggers) {
       await child.end();
