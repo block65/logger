@@ -1,9 +1,9 @@
-import Emittery from 'emittery';
 import { AsyncLocalStorage } from 'node:async_hooks';
 import { EventEmitter } from 'node:events';
 import { WriteStream } from 'node:fs';
 import { PassThrough, Writable } from 'node:stream';
 import { WriteStream as TtyWriteStream } from 'node:tty';
+import Emittery from 'emittery';
 import format from 'quick-format-unescaped';
 import { ErrorObject, serializeError } from 'serialize-error';
 import Chain from 'stream-chain';
@@ -108,8 +108,10 @@ function stringifyIfNotUndefined(val: unknown): string | undefined {
   return typeof val !== 'undefined' ? String(val) : val;
 }
 
-function withNullProto<T extends object>(obj: T, ...objs: Partial<T>[]): T {
-  return Object.assign(Object.create(null), obj, ...objs);
+export function withNullProto<T extends Record<string | number, unknown>>(
+  obj: T,
+): T {
+  return Object.assign<object, T>(Object.create(null), obj);
 }
 
 function isPrimitive(value: unknown): value is JsonPrimitive {
