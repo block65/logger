@@ -1,5 +1,5 @@
-import { describe, test } from '@jest/globals';
 import { TextEncoder } from 'util';
+import { describe, test } from '@jest/globals';
 import { createLoggerWithWaitableMock } from './helpers.js';
 
 enum TestEnum {

@@ -1,6 +1,6 @@
+import { Writable } from 'node:stream';
+import util from 'node:util';
 import { createColors } from 'colorette';
-import { Writable } from 'stream';
-import util from 'util';
 import {
   Level,
   type LogDescriptor,

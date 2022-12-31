@@ -1,7 +1,7 @@
-import { describe, expect, jest, test } from '@jest/globals';
 import { createWriteStream } from 'node:fs';
 import { PassThrough } from 'stream';
 import { finished } from 'stream/promises';
+import { describe, expect, jest, test } from '@jest/globals';
 import type { LogDescriptor } from '../lib/logger.js';
 import { promiseWait } from './helpers.js';
 

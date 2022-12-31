@@ -61,7 +61,7 @@ describe('GCP Processor', () => {
       processors: [gcpErrorProcessor],
     });
 
-    logger.fatal(new Error(`Ded 2`));
+    logger.fatal(new Error('Ded 2'));
     await logger.end();
 
     expect(callback.mock.calls).toMatchSnapshot();

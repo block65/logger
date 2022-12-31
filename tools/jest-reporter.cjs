@@ -1,6 +1,8 @@
 class BazelReporter {
+  // eslint-disable-next-line class-methods-use-this
   onRunComplete(_, results) {
     if (results.numFailedTests && results.snapshot.failure) {
+      // eslint-disable-next-line no-console
       console.log(`================================================================================
       
       Snapshot failed, you can update the snapshot by running

@@ -126,6 +126,7 @@ describe('Child Logger', () => {
     const warningMock = jest.fn();
 
     process.on('warning', (err) => {
+      // eslint-disable-next-line no-console
       console.warn(err);
       warningMock(err);
     });

@@ -1,7 +1,7 @@
+import { PassThrough } from 'node:stream';
 import { jest } from '@jest/globals';
 import Emittery from 'emittery';
 import type { Mock } from 'jest-mock';
-import { PassThrough } from 'node:stream';
 import { createLogger } from '../lib/index.js';
 import {
   CreateLoggerOptions,
@@ -29,13 +29,14 @@ export function waitableJestFn<
   const fn = jest.fn((...args: TArgs): void => {
     // console.log('waitableJestFn called with', { args });
     emitter.emit('call', args).catch((err) => {
+      // eslint-disable-next-line no-console
       console.warn(err);
       process.exitCode = 1;
     });
   });
 
-  const waitUntilCalledTimes = (times: number) => {
-    return new Promise<TArgs[]>((resolve) => {
+  const waitUntilCalledTimes = (times: number) =>
+    new Promise<TArgs[]>((resolve) => {
       const maybeResolve = () => {
         if (fn.mock.calls.length >= times) {
           emitter.clearListeners();
@@ -45,7 +46,6 @@ export function waitableJestFn<
       emitter.on('call', maybeResolve);
       maybeResolve();
     });
-  };
 
   const waitUntilCalled = async (): Promise<TArgs> => {
     const [call] = await waitUntilCalledTimes(1);
@@ -72,7 +72,8 @@ export function createLoggerWithWaitableMock(
   const destination = new PassThrough({ objectMode: true });
   const writeCallback = waitableJestFn<[LogDescriptor]>();
   const errBack = jest.fn((err) => {
-    console.trace({ err });
+    // eslint-disable-next-line no-console
+    console.trace(err);
   });
 
   destination.on('data', (val: LogDescriptor) => writeCallback(val));
@@ -94,7 +95,8 @@ export function createAutoConfiguredLoggerWithWaitableMock(
   const destination = new PassThrough({ objectMode: true });
   const writeCallback = waitableJestFn<[string]>();
   const errBack = jest.fn((err) => {
-    console.trace({ err });
+    // eslint-disable-next-line no-console
+    console.trace(err);
   });
 
   destination.on('data', (val: string) => writeCallback(val));

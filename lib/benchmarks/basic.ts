@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { createWriteStream } from 'node:fs';
 import { createLogger } from '../index.js';
 import { Level } from '../logger.js';
@@ -12,7 +13,7 @@ async function basicIterations(iterations: number) {
     level: Level.Trace,
   });
 
-  [...Array(iterations)].forEach(() => logger.info('hello world'));
+  Array(iterations).forEach(() => logger.info('hello world'));
 
   await logger.end();
 

@@ -1,6 +1,6 @@
 import type { RequestHandler } from 'express';
-import type { Logger } from './index.js';
 import type { AlsContext } from './logger.js';
+import type { Logger } from './index.js';
 
 export function expressLoggerContextMiddleware(
   logger: Logger,

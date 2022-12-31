@@ -8,31 +8,21 @@ import {
 } from '@jest/globals';
 import * as sentryModule from '@sentry/node';
 
-const captureException = jest.fn((/* exception, captureContext */) => {
-  return 'yes';
-});
+const captureException = jest.fn((/* exception, captureContext */) => 'yes');
 
-const addBreadcrumb = jest.fn((/* exception, captureContext */) => {
-  return 'yes';
-});
+const addBreadcrumb = jest.fn((/* exception, captureContext */) => 'yes');
 
-const captureMessage = jest.fn((/* message, captureContext */) => {
-  return 'yes';
-});
+const captureMessage = jest.fn((/* message, captureContext */) => 'yes');
 
-const flush = jest.fn((/* message, captureContext */) => {
-  return 'yes';
-});
+const flush = jest.fn((/* message, captureContext */) => 'yes');
 
-jest.unstable_mockModule('@sentry/node', () => {
-  return {
+jest.unstable_mockModule('@sentry/node', () => ({
     ...sentryModule,
     flush,
     captureException,
     addBreadcrumb,
     captureMessage,
-  };
-});
+  }));
 
 describe('Sentry processor', () => {
   beforeEach(() => {
