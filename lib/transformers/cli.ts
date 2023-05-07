@@ -1,7 +1,6 @@
 import { Writable } from 'node:stream';
 import { inspect } from 'node:util';
 import { createColors } from 'colorette';
-import type { JsonObject } from 'type-fest';
 import {
   Level,
   type LogDescriptor,

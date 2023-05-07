@@ -1,4 +1,3 @@
-import type { JsonObject } from 'type-fest';
 import { Level, type PlainTransformer, type Transformer } from '../logger.js';
 import { isEmptyObject, safeStringify, stringifyUndefined } from '../utils.js';
 
