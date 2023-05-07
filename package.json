@@ -7,25 +7,25 @@
   "type": "module",
   "exports": {
     ".": {
-      "types": "./lib/index.d.ts",
-      "default": "./lib/index.js"
+      "types": "./dist/lib/index.d.ts",
+      "default": "./dist/lib/index.js"
     },
     "./sentry": {
-      "types": "./lib/sentry.d.ts",
-      "default": "./lib/sentry.js"
+      "types": "./dist/lib/sentry.d.ts",
+      "default": "./dist/lib/sentry.js"
     },
     "./express": {
-      "types": "./lib/express.d.ts",
-      "default": "./lib/express.js"
+      "types": "./dist/lib/express.d.ts",
+      "default": "./dist/lib/express.js"
     },
     "./lambda": {
-      "types": "./lib/lambda.d.ts",
-      "default": "./lib/lambda.js"
+      "types": "./dist/lib/lambda.d.ts",
+      "default": "./dist/lib/lambda.js"
     }
   },
   "files": [
-    "lib/**/*.js",
-    "lib/**/*.d.ts",
+    "dist/lib/**/*.js",
+    "dist/lib/**/*.d.ts",
     "CREDITS",
     "LICENSE.md"
   ],
