@@ -1,4 +1,3 @@
-
 SRCS = $(wildcard lib/**)
 
 all: dist
@@ -9,6 +8,7 @@ deps: node_modules
 .PHONY: clean
 clean:
 	pnpm tsc -b --clean
+	rm -rf dist
 
 .PHONY: test
 test:
