@@ -1,4 +1,4 @@
-import fastSafeStringify from 'fast-safe-stringify';
+import stringify from 'fast-safe-stringify';
 
 export function isPlainObject<T extends Record<string, unknown>>(
   value: unknown | T,
@@ -49,7 +49,7 @@ export function isEmptyObject(obj: object): boolean {
 
 export function safeStringify(value: unknown): string {
   try {
-    return fastSafeStringify(value);
+    return stringify.default(value);
   } catch (err) {
     return '';
   }
