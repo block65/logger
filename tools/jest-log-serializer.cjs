@@ -1,4 +1,5 @@
 const { format: prettyFormat } = require('pretty-format');
+const manifest = require('../package.json');
 
 /**
  *
@@ -16,6 +17,13 @@ function errorToObject(err) {
  */
 function redactPaths(str) {
   return str
+    .replaceAll(
+      new RegExp(
+        `/(.*?)/(${manifest.name.replace('@', '').replace('/', '\\/')})`,
+        'g',
+      ),
+      '~/$2',
+    )
     .replaceAll(/\/.*execroot/g, '~')
     .replaceAll(/bin\/(.*\.sh.runfiles|external)/g, '~');
 }

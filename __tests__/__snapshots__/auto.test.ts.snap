@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Auto Logger AWS ECS 1`] = `
+Array [
+  Array [
+    "2009-02-13T23:31:30.000Z		INFO	woo yeah!!!	{\\"level\\":30,\\"ctx\\":{\\"pid\\":1337,\\"hostname\\":\\"testhost\\"}}
+",
+  ],
+  Array [
+    "2009-02-13T23:31:30.000Z		ERROR	bad stuff	{\\"level\\":50,\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"bad stuff\\",\\"stack\\":\\"Error: bad stuff\\\\n    at Object.<anonymous> (~/block65/logger/__tests__/auto.test.ts:53:18)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)\\"},\\"ctx\\":{\\"pid\\":1337,\\"hostname\\":\\"testhost\\"}}
+",
+  ],
+  Array [
+    "2009-02-13T23:31:30.000Z		WARN	bad stuff	{\\"level\\":40,\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"bad stuff\\",\\"stack\\":\\"Error: bad stuff\\\\n    at Object.<anonymous> (~/block65/logger/__tests__/auto.test.ts:54:17)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)\\"},\\"ctx\\":{\\"pid\\":1337,\\"hostname\\":\\"testhost\\"}}
+",
+  ],
+]
+`;
+
+exports[`Auto Logger AWS Lambda 1`] = `
+Array [
+  Array [
+    "2009-02-13T23:31:30.000Z		INFO	woo yeah!!!	{\\"level\\":30}
+",
+  ],
+  Array [
+    "2009-02-13T23:31:30.000Z		ERROR	bad stuff	{\\"level\\":50,\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"bad stuff\\",\\"stack\\":\\"Error: bad stuff\\\\n    at Object.<anonymous> (~/block65/logger/__tests__/auto.test.ts:69:18)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)\\"}}
+",
+  ],
+  Array [
+    "2009-02-13T23:31:30.000Z		WARN	bad stuff	{\\"level\\":40,\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"bad stuff\\",\\"stack\\":\\"Error: bad stuff\\\\n    at Object.<anonymous> (~/block65/logger/__tests__/auto.test.ts:70:17)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)\\"}}
+",
+  ],
+]
+`;
+
+exports[`Auto Logger GCP 1`] = `
+Array [
+  Array [
+    "{\\"severity\\":\\"INFO\\",\\"time\\":\\"2009-02-13T23:31:30.000Z\\",\\"message\\":\\"woo yeah!!!\\",\\"ctx\\":{\\"pid\\":1337,\\"hostname\\":\\"testhost\\"}}
+",
+  ],
+  Array [
+    "{\\"severity\\":\\"ERROR\\",\\"time\\":\\"2009-02-13T23:31:30.000Z\\",\\"message\\":\\"Unknown SmallInt\\",\\"@type\\":\\"type.googleapis.com~/block65/logger/__tests__/auto.test.ts:35:18)\\",\\"name\\":\\"TypeError\\",\\"ctx\\":{\\"pid\\":1337,\\"hostname\\":\\"testhost\\"}}
+",
+  ],
+  Array [
+    "{\\"severity\\":\\"WARNING\\",\\"time\\":\\"2009-02-13T23:31:30.000Z\\",\\"message\\":\\"this code stinks\\",\\"err\\":{\\"name\\":\\"SyntaxError\\",\\"message\\":\\"this code stinks\\",\\"stack\\":\\"SyntaxError: this code stinks\\\\n    at Object.<anonymous> (~/block65/logger/__tests__/auto.test.ts:36:17)\\"},\\"ctx\\":{\\"pid\\":1337,\\"hostname\\":\\"testhost\\"}}
+",
+  ],
+]
+`;

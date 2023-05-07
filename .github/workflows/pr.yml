@@ -1,12 +1,11 @@
-name: Deploy
+name: Unit Tests (PR)
 
 on:
-  workflow_dispatch: {}
-  release:
-    types: [published]
+  pull_request:
+    branches: ['canary', 'master']
 
 jobs:
-  publish-npm:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -18,7 +17,4 @@ jobs:
           node-version: 16
           registry-url: https://registry.npmjs.org/
           cache: 'pnpm'
-      - run: make
-      - run: pnpm publish --access=public --no-git-checks
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+      - run: make test

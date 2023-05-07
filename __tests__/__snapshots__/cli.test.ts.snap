@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CLI force-color off 1`] = `
+Array [
+  Array [
+    "2009-02-13T23:31:30.000Z FATAL  herp { err: { message: 'herp', name: 'Error', stack: 'Error: herp\\\\n    at Object.<anonymous> (~/block65/logger/__tests__/cli.test.ts:57:18)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)' } }
+",
+  ],
+  Array [
+    "2009-02-13T23:31:30.000Z ERROR  hallo { err: { message: 'hallo', name: 'Error', stack: 'Error: hallo\\\\n    at Object.<anonymous> (~/block65/logger/__tests__/cli.test.ts:58:18)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)' } }
+",
+  ],
+  Array [
+    "2009-02-13T23:31:30.000Z INFO   hello { err: { message: 'hello', name: 'Error', stack: 'Error: hello\\\\n    at Object.<anonymous> (~/block65/logger/__tests__/cli.test.ts:59:17)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)' } }
+",
+  ],
+  Array [
+    "2009-02-13T23:31:30.000Z WARN   halo { err: { message: 'halo', name: 'Error', stack: 'Error: halo\\\\n    at Object.<anonymous> (~/block65/logger/__tests__/cli.test.ts:60:17)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)' } }
+",
+  ],
+  Array [
+    "2009-02-13T23:31:30.000Z DEBUG  gday { err: { message: 'gday', name: 'Error', stack: 'Error: gday\\\\n    at Object.<anonymous> (~/block65/logger/__tests__/cli.test.ts:61:18)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)' } }
+",
+  ],
+  Array [
+    "2009-02-13T23:31:30.000Z TRACE  nihao3 { err: { message: 'nihao3', name: 'Error', stack: 'Error: nihao3\\\\n    at Object.<anonymous> (~/block65/logger/__tests__/cli.test.ts:62:18)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)' } }
+",
+  ],
+]
+`;
+
+exports[`CLI force-color on 1`] = `
+Array [
+  Array [
+    "[90m2009-02-13T23:31:30.000Z[39m [41m[97m[1mFATAL[22m[39m[49m [1mherp[22m { err: { message: [32m'herp'[39m, name: [32m'Error'[39m, stack: [32m'Error: herp\\\\n    at Object.<anonymous> (~/block65/logger/__tests__/cli.test.ts:33:18)'[39m } }
+",
+  ],
+  Array [
+    "[90m2009-02-13T23:31:30.000Z[39m [31mERROR[39m [1mhallo[22m { err: { message: [32m'hallo'[39m, name: [32m'Error'[39m, stack: [32m'Error: hallo\\\\n    at Object.<anonymous> (~/block65/logger/__tests__/cli.test.ts:34:18)'[39m } }
+",
+  ],
+  Array [
+    "[90m2009-02-13T23:31:30.000Z[39m [34mINFO[39m [1mhello[22m { err: { message: [32m'hello'[39m, name: [32m'Error'[39m, stack: [32m'Error: hello\\\\n    at Object.<anonymous> (~/block65/logger/__tests__/cli.test.ts:35:17)'[39m } }
+",
+  ],
+  Array [
+    "[90m2009-02-13T23:31:30.000Z[39m [43m[30m[1mWARN[22m[39m[49m [1mhalo[22m { err: { message: [32m'halo'[39m, name: [32m'Error'[39m, stack: [32m'Error: halo\\\\n    at Object.<anonymous> (~/block65/logger/__tests__/cli.test.ts:36:17)'[39m } }
+",
+  ],
+  Array [
+    "[90m2009-02-13T23:31:30.000Z[39m [32mDEBUG[39m [1mgday[22m { err: { message: [32m'gday'[39m, name: [32m'Error'[39m, stack: [32m'Error: gday\\\\n    at Object.<anonymous> (~/block65/logger/__tests__/cli.test.ts:37:18)'[39m } }
+",
+  ],
+  Array [
+    "[90m2009-02-13T23:31:30.000Z[39m [2mTRACE[22m [1mnihao3[22m { err: { message: [32m'nihao3'[39m, name: [32m'Error'[39m, stack: [32m'Error: nihao3\\\\n    at Object.<anonymous> (~/block65/logger/__tests__/cli.test.ts:38:18)'[39m } }
+",
+  ],
+]
+`;

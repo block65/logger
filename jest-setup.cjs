@@ -13,3 +13,5 @@ jest.unstable_mockModule('node:os', () => {
     hostname: jest.fn(() => 'testhost'),
   };
 });
+
+Error.stackTraceLimit = 3;

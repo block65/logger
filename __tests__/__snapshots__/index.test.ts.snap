@@ -1,0 +1,458 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Basic Mixins basic + accum 1`] = `
+Array [
+  Array [
+    Object {
+      "data": Object {
+        "logger": Object {
+          "go": "log",
+        },
+        "luger": Object {
+          "go": "bang",
+        },
+      },
+      "level": 40,
+      "msg": "hello",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Basic Mixins property overwrite 1`] = `
+Array [
+  Array [
+    Object {
+      "data": Object {
+        "logger": Object {
+          "go": "brrr",
+        },
+      },
+      "level": 40,
+      "msg": "hello",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Basic Object 1`] = `
+Array [
+  Array [
+    Object {
+      "data": Object {
+        "omg": true,
+      },
+      "level": 40,
+      "msg": undefined,
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Basic Object with undefined props 1`] = `
+Array [
+  Array [
+    Object {
+      "data": Object {
+        "omg": undefined,
+      },
+      "level": 40,
+      "msg": undefined,
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Basic Object, String = No Format 1`] = `
+Array [
+  Array [
+    Object {
+      "data": Object {
+        "omg": true,
+      },
+      "level": 40,
+      "msg": "hello",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Basic Object, String Format, ...Primitives 1`] = `
+Array [
+  Array [
+    Object {
+      "data": Object {
+        "omg": true,
+      },
+      "level": 40,
+      "msg": "hello world and 123",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Basic Object, String Format, String 1`] = `
+Array [
+  Array [
+    Object {
+      "data": Object {
+        "omg": true,
+      },
+      "level": 40,
+      "msg": "hello world",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Basic String Format, Object 1`] = `
+Array [
+  Array [
+    Object {
+      "level": 40,
+      "msg": "hello {\\"omg\\":true} spleen!",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Basic String, Object = Object ignored 1`] = `
+Array [
+  Array [
+    Object {
+      "level": 40,
+      "msg": "hello",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Basic Trace Caller Auto (development) 1`] = `
+Array [
+  Array [
+    Object {
+      "level": 40,
+      "msg": "hello",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Basic Trace Caller Auto (production) 1`] = `
+Array [
+  Array [
+    Object {
+      "level": 40,
+      "msg": "hello",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Basic Trace Caller Force false (development) 1`] = `
+Array [
+  Array [
+    Object {
+      "level": 40,
+      "msg": "hello",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Basic Trace Caller Force true (production) 1`] = `
+Array [
+  Array [
+    Object {
+      "level": 40,
+      "msg": "hello",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Basic allow flush and reuse 1`] = `
+Array [
+  Array [
+    Object {
+      "data": Object {
+        "err": Object {
+          "message": "Before 1",
+          "name": "Error",
+          "stack": "Error: Before 1
+    at Object.<anonymous> (~/block65/logger/__tests__/index.test.ts:219:18)
+    at Promise.then.completed (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:293:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:226:10)
+    at _callCircusTest (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:297:40)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at _runTest (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:233:3)
+    at _runTestsForDescribeBlock (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:135:9)
+    at _runTestsForDescribeBlock (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:130:9)
+    at run (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:68:3)",
+        },
+      },
+      "err": [Error: Before 1],
+      "level": 60,
+      "msg": "Before 1",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+  Array [
+    Object {
+      "data": Object {
+        "err": Object {
+          "message": "Before 2",
+          "name": "Error",
+          "stack": "Error: Before 2
+    at Object.<anonymous> (~/block65/logger/__tests__/index.test.ts:220:18)
+    at Promise.then.completed (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:293:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:226:10)
+    at _callCircusTest (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:297:40)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at _runTest (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:233:3)
+    at _runTestsForDescribeBlock (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:135:9)
+    at _runTestsForDescribeBlock (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:130:9)
+    at run (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:68:3)",
+        },
+      },
+      "err": [Error: Before 2],
+      "level": 60,
+      "msg": "Before 2",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+  Array [
+    Object {
+      "data": Object {
+        "err": Object {
+          "message": "After 1",
+          "name": "Error",
+          "stack": "Error: After 1
+    at Object.<anonymous> (~/block65/logger/__tests__/index.test.ts:226:18)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)",
+        },
+      },
+      "err": [Error: After 1],
+      "level": 60,
+      "msg": "After 1",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+  Array [
+    Object {
+      "data": Object {
+        "err": Object {
+          "message": "After 2",
+          "name": "Error",
+          "stack": "Error: After 2
+    at Object.<anonymous> (~/block65/logger/__tests__/index.test.ts:227:18)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)",
+        },
+      },
+      "err": [Error: After 2],
+      "level": 60,
+      "msg": "After 2",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Basic allow undefined logger level 1`] = `
+Array [
+  Array [
+    Object {
+      "data": Object {
+        "err": Object {
+          "message": "Fake",
+          "name": "Error",
+          "stack": "Error: Fake
+    at Object.<anonymous> (~/block65/logger/__tests__/index.test.ts:205:18)
+    at Promise.then.completed (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:293:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:226:10)
+    at _callCircusTest (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:297:40)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at _runTest (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:233:3)
+    at _runTestsForDescribeBlock (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:135:9)
+    at _runTestsForDescribeBlock (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:130:9)
+    at run (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:68:3)",
+        },
+      },
+      "err": [Error: Fake],
+      "level": 60,
+      "msg": "Fake",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+  Array [
+    Object {
+      "data": Object {
+        "err": Object {
+          "message": "Fake",
+          "name": "Error",
+          "stack": "Error: Fake
+    at Object.<anonymous> (~/block65/logger/__tests__/index.test.ts:206:18)
+    at Promise.then.completed (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:293:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:226:10)
+    at _callCircusTest (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:297:40)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at _runTest (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:233:3)
+    at _runTestsForDescribeBlock (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:135:9)
+    at _runTestsForDescribeBlock (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:130:9)
+    at run (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:68:3)",
+        },
+      },
+      "err": [Error: Fake],
+      "level": 60,
+      "msg": "Fake",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Basic context and release name co-exist 1`] = `
+Array [
+  Array [
+    Object {
+      "level": 10,
+      "msg": "stuff",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+  Array [
+    Object {
+      "level": 20,
+      "msg": "oh debug yes",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+  Array [
+    Object {
+      "level": 30,
+      "msg": "Completed",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+  Array [
+    Object {
+      "data": Object {
+        "err": Object {
+          "message": "Warn",
+          "name": "Error",
+          "stack": "Error: Warn
+    at Object.<anonymous> (~/block65/logger/__tests__/index.test.ts:242:17)
+    at Promise.then.completed (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:293:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:226:10)
+    at _callCircusTest (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:297:40)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at _runTest (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:233:3)
+    at _runTestsForDescribeBlock (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:135:9)
+    at _runTestsForDescribeBlock (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:130:9)
+    at run (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:68:3)",
+        },
+      },
+      "err": [Error: Warn],
+      "level": 40,
+      "msg": "Warn",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+  Array [
+    Object {
+      "data": Object {
+        "err": Object {
+          "message": "Its an error",
+          "name": "Error",
+          "stack": "Error: Its an error
+    at Object.<anonymous> (~/block65/logger/__tests__/index.test.ts:243:18)
+    at Promise.then.completed (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:293:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:226:10)
+    at _callCircusTest (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:297:40)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at _runTest (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:233:3)
+    at _runTestsForDescribeBlock (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:135:9)
+    at _runTestsForDescribeBlock (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:130:9)
+    at run (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:68:3)",
+        },
+      },
+      "err": [Error: Its an error],
+      "level": 50,
+      "msg": "Its an error",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+  Array [
+    Object {
+      "data": Object {
+        "err": Object {
+          "message": "OMG fatal",
+          "name": "Error",
+          "stack": "Error: OMG fatal
+    at Object.<anonymous> (~/block65/logger/__tests__/index.test.ts:244:18)
+    at Promise.then.completed (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:293:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:226:10)
+    at _callCircusTest (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:297:40)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at _runTest (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:233:3)
+    at _runTestsForDescribeBlock (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:135:9)
+    at _runTestsForDescribeBlock (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:130:9)
+    at run (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:68:3)",
+        },
+      },
+      "err": [Error: OMG fatal],
+      "level": 60,
+      "msg": "OMG fatal",
+      "time": 2009-02-13T23:31:30.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Basic log levels 1`] = `
+Array [
+  Object {
+    "data": Object {
+      "err": Object {
+        "message": "OMG fatal",
+        "name": "Error",
+        "stack": "Error: OMG fatal
+    at Object.<anonymous> (~/block65/logger/__tests__/index.test.ts:264:18)
+    at Promise.then.completed (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:293:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:226:10)
+    at _callCircusTest (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:297:40)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at _runTest (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:233:3)
+    at _runTestsForDescribeBlock (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:135:9)
+    at _runTestsForDescribeBlock (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:130:9)
+    at run (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:68:3)",
+      },
+    },
+    "err": [Error: OMG fatal],
+    "level": 60,
+    "msg": "OMG fatal",
+    "time": 2009-02-13T23:31:30.000Z,
+  },
+]
+`;

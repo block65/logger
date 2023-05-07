@@ -8,7 +8,7 @@ Array [
         "message": "Oops kaboom",
         "name": "Error",
         "stack": "Error: Oops kaboom
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/sentry.test.js:76:22)",
+    at Object.<anonymous> (~/block65/logger/__tests__/sentry.test.ts:92:18)",
       },
     },
     "err": [Error: Oops kaboom],
@@ -45,9 +45,8 @@ Array [
           "message": "fake",
           "name": "Error",
           "stack": "Error: fake
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/sentry.test.js:87:22)
-    at runMicrotasks (<anonymous>)
-    at processTicksAndRejections (node:internal/process/task_queues:96:5)",
+    at Object.<anonymous> (~/block65/logger/__tests__/sentry.test.ts:108:18)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)",
         },
       },
       "err": [Error: fake],
@@ -63,9 +62,8 @@ Array [
           "message": "fake",
           "name": "Error",
           "stack": "Error: fake
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/sentry.test.js:88:22)
-    at runMicrotasks (<anonymous>)
-    at processTicksAndRejections (node:internal/process/task_queues:96:5)",
+    at Object.<anonymous> (~/block65/logger/__tests__/sentry.test.ts:109:18)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)",
         },
       },
       "err": [Error: fake],
@@ -81,9 +79,8 @@ Array [
           "message": "fake",
           "name": "Error",
           "stack": "Error: fake
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/sentry.test.js:89:22)
-    at runMicrotasks (<anonymous>)
-    at processTicksAndRejections (node:internal/process/task_queues:96:5)",
+    at Object.<anonymous> (~/block65/logger/__tests__/sentry.test.ts:110:18)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)",
         },
       },
       "err": [Error: fake],
@@ -99,9 +96,8 @@ Array [
           "message": "fake",
           "name": "Error",
           "stack": "Error: fake
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/sentry.test.js:92:22)
-    at runMicrotasks (<anonymous>)
-    at processTicksAndRejections (node:internal/process/task_queues:96:5)",
+    at Object.<anonymous> (~/block65/logger/__tests__/sentry.test.ts:116:18)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)",
         },
       },
       "err": [Error: fake],
@@ -117,9 +113,8 @@ Array [
           "message": "fake",
           "name": "Error",
           "stack": "Error: fake
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/sentry.test.js:93:22)
-    at runMicrotasks (<anonymous>)
-    at processTicksAndRejections (node:internal/process/task_queues:96:5)",
+    at Object.<anonymous> (~/block65/logger/__tests__/sentry.test.ts:117:18)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)",
         },
       },
       "err": [Error: fake],
@@ -135,9 +130,8 @@ Array [
           "message": "fake",
           "name": "Error",
           "stack": "Error: fake
-    at Object.<anonymous> (~/block65_logger/bazel-out/k8-fastbuild/~/block65_logger/__tests__/sentry.test.js:94:22)
-    at runMicrotasks (<anonymous>)
-    at processTicksAndRejections (node:internal/process/task_queues:96:5)",
+    at Object.<anonymous> (~/block65/logger/__tests__/sentry.test.ts:118:18)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)",
         },
       },
       "err": [Error: fake],

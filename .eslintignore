@@ -1,3 +1,4 @@
 dist
 node_modules
-bazel-out
+build
+tmp
