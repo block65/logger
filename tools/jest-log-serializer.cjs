@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 const { format: prettyFormat } = require('pretty-format');
 const manifest = require('../package.json');
 
