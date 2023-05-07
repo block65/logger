@@ -458,7 +458,7 @@ export class Logger {
     await this.#emitter
       .emit('flush')
       .catch((err) => this.#emitter.emit('error', err));
-  }
+  };
 
   public end = async () => {
     // eslint-disable-next-line no-restricted-syntax
@@ -479,7 +479,7 @@ export class Logger {
       .catch((err) => this.#emitter.emit('error', err));
 
     this.#emitter.clearListeners();
-  }
+  };
 
   public on<Name extends 'log' | 'error' | 'flush' | 'end'>(
     event: Name | Name[],

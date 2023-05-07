@@ -28,7 +28,7 @@ describe('GCP Processor', () => {
 
     logger.warn(new Error('hello'));
     await logger.end();
-    await expect(callback.mock.calls).toMatchSnapshot();
+    expect(callback.mock.calls).toMatchSnapshot();
     expect(errback).not.toBeCalled();
   });
 
@@ -40,7 +40,7 @@ describe('GCP Processor', () => {
 
     logger.warn(new Error('hello'));
     await logger.end();
-    await expect(callback.mock.calls).toMatchSnapshot();
+    expect(callback.mock.calls).toMatchSnapshot();
     expect(errback).not.toBeCalled();
   });
 

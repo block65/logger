@@ -1,5 +1,5 @@
 import type { Context } from 'aws-lambda';
-import type { JsonObject } from 'type-fest';
+import type { JsonifiableObject } from 'type-fest/source/jsonifiable.js';
 import type { Logger } from './logger.js';
 import { isEmptyObject } from './utils.js';
 
@@ -10,12 +10,12 @@ export function withLambdaLoggerContextWrapper<T>(
   lambdaContext: LambdaContext,
   fn: (...args: any) => Promise<T>,
 ): Promise<T> {
-  const context: JsonObject = {
+  const context = {
     // functionName: context.functionName,
     ...(lambdaContext.functionVersion !== '$LATEST' && {
       functionVersion: lambdaContext.functionVersion,
     }),
-  };
+  } satisfies JsonifiableObject;
 
   return logger.als.run(
     {

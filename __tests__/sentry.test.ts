@@ -17,12 +17,12 @@ const captureMessage = jest.fn((/* message, captureContext */) => 'yes');
 const flush = jest.fn((/* message, captureContext */) => 'yes');
 
 jest.unstable_mockModule('@sentry/node', () => ({
-    ...sentryModule,
-    flush,
-    captureException,
-    addBreadcrumb,
-    captureMessage,
-  }));
+  ...sentryModule,
+  flush,
+  captureException,
+  addBreadcrumb,
+  captureMessage,
+}));
 
 describe('Sentry processor', () => {
   beforeEach(() => {

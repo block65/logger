@@ -40,7 +40,7 @@ describe('Data', () => {
     { err: newError('err prop') },
   ];
 
-  const randomArgumentSet: typeof bigOlSetOfTypes[] = [];
+  const randomArgumentSet: (typeof bigOlSetOfTypes)[] = [];
 
   bigOlSetOfTypes.forEach((arg, idx, arr) => {
     randomArgumentSet.push([arg, ...arr.filter((v) => v !== arg)]);
