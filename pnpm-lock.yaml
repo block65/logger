@@ -19,6 +19,9 @@ dependencies:
   fast-redact:
     specifier: ^3.1.2
     version: 3.1.2
+  fast-safe-stringify:
+    specifier: ^2.1.1
+    version: 2.1.1
   quick-format-unescaped:
     specifier: ^4.0.4
     version: 4.0.4
@@ -3323,6 +3326,10 @@ packages:
   /fast-redact@3.1.2:
     resolution: {integrity: sha512-+0em+Iya9fKGfEQGcd62Yv6onjBmmhV1uh86XVfOU8VwAe6kaFdQCWI9s0/Nnugx5Vd9tdbZ7e6gE2tR9dzXdw==}
     engines: {node: '>=6'}
+    dev: false
+
+  /fast-safe-stringify@2.1.1:
+    resolution: {integrity: sha512-W+KJc2dmILlPplD/H4K9l9LcAHAfPtP6BY84uVLXQ6Evcz9Lcg33Y2z1IVblT6xdY54PXYVHEv+0Wpq8Io6zkA==}
     dev: false
 
   /fastq@1.15.0:

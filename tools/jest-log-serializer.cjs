@@ -1,5 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 const { format: prettyFormat } = require('pretty-format');
+const fastSafeStringify = require('fast-safe-stringify');
 const manifest = require('../package.json');
 
 /**
@@ -8,7 +9,7 @@ const manifest = require('../package.json');
  * @returns {object}
  */
 function errorToObject(err) {
-  return JSON.parse(JSON.stringify(err, Object.getOwnPropertyNames(err)));
+  return JSON.parse(fastSafeStringify(err, Object.getOwnPropertyNames(err)));
 }
 
 /**
