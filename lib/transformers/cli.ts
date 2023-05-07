@@ -1,6 +1,7 @@
 import { Writable } from 'node:stream';
 import { inspect } from 'node:util';
 import { createColors } from 'colorette';
+import type { JsonObject } from 'type-fest';
 import {
   Level,
   type LogDescriptor,
@@ -51,8 +52,8 @@ export const cliTransformer = function cliTransformer(
     }
   };
 
-  const { level, msg, time, ctx = {}, data } = log;
-  const { name, ...ctxRest } = ctx;
+  const { level, msg, time, ctx, data } = log;
+  const { name = null, ...ctxRest } = { ...ctx };
 
   const maybeFormattedName = name ? `(${name}) ` : '';
   const maybeFormattedMsg = msg ? `${bold(msg.toLocaleString())} ` : '';

@@ -164,7 +164,6 @@ exports[`Sentry processor listener one shot 2`] = `
 Array [
   Array [
     Object {
-      "data": undefined,
       "level": "info",
       "message": "This happened before the error",
       "timestamp": 1234567890000,

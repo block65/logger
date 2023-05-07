@@ -33,11 +33,13 @@ function sentryCaptureLog(log: LogDescriptor, options: SentryListenerOptions) {
 export function createSentryListener(options: SentryListenerOptions = {}) {
   return (log: LogDescriptor): LogDescriptor => {
     if (log.level < Level.Error) {
+      const message = log.msg?.toLocaleString();
+
       addBreadcrumb({
         level: sentrySeverityMap.get(log.level) || 'log',
-        message: log.msg?.toLocaleString(),
-        data: log.data,
         timestamp: log.time.getTime(),
+        ...(message && { message }),
+        ...(log.data && { data: log.data }),
       });
     }
     if (log.level >= Level.Error && log.err) {

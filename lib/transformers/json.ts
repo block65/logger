@@ -1,4 +1,5 @@
-import type { Jsonify, JsonPrimitive } from 'type-fest';
+import { serializeError } from 'serialize-error';
+import type { JsonPrimitive } from 'type-fest';
 import type { JsonifiableObject } from 'type-fest/source/jsonifiable.js';
 import type { LogData, LogDescriptor, PlainTransformer } from '../logger.js';
 import { safeStringify, withNullProto } from '../utils.js';
@@ -19,19 +20,24 @@ interface LogFormat {
   ctx?: LogData;
 }
 
-export type JsonLogFormat = JsonifiableObject & Jsonify<LogFormat>;
+export type JsonLogFormat = JsonifiableObject & LogFormat;
 
 export const jsonTransformer: PlainTransformer = (
   log: LogDescriptor,
 ): string => {
-  const { level, time, ctx, data, msg } = log;
+  const { level, time, ctx, data = {}, msg } = log;
 
-  const jsonLog: LogFormat = withNullProto({
+  const { err, ...dataRest } = data;
+
+  const jsonLog: JsonLogFormat = withNullProto({
     level,
     time: time.toISOString(),
-    msg,
-    ...data,
-    ctx,
+    ...(msg && { msg }),
+    ...dataRest,
+    ...(!!err && {
+      error: err instanceof Error ? serializeError(err) : Object(err),
+    }),
+    ...(ctx && { ctx }),
   });
 
   return `${safeStringify(jsonLog)}\n`;

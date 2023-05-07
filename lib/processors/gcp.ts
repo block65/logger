@@ -12,7 +12,8 @@ export function gcpErrorProcessor(log: LogDescriptor): LogDescriptor {
   }
 
   const { err, ...data } = log.data;
-  const { stack, message, ...restErr } = err;
+  const { stack, message, ...restErr } =
+    err instanceof Error ? err : Object(err);
 
   return {
     ...log,

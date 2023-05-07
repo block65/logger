@@ -1,3 +1,4 @@
+import { serializeError } from 'serialize-error';
 import type { JsonPrimitive } from 'type-fest';
 import {
   Level,
@@ -29,15 +30,20 @@ const logLevelGcpSeverityMap = new Map<Level, GcpSeverities>([
 export const gcpTransformer: PlainTransformer = (
   log: LogDescriptor,
 ): string => {
-  const { level, time, ctx, data, msg } = gcpErrorProcessor(log);
+  const { level, time, ctx, data = {}, msg } = gcpErrorProcessor(log);
+
+  const { err, ...dataRest } = data;
 
   // See https://cloud.google.com/error-reporting/docs/formatting-error-messages
   const jsonLog: GcpJsonLogFormat = withNullProto({
     severity: logLevelGcpSeverityMap.get(level) || 'INFO',
     time: time.toISOString(),
-    message: msg,
-    ...data,
-    ctx,
+    ...(msg && { message: msg }),
+    ...dataRest,
+    ...(!!err && {
+      err: err instanceof Error ? serializeError(err) : Object(err),
+    }),
+    ...(ctx && { ctx }),
   });
 
   return `${safeStringify(jsonLog)}\n`;

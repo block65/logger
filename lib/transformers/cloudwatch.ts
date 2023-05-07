@@ -1,3 +1,4 @@
+import type { JsonObject } from 'type-fest';
 import { Level, type PlainTransformer, type Transformer } from '../logger.js';
 import { isEmptyObject, safeStringify, stringifyUndefined } from '../utils.js';
 
@@ -17,12 +18,12 @@ const levelNumberToCloudwatchStringMap = new Map<Level, AwsLevelNames>([
 const cloudwatchTransformer: Transformer = function cloudwatchTransformer(log) {
   const { level, msg, ctx, time, data } = log;
 
-  const { id: contextId, ...contextRest } = ctx || {};
+  const { id: contextId = null, ...ctxRest } = { ...ctx };
 
   const dataStr = safeStringify({
     level,
     ...stringifyUndefined(data),
-    ...(contextRest && !isEmptyObject(contextRest) && { ctx: contextRest }),
+    ...(ctxRest && !isEmptyObject(ctxRest) && { ctx: ctxRest }),
   });
 
   const line = [
