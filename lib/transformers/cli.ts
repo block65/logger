@@ -1,5 +1,5 @@
 import { Writable } from 'node:stream';
-import util from 'node:util';
+import { inspect } from 'node:util';
 import { createColors } from 'colorette';
 import {
   Level,
@@ -64,12 +64,12 @@ export const cliTransformer = function cliTransformer(
 
   const formattedData =
     dataWithCtx && Object.keys(dataWithCtx).length > 0
-      ? `${util.inspect(dataWithCtx, {
-          colors: options.useColor,
+      ? `${inspect(dataWithCtx, {
           compact: true,
           breakLength: Infinity,
           sorted: true,
           depth: 6,
+          ...('useColor' in options && { colors: options.useColor }),
         })}`
       : '';
 
@@ -99,7 +99,7 @@ export const createCliTransformer = (
       supportsColorCache.set(this.destination, destHasColor);
     }
 
-    const useColor = supportsColorCache.get(this.destination);
+    const useColor = supportsColorCache.get(this.destination) || false;
 
     return cliTransformer(log, { useColor });
   };

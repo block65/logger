@@ -1,5 +1,5 @@
 import fastRedact, { type RedactOptions } from 'fast-redact';
-import { Processor } from '../logger.js';
+import { type Processor } from '../logger.js';
 
 export function createRedactProcessor(
   options: Omit<RedactOptions, 'serialize'>,

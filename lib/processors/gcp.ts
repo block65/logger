@@ -1,4 +1,4 @@
-import { Level, LogDescriptor } from '../logger.js';
+import { Level, type LogDescriptor } from '../logger.js';
 
 export function gcpErrorProcessor(log: LogDescriptor): LogDescriptor {
   // dont augment anything less than an actual error

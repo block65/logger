@@ -1,5 +1,5 @@
 import { sep } from 'node:path';
-import { Processor } from '../logger.js';
+import type { Processor } from '../logger.js';
 
 export const callerProcessor: Processor = (log) => {
   const stackParts = new Error().stack?.split('\n') || [];

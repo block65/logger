@@ -1,4 +1,4 @@
-import { Level, PlainTransformer, Transformer } from '../logger.js';
+import { Level, type PlainTransformer, type Transformer } from '../logger.js';
 import { isEmptyObject, safeStringify, stringifyUndefined } from '../utils.js';
 
 // https://github.com/aws/aws-lambda-nodejs-runtime-interface-client/blob/c31c41ffe5f2f03ae9e8589b96f3b005e2bb8a4a/src/utils/LogPatch.ts#L10

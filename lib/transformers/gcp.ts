@@ -1,5 +1,10 @@
 import type { JsonPrimitive } from 'type-fest';
-import { Level, LogData, LogDescriptor, PlainTransformer } from '../logger.js';
+import {
+  Level,
+  type LogData,
+  type LogDescriptor,
+  type PlainTransformer,
+} from '../logger.js';
 import { gcpErrorProcessor } from '../processors/gcp.js';
 import { safeStringify, withNullProto } from '../utils.js';
 

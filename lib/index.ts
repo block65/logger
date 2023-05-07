@@ -1,5 +1,10 @@
 import { hostname } from 'node:os';
-import { CreateLoggerOptions, Level, LevelAsString, Logger } from './logger.js';
+import {
+  Level,
+  Logger,
+  type CreateLoggerOptions,
+  type LevelAsString,
+} from './logger.js';
 import { callerProcessor } from './processors/caller.js';
 import { createCliTransformer } from './transformers/cli.js';
 import { createCloudwatchTransformer } from './transformers/cloudwatch.js';

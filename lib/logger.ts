@@ -3,35 +3,30 @@ import { EventEmitter } from 'node:events';
 import { WriteStream } from 'node:fs';
 import { PassThrough, Writable } from 'node:stream';
 import { WriteStream as TtyWriteStream } from 'node:tty';
-import Emittery from 'emittery';
+import Emittery, { type UnsubscribeFunction } from 'emittery';
 import format from 'quick-format-unescaped';
-import { ErrorObject, serializeError } from 'serialize-error';
+import { type ErrorObject, serializeError } from 'serialize-error';
 import Chain from 'stream-chain';
-import type { JsonPrimitive } from 'type-fest';
+import type { JsonPrimitive, Jsonifiable } from 'type-fest';
+import type { JsonifiableObject } from 'type-fest/source/jsonifiable.js';
 import { isPlainObject, safeStringify } from './utils.js';
 
 // we support an extended set of values, as each have a toJSON method and
 // corresponding representation, typically a string
-type JsonValueExtended =
-  | JsonObjectExtended
-  | JsonArrayExtended
-  | JsonPrimitive
-  | Date
-  | URL;
+type JsonValueExtended = Jsonifiable;
 
-type JsonObjectExtended = { [Key in string]?: JsonValueExtended };
-type JsonArrayExtended = JsonValueExtended[];
+type JsonObjectExtended = JsonifiableObject;
 
 type JsonObjectExtendedWithError = JsonObjectExtended & {
-  err?: Error | unknown;
+  err?: Error | unknown | undefined;
 };
 
 interface LoggerOptions {
   destination: Writable;
-  level?: Level;
+  level?: Level | undefined;
   processors?: Processor[];
-  transformer?: Transformer;
-  context?: LogDescriptor['ctx'];
+  transformer?: Transformer | undefined;
+  context?: LogDescriptor['ctx'] | undefined;
 }
 
 export type LoggerProcessor<T, R = Partial<T>> =
@@ -161,15 +156,17 @@ function toLogDescriptor(
   }
 
   if (Array.isArray(arg1)) {
+    const msg =
+      typeof arg2 === 'string'
+        ? format(arg2, args, {
+            stringify: safeStringify,
+          })
+        : stringifyIfNotUndefined(arg2);
+
     return {
       time,
       level,
-      msg:
-        typeof arg2 === 'string'
-          ? format(arg2, args, {
-              stringify: safeStringify,
-            })
-          : stringifyIfNotUndefined(arg2),
+      ...(msg && { msg }),
       data: { ...arg1 },
     };
   }
@@ -178,10 +175,12 @@ function toLogDescriptor(
     const { err, ...data } = arg1 as JsonObjectExtendedWithError;
 
     if (err instanceof Error) {
+      const msg = typeof arg2 === 'string' ? arg2 : err.message || undefined;
+
       return {
         time,
         level,
-        msg: typeof arg2 === 'string' ? arg2 : err.message || undefined,
+        ...(msg && { msg }),
         err,
         data: withNullProto({
           err: serializeError(err),
@@ -190,28 +189,32 @@ function toLogDescriptor(
       };
     }
 
+    const msg =
+      typeof arg2 === 'string'
+        ? format(String(arg2), args, {
+            stringify: safeStringify,
+          })
+        : stringifyIfNotUndefined(arg2);
+
     return {
       time,
       level,
-      msg:
-        typeof arg2 === 'string'
-          ? format(String(arg2), args, {
-              stringify: safeStringify,
-            })
-          : stringifyIfNotUndefined(arg2),
+      ...(msg && { msg }),
       data: arg1,
     };
   }
 
+  const msg =
+    typeof arg2 === 'string'
+      ? format(arg2, args, {
+          stringify: safeStringify,
+        })
+      : stringifyIfNotUndefined(arg1);
+
   return {
     time,
     level,
-    msg:
-      typeof arg2 === 'string'
-        ? format(arg2, args, {
-            stringify: safeStringify,
-          })
-        : stringifyIfNotUndefined(arg1),
+    ...(msg && { msg }),
   };
 }
 
@@ -470,7 +473,8 @@ export class Logger {
 
     [this.#inputStream, this.#processorChain, this.#pipeCleanerChain].forEach(
       (stream) => {
-        stream.destroy().unpipe().removeAllListeners();
+        stream.destroy();
+        stream.unpipe().removeAllListeners();
       },
     );
 
@@ -491,7 +495,7 @@ export class Logger {
         end: undefined;
       }[Name],
     ) => void | Promise<void>,
-  ): Emittery.UnsubscribeFn {
+  ): UnsubscribeFunction {
     return this.#emitter.on(event, fn);
   }
 

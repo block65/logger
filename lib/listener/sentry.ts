@@ -2,10 +2,10 @@ import {
   addBreadcrumb,
   captureException,
   flush,
-  SeverityLevel,
+  type SeverityLevel,
 } from '@sentry/node';
 import type { ScopeContext } from '@sentry/types';
-import { Level, LogDescriptor, Logger } from '../logger.js';
+import { Level, type LogDescriptor, Logger } from '../logger.js';
 
 export interface SentryListenerOptions {
   // extra is deprecated - see https://docs.sentry.io/platforms/javascript/enriching-events/context/#additional-data
