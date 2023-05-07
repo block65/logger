@@ -1,18 +1,29 @@
 {
   "compilerOptions": {
-    "strict": true,
-    "moduleResolution": "node",
-    "declaration": true,
-    "target": "es2021",
-    "lib": ["es2021"],
+    "moduleResolution": "node16",
+    "target": "es2022",
+    "lib": ["es2022"],
     "module": "es2022",
-    "inlineSources": false,
-    "noEmitOnError": false,
-    "removeComments": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
+    "incremental": true,
+    "strict": true,
+    "declaration": true,
+    "outDir": "dist",
+    "preserveSymlinks": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowUnusedLabels": false,
+    "allowUnreachableCode": false,
+    "exactOptionalPropertyTypes": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
     "noUncheckedIndexedAccess": true,
-    "useUnknownInCatchVariables": true
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "verbatimModuleSyntax": true,
+    "removeComments": true,
+    "allowArbitraryExtensions": true,
+    "skipLibCheck": true
   },
-  "include": ["./lib", "./__tests__"]
+  "include": ["./src", "./lib", "./bin", "./__tests__"],
+  "exclude": ["./dist", "node_modules"]
 }

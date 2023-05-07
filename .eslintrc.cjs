@@ -1,17 +1,7 @@
 module.exports = {
-  extends: '@block65',
+  root: true,
+  extends: ['@block65/eslint-config', '@block65/eslint-config/javascript'],
   parserOptions: {
-    project: ['./tsconfig.json'],
+    project: true,
   },
-  overrides: [
-    {
-      files: ['jest*.*js'],
-      rules: {
-        'import/no-extraneous-dependencies': [
-          'error',
-          { devDependencies: true },
-        ],
-      },
-    },
-  ],
 };
