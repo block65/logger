@@ -9,7 +9,9 @@ export function isPlainObject<T extends Record<string, unknown>>(
   return prototype === null || prototype === Object.getPrototypeOf({});
 }
 
-export function stringifyUndefined(details: unknown | object): object {
+export function stringifyUndefined(
+  details: unknown | Record<string, unknown>,
+): Record<string, unknown> {
   if (isPlainObject(details)) {
     return Object.fromEntries(
       Object.entries(details).map(([k, v]) => {
@@ -29,7 +31,7 @@ export function withNullProto<T extends Record<string | number, unknown>>(
   return Object.assign(Object.create(null), obj);
 }
 
-export function stripUndefined<T extends Record<string, any>>(obj: T): T {
+export function stripUndefined<T extends Record<string, unknown>>(obj: T): T {
   return Object.entries(obj).reduce(
     (accum, [k, v]) =>
       typeof v === 'undefined'

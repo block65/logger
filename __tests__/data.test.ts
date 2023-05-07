@@ -42,7 +42,7 @@ describe('Data', () => {
 
   const randomArgumentSet: (typeof bigOlSetOfTypes)[] = [];
 
-  bigOlSetOfTypes.forEach((arg, idx, arr) => {
+  bigOlSetOfTypes.forEach((arg, _idx, arr) => {
     randomArgumentSet.push([arg, ...arr.filter((v) => v !== arg)]);
   });
 
