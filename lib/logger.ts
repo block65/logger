@@ -5,19 +5,13 @@ import { PassThrough, Writable } from 'node:stream';
 import { WriteStream as TtyWriteStream } from 'node:tty';
 import Emittery, { type UnsubscribeFunction } from 'emittery';
 import format from 'quick-format-unescaped';
-import { type ErrorObject, serializeError } from 'serialize-error';
+import { serializeError } from 'serialize-error';
 import Chain from 'stream-chain';
-import type { JsonPrimitive, Jsonifiable } from 'type-fest';
+import type { JsonPrimitive } from 'type-fest';
 import type { JsonifiableObject } from 'type-fest/source/jsonifiable.js';
 import { isPlainObject, safeStringify } from './utils.js';
 
-// we support an extended set of values, as each have a toJSON method and
-// corresponding representation, typically a string
-type JsonValueExtended = Jsonifiable;
-
-type JsonObjectExtended = JsonifiableObject;
-
-type JsonObjectExtendedWithError = JsonObjectExtended & {
+type JsonifiableObjectWithError = JsonifiableObject & {
   err?: Error | unknown | undefined;
 };
 
@@ -61,45 +55,33 @@ export enum Level {
 
 export type LevelAsString = Lowercase<keyof typeof Level>;
 
-export interface CreateLoggerOptions {
-  destination?: Writable;
-  level?: Level;
-  processors?: Processor[];
-  transformer?: Transformer;
-  context?: LogDescriptor['ctx'];
-}
+export type CreateLoggerOptions = Partial<LoggerOptions>;
 
-export type LogData = {
-  [key in string]?: JsonValueExtended | undefined | unknown;
-} & {
-  err?: ErrorObject;
-};
+export type LogData = JsonifiableObjectWithError;
 
 export interface LogDescriptor {
   time: Date;
   level: Level;
   msg?: JsonPrimitive;
-  ctx?: LogData;
+  ctx?: JsonifiableObject;
   data?: LogData;
   err?: Error | unknown;
 }
 
 export type LogMethod = {
   (err: Error | unknown, str?: JsonPrimitive, ...args: unknown[]): void;
-  (
-    data: JsonObjectExtendedWithError,
-    str?: JsonPrimitive,
-    ...args: unknown[]
-  ): void;
+  (data: JsonifiableObject, str?: JsonPrimitive, ...args: unknown[]): void;
   (str: JsonPrimitive, ...args: unknown[]): void;
 };
 
 export interface AlsContext {
   id: string;
-  context?: JsonObjectExtended;
+  context?: JsonifiableObject;
 }
 
-function stringifyIfNotUndefined(val: unknown): string | undefined {
+function stringifyIfNotUndefined<T extends unknown | undefined>(
+  val: T,
+): string | undefined {
   return typeof val !== 'undefined' ? String(val) : val;
 }
 
@@ -167,12 +149,14 @@ function toLogDescriptor(
       time,
       level,
       ...(msg && { msg }),
-      data: { ...arg1 },
+      // this stops TS complaining about serializing array methods
+      // it may not be necessary
+      data: Object.fromEntries(arg1.map((value, idx) => [idx, value])),
     };
   }
 
   if (arg1 && typeof arg1 === 'object') {
-    const { err, ...data } = arg1 as JsonObjectExtendedWithError;
+    const { err, ...data } = arg1 as JsonifiableObjectWithError;
 
     if (err instanceof Error) {
       const msg = typeof arg2 === 'string' ? arg2 : err.message || undefined;
@@ -379,7 +363,7 @@ export class Logger {
   }
 
   public child(
-    data: JsonObjectExtended,
+    data: JsonifiableObject,
     options: Pick<LoggerOptions, 'level' | 'context' | 'processors'> = {},
   ) {
     // this prevents a MaxListenersExceededWarning when we create the new logger
