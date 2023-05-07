@@ -71,7 +71,7 @@ export function createLoggerWithWaitableMock(
 ): [Logger, WaitableMock<[LogDescriptor]>, Mock] {
   const destination = new PassThrough({ objectMode: true });
   const writeCallback = waitableJestFn<[LogDescriptor]>();
-  const errBack = jest.fn((err) => {
+  const errBack = jest.fn((err: unknown) => {
     // eslint-disable-next-line no-console
     console.trace(err);
   });
@@ -94,7 +94,7 @@ export function createAutoConfiguredLoggerWithWaitableMock(
 ): [Logger, WaitableMock<[string]>, Mock] {
   const destination = new PassThrough({ objectMode: true });
   const writeCallback = waitableJestFn<[string]>();
-  const errBack = jest.fn((err) => {
+  const errBack = jest.fn((err: unknown) => {
     // eslint-disable-next-line no-console
     console.trace(err);
   });

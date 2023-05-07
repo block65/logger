@@ -43,12 +43,12 @@ describe('Events', () => {
       ],
     });
 
-    const callback = jest.fn(async (err) => err);
+    const callback = jest.fn(async (err: unknown) => err);
     logger.on('log', async (err) => {
       await callback(err);
     });
 
-    const errback = jest.fn((err) => err);
+    const errback = jest.fn((err: unknown) => err);
     logger.on('error', (err) => {
       errback(err);
     });
