@@ -1,5 +1,6 @@
-import type { Jsonify, JsonObject, JsonPrimitive } from 'type-fest';
-import { LogData, LogDescriptor, PlainTransformer } from '../logger.js';
+import type { Jsonify, JsonPrimitive } from 'type-fest';
+import type { JsonifiableObject } from 'type-fest/source/jsonifiable.js';
+import type { LogData, LogDescriptor, PlainTransformer } from '../logger.js';
 import { safeStringify, withNullProto } from '../utils.js';
 
 // const levelToStringMap = new Map<Level, string>([
@@ -18,7 +19,7 @@ interface LogFormat {
   ctx?: LogData;
 }
 
-export type JsonLogFormat = JsonObject & Jsonify<LogFormat>;
+export type JsonLogFormat = JsonifiableObject & Jsonify<LogFormat>;
 
 export const jsonTransformer: PlainTransformer = (
   log: LogDescriptor,

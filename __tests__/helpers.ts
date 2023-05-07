@@ -4,10 +4,10 @@ import Emittery from 'emittery';
 import type { Mock } from 'jest-mock';
 import { createLogger } from '../lib/index.js';
 import {
-  CreateLoggerOptions,
   Level,
-  LogDescriptor,
   Logger,
+  type CreateLoggerOptions,
+  type LogDescriptor,
 } from '../lib/logger.js';
 
 interface WaitableMock<TArgs extends unknown[] = unknown[]>

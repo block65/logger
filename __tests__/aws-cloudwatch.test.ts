@@ -6,7 +6,7 @@ import {
   jest,
   test,
 } from '@jest/globals';
-import { LogDescriptor, Level } from '../lib/logger.js';
+import { Level, type LogDescriptor } from '../lib/logger.js';
 
 describe('AWS Cloudwatch', () => {
   beforeEach(() => {
