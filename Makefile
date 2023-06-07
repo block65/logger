@@ -7,28 +7,28 @@ deps: node_modules
 
 .PHONY: clean
 clean:
-	pnpm tsc -b --clean
+	pnpm exec tsc -b --clean
 	rm -rf dist
 
 .PHONY: test
 test:
-	NODE_OPTIONS=--experimental-vm-modules pnpm jest
+	NODE_OPTIONS=--experimental-vm-modules pnpm exec jest
 
 .PHONY: test-update
 test-update:
-	NODE_OPTIONS=--experimental-vm-modules pnpm jest -u
+	NODE_OPTIONS=--experimental-vm-modules pnpm exec jest -u
 
 node_modules: package.json
 	pnpm install
 
 dist: node_modules tsconfig.json $(SRCS)
-	pnpm tsc
+	pnpm exec tsc
 
 .PHONY: dist-watch
 dist-watch:
-	pnpm tsc -w --preserveWatchOutput
+	pnpm exec tsc -w --preserveWatchOutput
 
 .PHONY: pretty
 pretty: node_modules
-	pnpm eslint --fix .
-	pnpm prettier --write .
+	pnpm exec eslint --fix .
+	pnpm exec prettier --write .
