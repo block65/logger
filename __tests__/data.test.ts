@@ -48,12 +48,11 @@ describe('Data', () => {
 
   test.each(randomArgumentSet)(
     '%# args [%o,%o,%o,%o] does not crash',
-    async (...args: unknown[]) => {
+    async (arg: unknown) => {
       const { createLoggerWithWaitableMock } = await import('./helpers.js');
 
       const [logger, callback, errback] = createLoggerWithWaitableMock();
-      // @ts-ignore;
-      logger.fatal(...args);
+      logger.fatal(arg);
       await logger.end();
 
       expect(callback.mock.calls).toMatchSnapshot();
