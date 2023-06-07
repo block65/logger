@@ -9,8 +9,8 @@ Array [
           "message": "hello",
           "name": "Error",
           "stack": "Error: hello
-    at Object.<anonymous> (~/block65/logger/__tests__/gcp.test.ts:29:17)
-    at Promise.then.completed (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:293:28)
+    at Object.<anonymous> (~/logger/__tests__/gcp.test.ts:29:17)
+    at Promise.then.completed (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:293:28)
     at new Promise (<anonymous>)",
         },
       },
@@ -32,8 +32,8 @@ Array [
         "message": "Ded 1",
         "name": "Error",
         "stack_trace": "Error: Ded 1
-    at Object.<anonymous> (~/block65/logger/__tests__/gcp.test.ts:52:18)
-    at Promise.then.completed (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:293:28)
+    at Object.<anonymous> (~/logger/__tests__/gcp.test.ts:52:18)
+    at Promise.then.completed (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:293:28)
     at new Promise (<anonymous>)",
       },
       "err": [Error: Ded 1],
@@ -54,8 +54,8 @@ Array [
         "message": "Ded 2",
         "name": "Error",
         "stack_trace": "Error: Ded 2
-    at Object.<anonymous> (~/block65/logger/__tests__/gcp.test.ts:64:18)
-    at Promise.then.completed (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:293:28)
+    at Object.<anonymous> (~/logger/__tests__/gcp.test.ts:64:18)
+    at Promise.then.completed (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:293:28)
     at new Promise (<anonymous>)",
       },
       "err": [Error: Ded 2],
@@ -76,8 +76,8 @@ Array [
           "message": "hello",
           "name": "Error",
           "stack": "Error: hello
-    at Object.<anonymous> (~/block65/logger/__tests__/gcp.test.ts:41:17)
-    at Promise.then.completed (~/block65/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:293:28)
+    at Object.<anonymous> (~/logger/__tests__/gcp.test.ts:41:17)
+    at Promise.then.completed (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:293:28)
     at new Promise (<anonymous>)",
         },
       },

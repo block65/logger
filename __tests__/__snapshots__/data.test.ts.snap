@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Data 0 argdddds ['string',123,false,Symbol(123)] does not crash 1`] = `
+exports[`Data 0 args ['string',123,false,Symbol(123)] does not crash 1`] = `
 Array [
   Array [
     Object {
@@ -12,7 +12,7 @@ Array [
 ]
 `;
 
-exports[`Data 1 argdddds [123,'string',false,Symbol(123)] does not crash 1`] = `
+exports[`Data 1 args [123,'string',false,Symbol(123)] does not crash 1`] = `
 Array [
   Array [
     Object {
@@ -24,7 +24,7 @@ Array [
 ]
 `;
 
-exports[`Data 2 argdddds [false,'string',123,Symbol(123)] does not crash 1`] = `
+exports[`Data 2 args [false,'string',123,Symbol(123)] does not crash 1`] = `
 Array [
   Array [
     Object {
@@ -36,7 +36,7 @@ Array [
 ]
 `;
 
-exports[`Data 3 argdddds [Symbol(123),'string',123,false] does not crash 1`] = `
+exports[`Data 3 args [Symbol(123),'string',123,false] does not crash 1`] = `
 Array [
   Array [
     Object {
@@ -48,7 +48,7 @@ Array [
 ]
 `;
 
-exports[`Data 4 argdddds [{ [Symbol(234)]: 'symbol as key' },'string',123,false] does not crash 1`] = `
+exports[`Data 4 args [{ [Symbol(234)]: 'symbol as key' },'string',123,false] does not crash 1`] = `
 Array [
   Array [
     Object {
@@ -56,14 +56,13 @@ Array [
         Symbol(234): "symbol as key",
       },
       "level": 60,
-      "msg": "string",
       "time": 2009-02-13T23:31:30.000Z,
     },
   ],
 ]
 `;
 
-exports[`Data 5 argdddds [{ frozen: 123 },'string',123,false] does not crash 1`] = `
+exports[`Data 5 args [{ frozen: 123 },'string',123,false] does not crash 1`] = `
 Array [
   Array [
     Object {
@@ -71,14 +70,13 @@ Array [
         "frozen": 123,
       },
       "level": 60,
-      "msg": "string",
       "time": 2009-02-13T23:31:30.000Z,
     },
   ],
 ]
 `;
 
-exports[`Data 6 argdddds [Error
+exports[`Data 6 args [Error
     at fake.js:0:0 {
   [stack]: 'Error\\n    at fake.js:0:0',
   [message]: 'test'
@@ -96,14 +94,14 @@ Array [
       },
       "err": [Error: test],
       "level": 60,
-      "msg": "string",
+      "msg": "test",
       "time": 2009-02-13T23:31:30.000Z,
     },
   ],
 ]
 `;
 
-exports[`Data 7 argdddds [null,'string',123,false] does not crash 1`] = `
+exports[`Data 7 args [null,'string',123,false] does not crash 1`] = `
 Array [
   Array [
     Object {
@@ -115,19 +113,18 @@ Array [
 ]
 `;
 
-exports[`Data 8 argdddds [undefined,'string',123,false] does not crash 1`] = `
+exports[`Data 8 args [undefined,'string',123,false] does not crash 1`] = `
 Array [
   Array [
     Object {
       "level": 60,
-      "msg": "string",
       "time": 2009-02-13T23:31:30.000Z,
     },
   ],
 ]
 `;
 
-exports[`Data 9 argdddds [1n,'string',123,false] does not crash 1`] = `
+exports[`Data 9 args [1n,'string',123,false] does not crash 1`] = `
 Array [
   Array [
     Object {
@@ -139,7 +136,7 @@ Array [
 ]
 `;
 
-exports[`Data 10 argdddds [<Buffer >,'string',123,false] does not crash 1`] = `
+exports[`Data 10 args [<Buffer >,'string',123,false] does not crash 1`] = `
 Array [
   Array [
     Object {
@@ -148,14 +145,13 @@ Array [
         "type": "Buffer",
       },
       "level": 60,
-      "msg": "string",
       "time": 2009-02-13T23:31:30.000Z,
     },
   ],
 ]
 `;
 
-exports[`Data 11 argdddds [{ message: 'test' },'string',123,false] does not crash 1`] = `
+exports[`Data 11 args [{ message: 'test' },'string',123,false] does not crash 1`] = `
 Array [
   Array [
     Object {
@@ -163,14 +159,13 @@ Array [
         "message": "test",
       },
       "level": 60,
-      "msg": "string",
       "time": 2009-02-13T23:31:30.000Z,
     },
   ],
 ]
 `;
 
-exports[`Data 12 argdddds [{ err: null },'string',123,false] does not crash 1`] = `
+exports[`Data 12 args [{ err: null },'string',123,false] does not crash 1`] = `
 Array [
   Array [
     Object {
@@ -178,14 +173,13 @@ Array [
         "err": null,
       },
       "level": 60,
-      "msg": "string",
       "time": 2009-02-13T23:31:30.000Z,
     },
   ],
 ]
 `;
 
-exports[`Data 13 argdddds [{
+exports[`Data 13 args [{
   err: Error
       at fake.js:0:0 {
     [stack]: 'Error\\n    at fake.js:0:0',
@@ -205,7 +199,6 @@ Array [
       },
       "err": [Error: err prop],
       "level": 60,
-      "msg": "string",
       "time": 2009-02-13T23:31:30.000Z,
     },
   ],

@@ -155,12 +155,17 @@ function toLogDescriptor(
     };
   }
 
-  if (arg1 && typeof arg1 === 'object') {
-    const { err, ...data } = arg1 as JsonifiableObjectWithError;
+  if (arg1 && isPlainObject(arg1)) {
+    const { err, ...data } = arg1;
+
+    const msg =
+      typeof arg2 === 'string'
+        ? format(arg2, args, {
+            stringify: safeStringify,
+          })
+        : stringifyIfNotUndefined(arg2);
 
     if (err instanceof Error) {
-      const msg = typeof arg2 === 'string' ? arg2 : err.message || undefined;
-
       return {
         time,
         level,
@@ -173,18 +178,11 @@ function toLogDescriptor(
       };
     }
 
-    const msg =
-      typeof arg2 === 'string'
-        ? format(String(arg2), args, {
-            stringify: safeStringify,
-          })
-        : stringifyIfNotUndefined(arg2);
-
     return {
       time,
       level,
       ...(msg && { msg }),
-      data: arg1,
+      data: Object(arg1),
     };
   }
 
@@ -194,6 +192,21 @@ function toLogDescriptor(
           stringify: safeStringify,
         })
       : stringifyIfNotUndefined(arg1);
+
+  // this includes things like Buffer
+  if (
+    arg1 &&
+    typeof arg1 === 'object' &&
+    'toJSON' in arg1 &&
+    typeof arg1.toJSON === 'function'
+  ) {
+    return {
+      time,
+      level,
+      ...(msg && { msg }),
+      data: Object(arg1.toJSON()),
+    };
+  }
 
   return {
     time,
@@ -262,7 +275,7 @@ export class Logger {
     ): Processor<LogDescriptor | symbol> | Transformer => {
       if (typeof processor === 'function') {
         return async (log: LogDescriptor | symbol) => {
-          // run the processor on anything log descriptory
+          // run the processor on anything log descriptor-ish
           if (isLogDescriptor(log)) {
             try {
               return processor.call(this, log);
