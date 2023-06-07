@@ -13,7 +13,7 @@ Array [
 ",
   ],
   Array [
-    "2009-02-13T23:31:30.000Z	000fake-0000-000request-000-id	ERROR	fake	{\\"level\\":50,\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"fake\\",\\"stack\\":\\"Error: fake\\\\n    at ~/block65/logger~/block65/logger/lib/lambda.ts:25:11)\\\\n    at AsyncLocalStorage.run (node:async_hooks:341:14)\\"}}
+    "2009-02-13T23:31:30.000Z	000fake-0000-000request-000-id	ERROR	fake	{\\"level\\":50,\\"err\\":{\\"name\\":\\"Error\\",\\"message\\":\\"fake\\",\\"stack\\":\\"Error: fake\\\\n    at ~/block65/logger~/block65/logger/lib/lambda.ts:25:11)\\\\n    at AsyncLocalStorage.run (node:async_hooks:346:14)\\"}}
 ",
   ],
 ]
