@@ -107,6 +107,15 @@ Array [
 ]
 `;
 
+exports[`Child Logger Child message format 1`] = `
+Array [
+  Array [
+    "{\\"level\\":60,\\"time\\":\\"2009-02-13T23:31:30.000Z\\",\\"msg\\":\\"Time is an illusion\\",\\"woo\\":\\"yeah\\",\\"helloChildLogger\\":\\"hello!\\",\\"error\\":{\\"name\\":\\"Error\\",\\"message\\":\\"\\",\\"stack\\":\\"Error: \\\\n    at Object.<anonymous> (~/block65/logger/__tests__/child.test.ts:214:14)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)\\"}}
+",
+  ],
+]
+`;
+
 exports[`Child Logger Lambda Context wrapper with child 1`] = `
 Array [
   Array [

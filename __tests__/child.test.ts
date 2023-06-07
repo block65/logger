@@ -6,7 +6,7 @@ import {
   jest,
   test,
 } from '@jest/globals';
-import { createCliTransformer, Level } from '../lib/index.js';
+import { createCliTransformer, jsonTransformer, Level } from '../lib/index.js';
 
 describe('Child Logger', () => {
   beforeEach(() => {
@@ -198,6 +198,25 @@ describe('Child Logger', () => {
 
     await expect(callback.waitUntilCalledTimes(4)).resolves.toMatchSnapshot();
 
+    expect(errback).not.toBeCalled();
+  });
+
+  test('Child message format', async () => {
+    const { createLoggerWithWaitableMock } = await import('./helpers.js');
+
+    const [logger, callback, errback] = createLoggerWithWaitableMock({
+      transformer: jsonTransformer,
+    });
+
+    const childLogger = logger.child({ helloChildLogger: 'hello!' });
+
+    childLogger.fatal(
+      { err: new Error(), woo: 'yeah' },
+      'Time is an %s',
+      'illusion',
+    );
+
+    await expect(callback.waitUntilCalledTimes(1)).resolves.toMatchSnapshot();
     expect(errback).not.toBeCalled();
   });
 });
