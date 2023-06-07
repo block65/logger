@@ -26,9 +26,9 @@ Array [
   Object {
     "data": Object {
       "LOG_REDACTOR_CRASH": "TypeError: Cannot assign to read only property 'jwt' of object '#<Object>'
-    at specialSet (~/block65/logger/node_modules/.pnpm/fast-redact@3.1.2/node_modules/fast-redact/lib/modifiers.js:150:12)
-    at nestedRedact (~/block65/logger/node_modules/.pnpm/fast-redact@3.1.2/node_modules/fast-redact/lib/modifiers.js:73:7)
-    at Object.eval (eval at redactor (~/block65/logger/node_modules/.pnpm/fast-redact@3.1.2/node_modules/fast-redact/lib/redactor.js:9:18), <anonymous>:17:11)",
+    at specialSet (~/block65/logger/node_modules/.pnpm/fast-redact@3.2.0/node_modules/fast-redact/lib/modifiers.js:166:12)
+    at nestedRedact (~/block65/logger/node_modules/.pnpm/fast-redact@3.2.0/node_modules/fast-redact/lib/modifiers.js:77:7)
+    at Object.eval (eval at redactor (~/block65/logger/node_modules/.pnpm/fast-redact@3.2.0/node_modules/fast-redact/lib/redactor.js:9:18), <anonymous>:17:11)",
       "LOG_REDACTOR_CRASH_KEYS": Array [
         "someSpecialObject",
       ],
