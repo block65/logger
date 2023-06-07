@@ -9,7 +9,7 @@ Array [
         "message": "hallo",
         "name": "Error",
         "stack": "Error: hallo
-    at Object.<anonymous> (~/block65/logger/__tests__/control.test.ts:22:32)",
+    at Object.<anonymous> (~/logger/__tests__/control.test.ts:22:32)",
       },
     },
     "err": [Error: hallo],
@@ -28,7 +28,7 @@ Array [
         "message": "hallo",
         "name": "Error",
         "stack": "Error: hallo
-    at Object.<anonymous> (~/block65/logger/__tests__/control.test.ts:30:17)
+    at Object.<anonymous> (~/logger/__tests__/control.test.ts:30:17)
     at processTicksAndRejections (node:internal/process/task_queues:95:5)",
       },
     },

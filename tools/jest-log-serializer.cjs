@@ -1,6 +1,5 @@
-/* eslint-disable import/no-extraneous-dependencies */
-const { format: prettyFormat } = require('pretty-format');
 const fastSafeStringify = require('fast-safe-stringify');
+const { format: prettyFormat } = require('pretty-format');
 const manifest = require('../package.json');
 
 /**
@@ -18,16 +17,9 @@ function errorToObject(err) {
  * @returns {string}
  */
 function redactPaths(str) {
-  return str
-    .replaceAll(
-      new RegExp(
-        `/(.*?)/(${manifest.name.replace('@', '').replace('/', '\\/')})`,
-        'g',
-      ),
-      '~/$2',
-    )
-    .replaceAll(/\/.*execroot/g, '~')
-    .replaceAll(/bin\/(.*\.sh.runfiles|external)/g, '~');
+  const repoName = manifest.name.split('/')[1];
+
+  return str.replaceAll(new RegExp(`/(.*)/(${repoName})`, 'g'), '~/$2');
 }
 
 /**
