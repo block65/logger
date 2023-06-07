@@ -47,7 +47,7 @@ describe('Data', () => {
   });
 
   test.each(randomArgumentSet)(
-    '%# argdddds [%o,%o,%o,%o] does not crash',
+    '%# args [%o,%o,%o,%o] does not crash',
     async (...args: unknown[]) => {
       const { createLoggerWithWaitableMock } = await import('./helpers.js');
 
