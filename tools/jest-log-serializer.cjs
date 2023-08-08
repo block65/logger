@@ -23,8 +23,8 @@ function redactPaths(str) {
   return (
     str
       .replaceAll(new RegExp(`/(.*)/(${repoName})`, 'g'), '~/$2')
-      // remove line numbers from native ndoe modules so we can test across node
-      // version. This is not future proof, but works right now (node 18 - 20)
+      // remove line numbers from native node modules so we can test across
+      // versions. This is not future proof, but works right now (node 18 - 20)
       .replaceAll(/node:(.*):(\d+):(\d+)/g, 'node:$1:~:~')
   );
 }
