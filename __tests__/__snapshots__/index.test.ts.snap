@@ -192,15 +192,15 @@ Array [
           "name": "Error",
           "stack": "Error: Before 1
     at Object.<anonymous> (~/logger/__tests__/index.test.ts:219:18)
-    at Promise.then.completed (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:293:28)
+    at Promise.then.completed (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/utils.js:300:28)
     at new Promise (<anonymous>)
-    at callAsyncCircusFn (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:226:10)
-    at _callCircusTest (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:297:40)
+    at callAsyncCircusFn (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/utils.js:233:10)
+    at _callCircusTest (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:315:40)
     at processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at _runTest (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:233:3)
-    at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:135:9)
-    at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:130:9)
-    at run (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:68:3)",
+    at _runTest (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:251:3)
+    at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:125:9)
+    at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:120:9)
+    at run (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:70:3)",
         },
       },
       "err": [Error: Before 1],
@@ -217,15 +217,15 @@ Array [
           "name": "Error",
           "stack": "Error: Before 2
     at Object.<anonymous> (~/logger/__tests__/index.test.ts:220:18)
-    at Promise.then.completed (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:293:28)
+    at Promise.then.completed (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/utils.js:300:28)
     at new Promise (<anonymous>)
-    at callAsyncCircusFn (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:226:10)
-    at _callCircusTest (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:297:40)
+    at callAsyncCircusFn (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/utils.js:233:10)
+    at _callCircusTest (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:315:40)
     at processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at _runTest (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:233:3)
-    at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:135:9)
-    at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:130:9)
-    at run (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:68:3)",
+    at _runTest (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:251:3)
+    at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:125:9)
+    at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:120:9)
+    at run (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:70:3)",
         },
       },
       "err": [Error: Before 2],
@@ -281,15 +281,15 @@ Array [
           "name": "Error",
           "stack": "Error: Fake
     at Object.<anonymous> (~/logger/__tests__/index.test.ts:205:18)
-    at Promise.then.completed (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:293:28)
+    at Promise.then.completed (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/utils.js:300:28)
     at new Promise (<anonymous>)
-    at callAsyncCircusFn (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:226:10)
-    at _callCircusTest (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:297:40)
+    at callAsyncCircusFn (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/utils.js:233:10)
+    at _callCircusTest (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:315:40)
     at processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at _runTest (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:233:3)
-    at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:135:9)
-    at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:130:9)
-    at run (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:68:3)",
+    at _runTest (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:251:3)
+    at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:125:9)
+    at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:120:9)
+    at run (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:70:3)",
         },
       },
       "err": [Error: Fake],
@@ -306,15 +306,15 @@ Array [
           "name": "Error",
           "stack": "Error: Fake
     at Object.<anonymous> (~/logger/__tests__/index.test.ts:206:18)
-    at Promise.then.completed (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:293:28)
+    at Promise.then.completed (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/utils.js:300:28)
     at new Promise (<anonymous>)
-    at callAsyncCircusFn (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:226:10)
-    at _callCircusTest (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:297:40)
+    at callAsyncCircusFn (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/utils.js:233:10)
+    at _callCircusTest (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:315:40)
     at processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at _runTest (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:233:3)
-    at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:135:9)
-    at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:130:9)
-    at run (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:68:3)",
+    at _runTest (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:251:3)
+    at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:125:9)
+    at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:120:9)
+    at run (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:70:3)",
         },
       },
       "err": [Error: Fake],
@@ -357,15 +357,15 @@ Array [
           "name": "Error",
           "stack": "Error: Warn
     at Object.<anonymous> (~/logger/__tests__/index.test.ts:242:17)
-    at Promise.then.completed (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:293:28)
+    at Promise.then.completed (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/utils.js:300:28)
     at new Promise (<anonymous>)
-    at callAsyncCircusFn (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:226:10)
-    at _callCircusTest (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:297:40)
+    at callAsyncCircusFn (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/utils.js:233:10)
+    at _callCircusTest (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:315:40)
     at processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at _runTest (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:233:3)
-    at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:135:9)
-    at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:130:9)
-    at run (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:68:3)",
+    at _runTest (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:251:3)
+    at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:125:9)
+    at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:120:9)
+    at run (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:70:3)",
         },
       },
       "err": [Error: Warn],
@@ -382,15 +382,15 @@ Array [
           "name": "Error",
           "stack": "Error: Its an error
     at Object.<anonymous> (~/logger/__tests__/index.test.ts:243:18)
-    at Promise.then.completed (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:293:28)
+    at Promise.then.completed (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/utils.js:300:28)
     at new Promise (<anonymous>)
-    at callAsyncCircusFn (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:226:10)
-    at _callCircusTest (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:297:40)
+    at callAsyncCircusFn (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/utils.js:233:10)
+    at _callCircusTest (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:315:40)
     at processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at _runTest (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:233:3)
-    at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:135:9)
-    at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:130:9)
-    at run (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:68:3)",
+    at _runTest (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:251:3)
+    at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:125:9)
+    at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:120:9)
+    at run (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:70:3)",
         },
       },
       "err": [Error: Its an error],
@@ -407,15 +407,15 @@ Array [
           "name": "Error",
           "stack": "Error: OMG fatal
     at Object.<anonymous> (~/logger/__tests__/index.test.ts:244:18)
-    at Promise.then.completed (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:293:28)
+    at Promise.then.completed (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/utils.js:300:28)
     at new Promise (<anonymous>)
-    at callAsyncCircusFn (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:226:10)
-    at _callCircusTest (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:297:40)
+    at callAsyncCircusFn (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/utils.js:233:10)
+    at _callCircusTest (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:315:40)
     at processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at _runTest (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:233:3)
-    at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:135:9)
-    at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:130:9)
-    at run (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:68:3)",
+    at _runTest (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:251:3)
+    at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:125:9)
+    at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:120:9)
+    at run (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:70:3)",
         },
       },
       "err": [Error: OMG fatal],
@@ -436,15 +436,15 @@ Array [
         "name": "Error",
         "stack": "Error: OMG fatal
     at Object.<anonymous> (~/logger/__tests__/index.test.ts:264:18)
-    at Promise.then.completed (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:293:28)
+    at Promise.then.completed (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/utils.js:300:28)
     at new Promise (<anonymous>)
-    at callAsyncCircusFn (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:226:10)
-    at _callCircusTest (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:297:40)
+    at callAsyncCircusFn (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/utils.js:233:10)
+    at _callCircusTest (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:315:40)
     at processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at _runTest (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:233:3)
-    at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:135:9)
-    at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:130:9)
-    at run (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/run.js:68:3)",
+    at _runTest (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:251:3)
+    at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:125:9)
+    at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:120:9)
+    at run (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:70:3)",
       },
     },
     "err": [Error: OMG fatal],

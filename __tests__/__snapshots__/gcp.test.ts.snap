@@ -10,7 +10,7 @@ Array [
           "name": "Error",
           "stack": "Error: hello
     at Object.<anonymous> (~/logger/__tests__/gcp.test.ts:29:17)
-    at Promise.then.completed (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:293:28)
+    at Promise.then.completed (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/utils.js:300:28)
     at new Promise (<anonymous>)",
         },
       },
@@ -33,7 +33,7 @@ Array [
         "name": "Error",
         "stack_trace": "Error: Ded 1
     at Object.<anonymous> (~/logger/__tests__/gcp.test.ts:52:18)
-    at Promise.then.completed (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:293:28)
+    at Promise.then.completed (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/utils.js:300:28)
     at new Promise (<anonymous>)",
       },
       "err": [Error: Ded 1],
@@ -55,7 +55,7 @@ Array [
         "name": "Error",
         "stack_trace": "Error: Ded 2
     at Object.<anonymous> (~/logger/__tests__/gcp.test.ts:64:18)
-    at Promise.then.completed (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:293:28)
+    at Promise.then.completed (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/utils.js:300:28)
     at new Promise (<anonymous>)",
       },
       "err": [Error: Ded 2],
@@ -77,7 +77,7 @@ Array [
           "name": "Error",
           "stack": "Error: hello
     at Object.<anonymous> (~/logger/__tests__/gcp.test.ts:41:17)
-    at Promise.then.completed (~/logger/node_modules/.pnpm/jest-circus@29.5.0/node_modules/jest-circus/build/utils.js:293:28)
+    at Promise.then.completed (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/utils.js:300:28)
     at new Promise (<anonymous>)",
         },
       },
