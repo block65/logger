@@ -29,16 +29,16 @@
     "LICENSE.md"
   ],
   "dependencies": {
-    "@types/aws-lambda": "^8.10.116",
+    "@types/aws-lambda": "^8.10.119",
     "@types/express": "^4.17.17",
     "@types/express-serve-static-core": "^4.17.35",
     "@types/fast-redact": "^3.0.2",
     "colorette": "^2.0.20",
     "emittery": "^1.0.1",
-    "fast-redact": "^3.2.0",
+    "fast-redact": "^3.3.0",
     "fast-safe-stringify": "^2.1.1",
     "quick-format-unescaped": "^4.0.4",
-    "serialize-error": "^11.0.0",
+    "serialize-error": "^11.0.1",
     "stream-chain": "^2.2.5"
   },
   "devDependencies": {
