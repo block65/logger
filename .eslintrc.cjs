@@ -1,7 +1,11 @@
+/**
+ * @type {import('eslint').BaseConfig}
+ */
 module.exports = {
   root: true,
-  extends: ['@block65/eslint-config', '@block65/eslint-config/javascript'],
+  extends: ['@block65/eslint-config', '@block65/eslint-config/typescript'],
   parserOptions: {
-    project: true,
+    tsconfigRootDir: __dirname,
+    project: ['./tsconfig.json'],
   },
 };

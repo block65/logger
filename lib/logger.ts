@@ -1,8 +1,8 @@
 import { AsyncLocalStorage } from 'node:async_hooks';
 import { EventEmitter } from 'node:events';
-import { WriteStream } from 'node:fs';
-import { PassThrough, Writable } from 'node:stream';
-import { WriteStream as TtyWriteStream } from 'node:tty';
+import { type WriteStream } from 'node:fs';
+import { PassThrough, type Writable } from 'node:stream';
+import type { WriteStream as TtyWriteStream } from 'node:tty';
 import Emittery, { type UnsubscribeFunction } from 'emittery';
 import format from 'quick-format-unescaped';
 import { serializeError } from 'serialize-error';
