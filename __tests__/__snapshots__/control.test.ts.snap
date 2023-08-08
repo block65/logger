@@ -29,7 +29,7 @@ Array [
         "name": "Error",
         "stack": "Error: hallo
     at Object.<anonymous> (~/logger/__tests__/control.test.ts:30:17)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)",
+    at processTicksAndRejections (node:internal/process/task_queues:~:~)",
       },
     },
     "err": [Error: hallo],

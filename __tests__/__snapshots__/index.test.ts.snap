@@ -196,7 +196,7 @@ Array [
     at new Promise (<anonymous>)
     at callAsyncCircusFn (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/utils.js:233:10)
     at _callCircusTest (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:315:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at processTicksAndRejections (node:internal/process/task_queues:~:~)
     at _runTest (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:251:3)
     at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:125:9)
     at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:120:9)
@@ -221,7 +221,7 @@ Array [
     at new Promise (<anonymous>)
     at callAsyncCircusFn (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/utils.js:233:10)
     at _callCircusTest (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:315:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at processTicksAndRejections (node:internal/process/task_queues:~:~)
     at _runTest (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:251:3)
     at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:125:9)
     at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:120:9)
@@ -242,7 +242,7 @@ Array [
           "name": "Error",
           "stack": "Error: After 1
     at Object.<anonymous> (~/logger/__tests__/index.test.ts:226:18)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)",
+    at processTicksAndRejections (node:internal/process/task_queues:~:~)",
         },
       },
       "err": [Error: After 1],
@@ -259,7 +259,7 @@ Array [
           "name": "Error",
           "stack": "Error: After 2
     at Object.<anonymous> (~/logger/__tests__/index.test.ts:227:18)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)",
+    at processTicksAndRejections (node:internal/process/task_queues:~:~)",
         },
       },
       "err": [Error: After 2],
@@ -285,7 +285,7 @@ Array [
     at new Promise (<anonymous>)
     at callAsyncCircusFn (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/utils.js:233:10)
     at _callCircusTest (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:315:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at processTicksAndRejections (node:internal/process/task_queues:~:~)
     at _runTest (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:251:3)
     at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:125:9)
     at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:120:9)
@@ -310,7 +310,7 @@ Array [
     at new Promise (<anonymous>)
     at callAsyncCircusFn (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/utils.js:233:10)
     at _callCircusTest (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:315:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at processTicksAndRejections (node:internal/process/task_queues:~:~)
     at _runTest (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:251:3)
     at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:125:9)
     at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:120:9)
@@ -361,7 +361,7 @@ Array [
     at new Promise (<anonymous>)
     at callAsyncCircusFn (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/utils.js:233:10)
     at _callCircusTest (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:315:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at processTicksAndRejections (node:internal/process/task_queues:~:~)
     at _runTest (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:251:3)
     at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:125:9)
     at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:120:9)
@@ -386,7 +386,7 @@ Array [
     at new Promise (<anonymous>)
     at callAsyncCircusFn (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/utils.js:233:10)
     at _callCircusTest (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:315:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at processTicksAndRejections (node:internal/process/task_queues:~:~)
     at _runTest (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:251:3)
     at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:125:9)
     at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:120:9)
@@ -411,7 +411,7 @@ Array [
     at new Promise (<anonymous>)
     at callAsyncCircusFn (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/utils.js:233:10)
     at _callCircusTest (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:315:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at processTicksAndRejections (node:internal/process/task_queues:~:~)
     at _runTest (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:251:3)
     at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:125:9)
     at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:120:9)
@@ -440,7 +440,7 @@ Array [
     at new Promise (<anonymous>)
     at callAsyncCircusFn (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/utils.js:233:10)
     at _callCircusTest (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:315:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at processTicksAndRejections (node:internal/process/task_queues:~:~)
     at _runTest (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:251:3)
     at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:125:9)
     at _runTestsForDescribeBlock (~/logger/node_modules/.pnpm/jest-circus@29.6.2/node_modules/jest-circus/build/run.js:120:9)

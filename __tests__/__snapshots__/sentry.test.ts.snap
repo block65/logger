@@ -46,7 +46,7 @@ Array [
           "name": "Error",
           "stack": "Error: fake
     at Object.<anonymous> (~/logger/__tests__/sentry.test.ts:108:18)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)",
+    at processTicksAndRejections (node:internal/process/task_queues:~:~)",
         },
       },
       "err": [Error: fake],
@@ -63,7 +63,7 @@ Array [
           "name": "Error",
           "stack": "Error: fake
     at Object.<anonymous> (~/logger/__tests__/sentry.test.ts:109:18)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)",
+    at processTicksAndRejections (node:internal/process/task_queues:~:~)",
         },
       },
       "err": [Error: fake],
@@ -80,7 +80,7 @@ Array [
           "name": "Error",
           "stack": "Error: fake
     at Object.<anonymous> (~/logger/__tests__/sentry.test.ts:110:18)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)",
+    at processTicksAndRejections (node:internal/process/task_queues:~:~)",
         },
       },
       "err": [Error: fake],
@@ -97,7 +97,7 @@ Array [
           "name": "Error",
           "stack": "Error: fake
     at Object.<anonymous> (~/logger/__tests__/sentry.test.ts:116:18)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)",
+    at processTicksAndRejections (node:internal/process/task_queues:~:~)",
         },
       },
       "err": [Error: fake],
@@ -114,7 +114,7 @@ Array [
           "name": "Error",
           "stack": "Error: fake
     at Object.<anonymous> (~/logger/__tests__/sentry.test.ts:117:18)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)",
+    at processTicksAndRejections (node:internal/process/task_queues:~:~)",
         },
       },
       "err": [Error: fake],
@@ -131,7 +131,7 @@ Array [
           "name": "Error",
           "stack": "Error: fake
     at Object.<anonymous> (~/logger/__tests__/sentry.test.ts:118:18)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)",
+    at processTicksAndRejections (node:internal/process/task_queues:~:~)",
         },
       },
       "err": [Error: fake],

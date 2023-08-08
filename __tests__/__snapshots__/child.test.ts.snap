@@ -110,7 +110,7 @@ Array [
 exports[`Child Logger Child message format 1`] = `
 Array [
   Array [
-    "{\\"level\\":60,\\"time\\":\\"2009-02-13T23:31:30.000Z\\",\\"msg\\":\\"Time is an illusion\\",\\"woo\\":\\"yeah\\",\\"helloChildLogger\\":\\"hello!\\",\\"error\\":{\\"name\\":\\"Error\\",\\"message\\":\\"\\",\\"stack\\":\\"Error: \\\\n    at Object.<anonymous> (~/logger/__tests__/child.test.ts:214:14)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)\\"}}
+    "{\\"level\\":60,\\"time\\":\\"2009-02-13T23:31:30.000Z\\",\\"msg\\":\\"Time is an illusion\\",\\"woo\\":\\"yeah\\",\\"helloChildLogger\\":\\"hello!\\",\\"error\\":{\\"name\\":\\"Error\\",\\"message\\":\\"\\",\\"stack\\":\\"Error: \\\\n    at Object.<anonymous> (~/logger/__tests__/child.test.ts:214:14)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:~:~)\\"}}
 ",
   ],
 ]
@@ -147,7 +147,7 @@ Array [
           "name": "Error",
           "stack": "Error: fatal
     at Object.<anonymous> (~/logger/__tests__/child.test.ts:109:23)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)",
+    at processTicksAndRejections (node:internal/process/task_queues:~:~)",
         },
         "helloChildLogger": "hello!",
       },
@@ -204,27 +204,27 @@ Array [
 exports[`Child Logger with context + cli 1`] = `
 Array [
   Array [
-    "2009-02-13T23:31:30.000Z FATAL  (CHILDLOGGER) fatal { err: { message: 'fatal', name: 'Error', stack: 'Error: fatal\\\\n    at Object.<anonymous> (~/logger/__tests__/child.test.ts:52:23)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)' }, helloChildLogger: 'hello!' }
+    "2009-02-13T23:31:30.000Z FATAL  (CHILDLOGGER) fatal { err: { message: 'fatal', name: 'Error', stack: 'Error: fatal\\\\n    at Object.<anonymous> (~/logger/__tests__/child.test.ts:52:23)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:~:~)' }, helloChildLogger: 'hello!' }
 ",
   ],
   Array [
-    "2009-02-13T23:31:30.000Z ERROR  (CHILDLOGGER) error { err: { message: 'error', name: 'Error', stack: 'Error: error\\\\n    at Object.<anonymous> (~/logger/__tests__/child.test.ts:53:23)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)' }, helloChildLogger: 'hello!' }
+    "2009-02-13T23:31:30.000Z ERROR  (CHILDLOGGER) error { err: { message: 'error', name: 'Error', stack: 'Error: error\\\\n    at Object.<anonymous> (~/logger/__tests__/child.test.ts:53:23)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:~:~)' }, helloChildLogger: 'hello!' }
 ",
   ],
   Array [
-    "2009-02-13T23:31:30.000Z INFO   (CHILDLOGGER) info { err: { message: 'info', name: 'Error', stack: 'Error: info\\\\n    at Object.<anonymous> (~/logger/__tests__/child.test.ts:54:22)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)' }, helloChildLogger: 'hello!' }
+    "2009-02-13T23:31:30.000Z INFO   (CHILDLOGGER) info { err: { message: 'info', name: 'Error', stack: 'Error: info\\\\n    at Object.<anonymous> (~/logger/__tests__/child.test.ts:54:22)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:~:~)' }, helloChildLogger: 'hello!' }
 ",
   ],
   Array [
-    "2009-02-13T23:31:30.000Z WARN   (CHILDLOGGER) warn { err: { message: 'warn', name: 'Error', stack: 'Error: warn\\\\n    at Object.<anonymous> (~/logger/__tests__/child.test.ts:55:22)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)' }, helloChildLogger: 'hello!' }
+    "2009-02-13T23:31:30.000Z WARN   (CHILDLOGGER) warn { err: { message: 'warn', name: 'Error', stack: 'Error: warn\\\\n    at Object.<anonymous> (~/logger/__tests__/child.test.ts:55:22)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:~:~)' }, helloChildLogger: 'hello!' }
 ",
   ],
   Array [
-    "2009-02-13T23:31:30.000Z DEBUG  (CHILDLOGGER) debug { err: { message: 'debug', name: 'Error', stack: 'Error: debug\\\\n    at Object.<anonymous> (~/logger/__tests__/child.test.ts:56:23)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)' }, helloChildLogger: 'hello!' }
+    "2009-02-13T23:31:30.000Z DEBUG  (CHILDLOGGER) debug { err: { message: 'debug', name: 'Error', stack: 'Error: debug\\\\n    at Object.<anonymous> (~/logger/__tests__/child.test.ts:56:23)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:~:~)' }, helloChildLogger: 'hello!' }
 ",
   ],
   Array [
-    "2009-02-13T23:31:30.000Z TRACE  (CHILDLOGGER) trace { err: { message: 'trace', name: 'Error', stack: 'Error: trace\\\\n    at Object.<anonymous> (~/logger/__tests__/child.test.ts:57:23)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)' }, helloChildLogger: 'hello!' }
+    "2009-02-13T23:31:30.000Z TRACE  (CHILDLOGGER) trace { err: { message: 'trace', name: 'Error', stack: 'Error: trace\\\\n    at Object.<anonymous> (~/logger/__tests__/child.test.ts:57:23)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:~:~)' }, helloChildLogger: 'hello!' }
 ",
   ],
 ]

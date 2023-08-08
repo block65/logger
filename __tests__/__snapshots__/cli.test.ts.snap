@@ -3,27 +3,27 @@
 exports[`CLI force-color off 1`] = `
 Array [
   Array [
-    "2009-02-13T23:31:30.000Z FATAL  herp { err: { message: 'herp', name: 'Error', stack: 'Error: herp\\\\n    at Object.<anonymous> (~/logger/__tests__/cli.test.ts:57:18)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)' } }
+    "2009-02-13T23:31:30.000Z FATAL  herp { err: { message: 'herp', name: 'Error', stack: 'Error: herp\\\\n    at Object.<anonymous> (~/logger/__tests__/cli.test.ts:57:18)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:~:~)' } }
 ",
   ],
   Array [
-    "2009-02-13T23:31:30.000Z ERROR  hallo { err: { message: 'hallo', name: 'Error', stack: 'Error: hallo\\\\n    at Object.<anonymous> (~/logger/__tests__/cli.test.ts:58:18)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)' } }
+    "2009-02-13T23:31:30.000Z ERROR  hallo { err: { message: 'hallo', name: 'Error', stack: 'Error: hallo\\\\n    at Object.<anonymous> (~/logger/__tests__/cli.test.ts:58:18)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:~:~)' } }
 ",
   ],
   Array [
-    "2009-02-13T23:31:30.000Z INFO   hello { err: { message: 'hello', name: 'Error', stack: 'Error: hello\\\\n    at Object.<anonymous> (~/logger/__tests__/cli.test.ts:59:17)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)' } }
+    "2009-02-13T23:31:30.000Z INFO   hello { err: { message: 'hello', name: 'Error', stack: 'Error: hello\\\\n    at Object.<anonymous> (~/logger/__tests__/cli.test.ts:59:17)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:~:~)' } }
 ",
   ],
   Array [
-    "2009-02-13T23:31:30.000Z WARN   halo { err: { message: 'halo', name: 'Error', stack: 'Error: halo\\\\n    at Object.<anonymous> (~/logger/__tests__/cli.test.ts:60:17)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)' } }
+    "2009-02-13T23:31:30.000Z WARN   halo { err: { message: 'halo', name: 'Error', stack: 'Error: halo\\\\n    at Object.<anonymous> (~/logger/__tests__/cli.test.ts:60:17)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:~:~)' } }
 ",
   ],
   Array [
-    "2009-02-13T23:31:30.000Z DEBUG  gday { err: { message: 'gday', name: 'Error', stack: 'Error: gday\\\\n    at Object.<anonymous> (~/logger/__tests__/cli.test.ts:61:18)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)' } }
+    "2009-02-13T23:31:30.000Z DEBUG  gday { err: { message: 'gday', name: 'Error', stack: 'Error: gday\\\\n    at Object.<anonymous> (~/logger/__tests__/cli.test.ts:61:18)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:~:~)' } }
 ",
   ],
   Array [
-    "2009-02-13T23:31:30.000Z TRACE  nihao3 { err: { message: 'nihao3', name: 'Error', stack: 'Error: nihao3\\\\n    at Object.<anonymous> (~/logger/__tests__/cli.test.ts:62:18)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)' } }
+    "2009-02-13T23:31:30.000Z TRACE  nihao3 { err: { message: 'nihao3', name: 'Error', stack: 'Error: nihao3\\\\n    at Object.<anonymous> (~/logger/__tests__/cli.test.ts:62:18)\\\\n    at processTicksAndRejections (node:internal/process/task_queues:~:~)' } }
 ",
   ],
 ]
