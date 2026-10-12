@@ -1,60 +1,68 @@
+import { describe, expect, test } from "vitest";
 import {
-  afterEach,
-  beforeEach,
-  describe,
-  expect,
-  vi,
-  test,
-} from 'vitest';
-import { createRedactProcessor } from '../lib/index.ts';
-import { createLoggerWithWaitableMock } from './helpers.ts';
+	createRedactProcessor,
+	Logger,
+	type LogDescriptor,
+} from "../lib/index.ts";
+import { createCapture } from "./helpers.ts";
 
-describe('Redact', () => {
-  beforeEach(() => {
-      });
+function createRedactingLogger(paths: string[]) {
+	const { chunks, destination } = createCapture<LogDescriptor>();
+	const logger = new Logger({
+		destination,
+		processors: [createRedactProcessor({ paths, censor: "[secret]" })],
+	});
 
-  afterEach(() => {
-    vi.useRealTimers();
-  });
+	return { logger, logs: chunks };
+}
 
-  test('Basic', async () => {
-    const [logger, callback, errback] = createLoggerWithWaitableMock({
-      processors: [
-        createRedactProcessor({
-          censor: '🧱🧱🧱🧱',
-          paths: ['secret'],
-        }),
-      ],
-    });
+describe("createRedactProcessor", () => {
+	test("replaces the values at the given paths", async () => {
+		const { logger, logs } = createRedactingLogger([
+			"password",
+			"headers.authorization",
+		]);
 
-    logger.error({ secret: 'trustno1' });
-    logger.error('trustno1');
+		logger.info({
+			user: "max",
+			password: "trustno1",
+			headers: { authorization: "Bearer abc", accept: "text/plain" },
+		});
+		await logger.end();
 
-    await logger.flush();
+		expect(logs[0]?.data).toStrictEqual({
+			user: "max",
+			password: "[secret]",
+			headers: { authorization: "[secret]", accept: "text/plain" },
+		});
+	});
 
-    await expect(callback.waitUntilCalledTimes(1)).resolves.toMatchSnapshot();
-    expect(errback).not.toBeCalled();
-  });
+	test("leaves the caller's object unchanged", async () => {
+		const { logger } = createRedactingLogger(["password"]);
+		const payload = { password: "trustno1" };
 
-  test('Crashy', async () => {
-    const [logger, callback, errback] = createLoggerWithWaitableMock({
-      processors: [
-        createRedactProcessor({
-          paths: ['*.jwt'],
-        }),
-      ],
-    });
+		logger.info(payload);
+		await logger.end();
 
-    const someSpecialObject = Object.freeze({
-      jwt: 'eyJ...secret',
-    });
+		expect(payload.password).toBe("trustno1");
+	});
 
-    logger.error(
-      { someSpecialObject },
-      'the data contains a special frozen object',
-    );
+	test("redacts inside frozen objects", async () => {
+		const { logger, logs } = createRedactingLogger(["*.jwt"]);
 
-    await expect(callback.waitUntilCalled()).resolves.toMatchSnapshot();
-    expect(errback).not.toBeCalled();
-  });
+		logger.error({ token: Object.freeze({ jwt: "eyJ.secret" }) }, "frozen");
+		await logger.end();
+
+		expect(logs[0]?.data).toStrictEqual({ token: { jwt: "[secret]" } });
+	});
+
+	test("passes a log without data through", async () => {
+		const { logger, logs } = createRedactingLogger(["password"]);
+
+		logger.info("password is trustno1");
+		await logger.end();
+
+		expect(logs[0]?.msg).toBe("password is trustno1");
+		expect(logs[0]).not.toHaveProperty("data");
+	});
 });

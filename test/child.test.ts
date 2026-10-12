@@ -1,161 +1,111 @@
-import { beforeEach, describe, expect, vi, test } from 'vitest';
-import { jsonTransformer, Level } from '../lib/index.ts';
-import { createCliTransformer } from '../lib/node.ts';
+import { describe, expect, test, vi } from "vitest";
+import { Level, Logger, type LogDescriptor } from "../lib/index.ts";
+import { createCapture, createTestLogger } from "./helpers.ts";
 
-describe('Child Logger', () => {
-  beforeEach(() => {
-    vi.resetAllMocks();
-  });
+describe("child loggers", () => {
+	test("add their data to each log", async () => {
+		const { logger, logs } = createTestLogger();
+		const child = logger.child({ requestId: "r1" });
 
-  test('Basic', async () => {
-    const { createLoggerWithWaitableMock } = await import('./helpers.ts');
+		child.info({ step: 1 }, "working");
+		await logger.end();
 
-    const [logger, callback, errback] = createLoggerWithWaitableMock();
+		expect(logs).toMatchObject([
+			{ msg: "working", data: { step: 1, requestId: "r1" } },
+		]);
+	});
 
-    const childLogger = logger.child({ helloChildLogger: 'hello!' });
+	test("write through the parent's processors and transformer", async () => {
+		const { chunks, destination } = createCapture<string>();
+		const parent = new Logger({
+			destination,
+			processors: [(log) => ({ ...log, msg: `parent saw ${String(log.msg)}` })],
+			transformer: (log) => String(log.msg),
+		});
+		const child = parent.child(
+			{},
+			{
+				processors: [
+					(log) => ({ ...log, msg: `child saw ${String(log.msg)}` }),
+				],
+			},
+		);
 
-    childLogger.fatal(new Error('fatal'));
-    childLogger.error(new Error('error'));
-    childLogger.info(new Error('info'));
-    childLogger.warn(new Error('warn'));
-    childLogger.debug(new Error('debug'));
-    childLogger.trace(new Error('trace'));
-    await expect(callback.waitUntilCalledTimes(5)).resolves.toMatchSnapshot();
-    expect(errback).not.toBeCalled();
-  });
+		child.info("hello");
+		await parent.end();
 
-  test('with context + cli', async () => {
-    const { createLoggerWithWaitableMock } = await import('./helpers.ts');
+		expect(chunks).toStrictEqual(["parent saw child saw hello"]);
+	});
 
-    const [logger, callback, errback] = createLoggerWithWaitableMock({
-      transformer: createCliTransformer(),
-    });
+	test("take the parent's level unless given their own", async () => {
+		const { chunks, destination } = createCapture<LogDescriptor>();
+		const parent = new Logger({ destination, level: Level.Warn });
+		const inheriting = parent.child({ who: "inheriting" });
+		const verbose = parent.child({ who: "verbose" }, { level: Level.Trace });
 
-    const childLogger = logger.child(
-      { helloChildLogger: 'hello!' },
-      {
-        context: { name: 'CHILDLOGGER' },
-      },
-    );
+		inheriting.info("dropped");
+		inheriting.error("kept");
+		verbose.debug("kept");
+		parent.info("dropped");
+		await parent.end();
 
-    childLogger.fatal(new Error('fatal'));
-    childLogger.error(new Error('error'));
-    childLogger.info(new Error('info'));
-    childLogger.warn(new Error('warn'));
-    childLogger.debug(new Error('debug'));
-    childLogger.trace(new Error('trace'));
-    await expect(callback.waitUntilCalledTimes(6)).resolves.toMatchSnapshot();
-    expect(errback).not.toBeCalled();
-  });
+		expect(chunks.map((log) => [log.data?.who, log.msg])).toStrictEqual([
+			["inheriting", "kept"],
+			["verbose", "kept"],
+		]);
+	});
 
-  test('level changes parent > child', async () => {
-    const { createLoggerWithWaitableMock } = await import('./helpers.ts');
+	test("replace the parent's context with their own", async () => {
+		const { chunks, destination } = createCapture<LogDescriptor>();
+		const parent = new Logger({ destination, context: { parent: true } });
+		const child = parent.child({}, { context: { child: true } });
 
-    const [logger, callback, errback] = createLoggerWithWaitableMock({
-      level: Level.Fatal,
-      context: { parent: 'test' },
-    });
+		parent.info("from parent");
+		await parent.flush();
+		child.info("from child");
+		await parent.end();
 
-    const childLogger = logger.child(
-      { extraChildData: 'hello!' },
-      {
-        level: Level.Trace,
-        context: {
-          extraChildContext: 'hello!',
-        },
-      },
-    );
+		expect(chunks.map((log) => log.ctx)).toStrictEqual([
+			{ parent: true },
+			{ child: true },
+		]);
+	});
 
-    // logger.on('log', console.error);
+	test("are flushed and ended with the parent", async () => {
+		const { logger, logs, errors } = createTestLogger();
+		const onEnd = vi.fn<() => void>();
+		const count = 500;
 
-    logger.fatal('fatal');
-    childLogger.fatal('fatal');
-    childLogger.fatal('fatal');
-    childLogger.error('error');
-    childLogger.info('info');
-    childLogger.warn('warn');
-    childLogger.debug('debug');
-    childLogger.trace('trace');
+		Array.from({ length: count }, (_, childIndex) => childIndex).forEach(
+			(childIndex) => {
+				const child = logger.child({ childIndex });
+				child.on("end", onEnd);
+				child.info("hello");
+			},
+		);
 
-    await expect(callback.waitUntilCalledTimes(2)).resolves.toMatchSnapshot();
-    expect(errback).not.toBeCalled();
-  }, 10000);
+		await logger.end();
 
-  test('level changes child > parent', async () => {
-    const { createLoggerWithWaitableMock } = await import('./helpers.ts');
+		expect(logs).toHaveLength(count);
+		expect(onEnd).toHaveBeenCalledTimes(count);
+		expect(errors).toStrictEqual([]);
+	});
 
-    const [logger, callback, errback] = createLoggerWithWaitableMock({
-      level: Level.Trace,
-    });
+	test("keep the parent's error key handling", async () => {
+		const { logger, logs } = createTestLogger();
+		const err = new Error("child failure");
 
-    const childLogger = logger.child(
-      { helloChildLogger: 'hello!' },
-      {
-        level: Level.Fatal,
-      },
-    );
+		logger
+			.child({ requestId: "r2" })
+			.fatal({ err, extra: 1 }, "Time is an %s", "illusion");
+		await logger.end();
 
-    childLogger.fatal(new Error('fatal'));
-    childLogger.error(new Error('error'));
-    childLogger.info(new Error('info'));
-    childLogger.warn(new Error('warn'));
-    childLogger.debug(new Error('debug'));
-    childLogger.trace(new Error('trace'));
-    await expect(callback.waitUntilCalledTimes(1)).resolves.toMatchSnapshot();
-    expect(errback).not.toBeCalled();
-  });
-
-  test('child logger spam', async () => {
-    const { createLoggerWithWaitableMock } = await import('./helpers.ts');
-
-    const [logger, callback, errback] = createLoggerWithWaitableMock({
-      level: Level.Trace,
-    });
-
-    const warningMock = vi.fn();
-
-    process.on('warning', (err) => {
-      console.warn(err);
-      warningMock(err);
-    });
-
-    const iterations = 500;
-
-    const autoEndMock = vi.fn(() => {});
-
-    for (const childIndex of [...Array(iterations)].map((_, idx) => idx)) {
-      const childLogger = logger.child({ childIndex });
-      childLogger.info(new Error('hello'));
-      childLogger.on('end', autoEndMock);
-    }
-
-    await logger.end();
-
-    await callback.waitUntilCalledTimes(iterations);
-
-    expect(errback).not.toBeCalled();
-    expect(warningMock).not.toBeCalled();
-
-    // make sure each child was ended
-    expect(autoEndMock).toBeCalledTimes(iterations);
-  }, 30000);
-
-  test('Child message format', async () => {
-    const { createLoggerWithWaitableMock } = await import('./helpers.ts');
-
-    const [logger, callback, errback] = createLoggerWithWaitableMock({
-      transformer: jsonTransformer,
-    });
-
-    const childLogger = logger.child({ helloChildLogger: 'hello!' });
-
-    childLogger.fatal(
-      { err: new Error(), woo: 'yeah' },
-      'Time is an %s',
-      'illusion',
-    );
-
-    await expect(callback.waitUntilCalledTimes(1)).resolves.toMatchSnapshot();
-    expect(errback).not.toBeCalled();
-  });
+		expect(logs).toMatchObject([
+			{
+				msg: "Time is an illusion",
+				err,
+				data: { requestId: "r2", extra: 1, err: { message: "child failure" } },
+			},
+		]);
+	});
 });
