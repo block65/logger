@@ -1,39 +1,52 @@
-import fastRedact, { type RedactOptions } from 'fast-redact';
-import { type Processor } from '../logger.js';
+import createRedactor, { type RedactOptions } from "@pinojs/redact";
+import type { Except } from "type-fest";
+import type { Processor } from "../logger.ts";
+import { isPlainObject } from "../utils.ts";
 
+export type RedactProcessorOptions = Except<RedactOptions, "serialize">;
+
+/**
+ * Replaces the values at `paths` in a log's data, leaving the caller's object
+ * untouched
+ */
 export function createRedactProcessor(
-  options: Omit<RedactOptions, 'serialize'>,
+	options: RedactProcessorOptions,
 ): Processor {
-  const redact = fastRedact({
-    ...options,
-    serialize: false,
-  });
+	// with serialize false the result gets an enumerable restore() method, and
+	// the identity function returns the redacted copy as it is
+	const redact = createRedactor({
+		...options,
+		serialize: (redacted: unknown) => redacted,
+	});
 
-  return (log) => {
-    if (!log.data) {
-      return log;
-    }
+	return function redactProcessor(log) {
+		if (!log.data) {
+			return log;
+		}
 
-    try {
-      // redact types are wrong, it claims this could return a string.
-      // but that is only when serialize is true
-      const redacted = redact(log.data) as typeof log.data;
+		try {
+			const redacted = redact(log.data);
 
-      return {
-        ...log,
-        data: redacted,
-      };
-    } catch (err) {
-      // safely return no data if we failed to redact
-      return {
-        ...log,
-        data: {
-          LOG_REDACTOR_CRASH: Object(err).stack,
-          // attempt a crash free way of listing the keys to help debug
-          // without revealing sensitive data
-          LOG_REDACTOR_CRASH_KEYS: Object.keys(Object(log.data)),
-        },
-      };
-    }
-  };
+			if (!isPlainObject(redacted)) {
+				throw new TypeError(
+					"Redaction returned something other than an object",
+				);
+			}
+
+			return {
+				...log,
+				data: redacted,
+			};
+		} catch (err) {
+			// the keys help debug the crash without revealing the values
+			return {
+				...log,
+				data: {
+					LOG_REDACTOR_CRASH:
+						err instanceof Error ? String(err.stack) : String(err),
+					LOG_REDACTOR_CRASH_KEYS: Object.keys(log.data),
+				},
+			};
+		}
+	};
 }

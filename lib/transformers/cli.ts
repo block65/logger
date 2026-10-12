@@ -1,88 +1,72 @@
-import { inspect } from 'node:util';
-import { createColors } from '@block65/color';
-import {
-  Level,
-  type LogDescriptor,
-  type LoggerTransformer,
-} from '../logger.js';
+import { inspect } from "loupe";
+import { createColors } from "tinyrainbow";
+import { Level, type LogDescriptor, type Transformer } from "../logger.ts";
+import { toText } from "../utils.ts";
 
-export interface CliOptions {
-  color?: boolean;
+export type CliOptions = {
+	/** ANSI colour codes in the output, off by default */
+	color?: boolean | undefined;
+	/** Each line starts with the log's time, on by default */
+	timestamps?: boolean | undefined;
+};
+
+const colors = createColors({ force: true });
+
+type Paint = (input: string) => string;
+
+const levelStyles: Record<Level, { label: string; paint: Paint }> = {
+	[Level.Silent]: { label: "SILENT", paint: colors.dim },
+	[Level.Trace]: { label: "TRACE", paint: colors.dim },
+	[Level.Debug]: { label: "DEBUG", paint: colors.green },
+	[Level.Info]: { label: "INFO", paint: colors.blue },
+	[Level.Warn]: {
+		label: "WARN",
+		paint: (s) => colors.bgYellow(colors.black(colors.bold(s))),
+	},
+	[Level.Error]: { label: "ERROR", paint: colors.red },
+	[Level.Fatal]: {
+		label: "FATAL",
+		paint: (s) => colors.bgRed(colors.whiteBright(colors.bold(s))),
+	},
+};
+
+// labels are padded outside the colour codes, so columns line up either way
+function formatLevel(level: Level, color: boolean) {
+	const { label, paint } = levelStyles[level];
+	return `${color ? paint(label) : label}${" ".repeat(6 - label.length)}`;
 }
 
-const colors = createColors(true);
-const noColors = createColors(false);
+/**
+ * Formats a log as one human readable line, for a terminal or a console that
+ * shows text
+ */
+export function cliTransformer(
+	log: LogDescriptor,
+	options: CliOptions = {},
+): string {
+	const { color = false, timestamps = true } = options;
+	const { level, msg, time, ctx = {}, data = {} } = log;
+	const { name, ...ctxRest } = ctx;
 
-export function cliTransformer(log: LogDescriptor,
-  options: { useColor?: boolean; timestamps?: boolean } = {}): string {
-  const {
-    bgRed, bgYellow, black, blue, bold, dim,  green, red, whiteBright,
-  } = options.useColor ? colors : noColors;
+	const dataWithCtx = {
+		...data,
+		...(Object.keys(ctxRest).length > 0 && { ctx: ctxRest }),
+	};
 
-  const formatLevel = (level: number): string => {
-    switch (level) {
-      case Level.Fatal:
-        return bgRed(whiteBright(bold('FATAL')));
-      case Level.Error:
-        return red('ERROR');
-      case Level.Warn:
-        return bgYellow(black(bold('WARN')));
-      case Level.Info:
-        return blue('INFO');
-      case Level.Debug:
-        return green('DEBUG');
-      case Level.Trace:
-        return dim('TRACE');
-      case Level.Silent:
-      default:
-        return dim('SILENT');
-    }
-  };
-
-  const { level, msg, time: _, ctx, data } = log;
-  const { name = null, ...ctxRest } = ctx ?? {};
-
-  const maybeFormattedName = name !== undefined && name !== null ? `(${name}) ` : '';
-  const maybeFormattedMsg = msg !== undefined && msg !==null ? `${msg.toLocaleString()} ` : '';
-
-  const dataWithCtx = {
-    ...data,
-    ...(Object.keys(ctxRest).length > 0 && { ctx: ctxRest }),
-  };
-
-  const formattedData = dataWithCtx && Object.keys(dataWithCtx).length > 0
-    ? `${inspect(dataWithCtx, {
-      compact: true,
-      breakLength: Infinity,
-      sorted: true,
-      depth: 6,
-      ...('useColor' in options && { colors: options.useColor }),
-    })}`
-    : '';
-
-  const formattedLevel = formatLevel(level).padEnd(6);
-  const maybeTimestamp = options.timestamps === false ? '' : dim(`${new Date().toISOString()} `);
-
-  return `${maybeTimestamp}${formattedLevel} ${maybeFormattedName}${maybeFormattedMsg}${formattedData}`;
+	return [
+		timestamps && (color ? colors.dim(time.toISOString()) : time.toISOString()),
+		formatLevel(level, color),
+		name !== undefined && name !== null && `(${toText(name)})`,
+		msg !== undefined && msg !== null && String(msg),
+		Object.keys(dataWithCtx).length > 0 &&
+			inspect(dataWithCtx, { colors: color, depth: 6 }),
+	]
+		.filter((part) => typeof part === "string")
+		.join(" ");
 }
 
-export function createCliTransformer(options?: CliOptions): LoggerTransformer {
-  const supportsColorCache = new WeakMap<WritableStream<unknown>, boolean>();
-
-  return function cliTransformerCheckColor(log: LogDescriptor) {
-    // user wants color, just do it
-    if (options && 'color' in options) {
-      return cliTransformer(log, { useColor: options.color });
-    }
-
-    // For WritableStream we can't detect TTY, so default to no color
-    // unless explicitly set via options
-    if (!supportsColorCache.has(this.destination)) {
-      supportsColorCache.set(this.destination, false);
-    }
-
-    const useColor = supportsColorCache.get(this.destination) ?? false;
-
-    return cliTransformer(log, { useColor });
-  };
+export function createCliTransformer(options: CliOptions = {}): Transformer {
+	return function cliTransformerWithOptions(log) {
+		return cliTransformer(log, options);
+	};
 }

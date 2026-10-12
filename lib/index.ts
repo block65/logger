@@ -1,11 +1,26 @@
-export { Level, Logger, parseLevel } from './logger.js';
-export type {
-  CreateLoggerOptions,
-  LogDescriptor,
-  LevelAsString,
-  Processor,
-  Transformer,
-} from './logger.js';
-export { createRedactProcessor } from './processors/redact.js';
-export { jsonTransformer, type JsonLogFormat } from './transformers/json.js';
-export { cliTransformer, type CliOptions } from './transformers/cli.ts';
+export {
+	Level,
+	Logger,
+	parseLevel,
+	type ChildLoggerOptions,
+	type CreateLoggerOptions,
+	type JsonifiableObject,
+	type LevelAsString,
+	type LogData,
+	type LogDescriptor,
+	type LoggerEvents,
+	type LoggerOptions,
+	type LogMethod,
+	type Processor,
+	type Transformer,
+} from "./logger.ts";
+export {
+	createRedactProcessor,
+	type RedactProcessorOptions,
+} from "./processors/redact.ts";
+export {
+	cliTransformer,
+	createCliTransformer,
+	type CliOptions,
+} from "./transformers/cli.ts";
+export { jsonTransformer, type JsonLogFormat } from "./transformers/json.ts";

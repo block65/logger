@@ -1,56 +1,57 @@
-import stringify from 'fast-safe-stringify';
+import { configure } from "safe-stable-stringify";
 
-export function isPlainObject<T extends Record<string, unknown>>(
-  value: unknown | T,
-): value is T {
-  if (Object.prototype.toString.call(value) !== '[object Object]') {
-    return false;
-  }
+const stringify = configure({ deterministic: false });
 
-  const prototype = Object.getPrototypeOf(value);
-  return prototype === null || prototype === Object.getPrototypeOf({});
+export function isPlainObject(
+	value: unknown,
+): value is Record<string, unknown> {
+	if (Object.prototype.toString.call(value) !== "[object Object]") {
+		return false;
+	}
+
+	const prototype: unknown = Object.getPrototypeOf(value);
+	return prototype === null || prototype === Object.prototype;
 }
 
-export function stringifyUndefined(
-  details: unknown | Record<string, unknown>,
-): Record<string, unknown> {
-  if (isPlainObject(details)) {
-    return Object.fromEntries(
-      Object.entries(details).map(([k, v]) => {
-        if (typeof v === 'undefined') {
-          return [k, '_(undefined)'];
-        }
-        return [k, stringifyUndefined(v)];
-      }),
-    );
-  }
-  return Object(details);
+// JSON drops undefined values, and this keeps them visible as a marker string
+export function stringifyUndefined(details: unknown): Record<string, unknown> {
+	return isPlainObject(details)
+		? Object.fromEntries(
+				Object.entries(details).map(([k, v]) => [k, markUndefined(v)]),
+			)
+		: {};
+}
+
+function markUndefined(value: unknown) {
+	if (value === undefined) {
+		return "_(undefined)";
+	}
+
+	return isPlainObject(value) ? stringifyUndefined(value) : value;
 }
 
 export function withNullProto<T extends Record<string | number, unknown>>(
-  obj: T,
+	obj: T,
 ): T {
-  return Object.assign(Object.create(null), obj);
+	return Object.assign(Object.create(null), obj);
 }
 
-export function stripUndefined<T extends Record<string, unknown>>(obj: T): T {
-  return Object.entries(obj).reduce(
-    (accum, [k, v]) =>
-      typeof v === 'undefined'
-        ? accum
-        : { ...accum, [k]: isPlainObject(v) ? stripUndefined(v) : v },
-    withNullProto({} as T),
-  );
+export function isEmptyObject(obj: Record<string, unknown>): boolean {
+	return Object.keys(obj).length === 0;
 }
 
-export function isEmptyObject(obj: object): boolean {
-  return Object.keys(obj).length === 0;
-}
-
+// a toJSON() that throws gives an empty string, so the log is still written
 export function safeStringify(value: unknown): string {
-  try {
-    return stringify.default(value);
-  } catch (err) {
-    return '';
-  }
+	try {
+		return String(stringify(value));
+	} catch {
+		return "";
+	}
+}
+
+export function toText(value: unknown): string {
+	if (value === undefined) {
+		return "";
+	}
+	return typeof value === "string" ? value : safeStringify(value);
 }
