@@ -1,36 +1,50 @@
 {
-  "name": "@block65/logger",
-  "version": "14.0.0",
-  "private": false,
-  "license": "MIT",
-  "sideEffects": false,
-  "type": "module",
-  "exports": {
-    ".": "./lib/index.ts",
-    "./node": "./lib/node.ts"
-  },
-  "files": [
-    "lib/**/*.ts"
-  ],
-  "dependencies": {
-    "@block65/color": "workspace:^",
-    "emittery": "^2.0.0",
-    "fast-redact": "^3.5.0",
-    "fast-safe-stringify": "^2.1.1",
-    "quick-format-unescaped": "^4.0.4",
-    "serialize-error": "^13.0.1"
-  },
-  "devDependencies": {
-    "@block65/shared-config": "workspace:^",
-    "@block65/tsconfig": "workspace:^",
-    "@types/fast-redact": "^3.0.4",
-    "@types/node": "catalog:",
-    "@types/quick-format-unescaped": "^4.0.3",
-    "type-fest": "catalog:",
-    "typescript": "catalog:",
-    "vitest": "catalog:"
-  },
-  "engines": {
-    "node": ">=24"
-  }
+	"name": "@block65/logger",
+	"version": "14.0.0",
+	"private": false,
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/block65/logger"
+	},
+	"files": [
+		"lib"
+	],
+	"type": "module",
+	"sideEffects": false,
+	"exports": {
+		".": "./lib/index.ts",
+		"./node": "./lib/node.ts"
+	},
+	"scripts": {
+		"preversion": "just check"
+	},
+	"dependencies": {
+		"@pinojs/redact": "^0.4.0",
+		"@types/quick-format-unescaped": "^4.0.3",
+		"emittery": "^2.1.0",
+		"loupe": "^3.2.1",
+		"quick-format-unescaped": "^4.0.4",
+		"safe-stable-stringify": "^2.5.0",
+		"serialize-error": "^13.0.2",
+		"tinyrainbow": "^3.2.0",
+		"type-fest": "^5.10.0"
+	},
+	"devDependencies": {
+		"@block65/shared-config": "^0.9.0",
+		"@block65/tsconfig": "^0.3.1",
+		"@types/node": "^26.6.5",
+		"esbuild": "^0.28.2",
+		"fallow": "^3.33.1",
+		"oxfmt": "^0.72.0",
+		"oxlint": "^1.87.0",
+		"oxlint-tsgolint": "^7.0.200303",
+		"typescript": "^7.0.2",
+		"vite": "^8.3.4",
+		"vitest": "^5.0.3"
+	},
+	"engines": {
+		"node": ">=24.0.0"
+	},
+	"packageManager": "pnpm@12.4.0"
 }

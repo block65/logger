@@ -1,4 +1,15 @@
 {
-  "extends": "@block65/tsconfig/nodejs24",
-  "include": ["./lib","./test"]
+	"extends": ["@block65/tsconfig/nodejs24", "@block65/tsconfig/noprojref"],
+
+	"compilerOptions": {
+		"types": ["node"]
+	},
+
+	"include": [
+		"lib",
+		"test",
+		"oxfmt.config.ts",
+		"oxlint.config.ts",
+		"vitest.config.ts"
+	]
 }

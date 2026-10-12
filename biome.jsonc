@@ -1,8 +1,0 @@
-{
-	"$schema": "./node_modules/@block65/shared-config/node_modules/@biomejs/biome/configuration_schema.json",
-
-	"root": true,
-
-	"extends": ["./node_modules/@block65/shared-config/biome.jsonc"]
-
-}
