@@ -1,0 +1,456 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Basic > Mixins basic + accum 1`] = `
+[
+  [
+    {
+      data: {
+        logger: {
+          go: log,
+        },
+        luger: {
+          go: bang,
+        },
+      },
+      level: 40,
+      msg: hello,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Basic > Mixins property overwrite 1`] = `
+[
+  [
+    {
+      data: {
+        logger: {
+          go: brrr,
+        },
+      },
+      level: 40,
+      msg: hello,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Basic > Object 1`] = `
+[
+  [
+    {
+      data: {
+        omg: true,
+      },
+      level: 40,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Basic > Object with undefined props 1`] = `
+[
+  [
+    {
+      data: {
+        omg: undefined,
+      },
+      level: 40,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Basic > Object, String = No Format 1`] = `
+[
+  [
+    {
+      data: {
+        omg: true,
+      },
+      level: 40,
+      msg: hello,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Basic > Object, String Format, ...Primitives 1`] = `
+[
+  [
+    {
+      data: {
+        omg: true,
+      },
+      level: 40,
+      msg: hello world and 123,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Basic > Object, String Format, String 1`] = `
+[
+  [
+    {
+      data: {
+        omg: true,
+      },
+      level: 40,
+      msg: hello world,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Basic > String Format, Object 1`] = `
+[
+  [
+    {
+      level: 40,
+      msg: hello {"omg":true} spleen!,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Basic > String, Object = Object ignored 1`] = `
+[
+  [
+    {
+      level: 40,
+      msg: hello,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Basic > Trace Caller Auto (development) 1`] = `
+[
+  [
+    {
+      level: 40,
+      msg: hello,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Basic > Trace Caller Auto (production) 1`] = `
+[
+  [
+    {
+      level: 40,
+      msg: hello,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Basic > Trace Caller Force false (development) 1`] = `
+[
+  [
+    {
+      level: 40,
+      msg: hello,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Basic > Trace Caller Force true (production) 1`] = `
+[
+  [
+    {
+      level: 40,
+      msg: hello,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Basic > allow flush and reuse 1`] = `
+[
+  [
+    {
+      data: {
+        err: {
+          message: Before 1,
+          name: Error,
+          stack: Error: Before 1
+    at ~/logger/test/basic.test.ts:207:18
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20
+    at new Promise (<anonymous>)
+    at runWithCancel (file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:2955:64,
+        },
+      },
+      err: [Error: Before 1],
+      level: 60,
+      msg: Before 1,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+  [
+    {
+      data: {
+        err: {
+          message: Before 2,
+          name: Error,
+          stack: Error: Before 2
+    at ~/logger/test/basic.test.ts:208:18
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20
+    at new Promise (<anonymous>)
+    at runWithCancel (file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:2955:64,
+        },
+      },
+      err: [Error: Before 2],
+      level: 60,
+      msg: Before 2,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+  [
+    {
+      data: {
+        err: {
+          message: After 1,
+          name: Error,
+          stack: Error: After 1
+    at ~/logger/test/basic.test.ts:214:18
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:20,
+        },
+      },
+      err: [Error: After 1],
+      level: 60,
+      msg: After 1,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+  [
+    {
+      data: {
+        err: {
+          message: After 2,
+          name: Error,
+          stack: Error: After 2
+    at ~/logger/test/basic.test.ts:215:18
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:20,
+        },
+      },
+      err: [Error: After 2],
+      level: 60,
+      msg: After 2,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Basic > allow undefined logger level 1`] = `
+[
+  [
+    {
+      data: {
+        err: {
+          message: Fake,
+          name: Error,
+          stack: Error: Fake
+    at ~/logger/test/basic.test.ts:193:18
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20
+    at new Promise (<anonymous>)
+    at runWithCancel (file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:2955:64,
+        },
+      },
+      err: [Error: Fake],
+      level: 60,
+      msg: Fake,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+  [
+    {
+      data: {
+        err: {
+          message: Fake,
+          name: Error,
+          stack: Error: Fake
+    at ~/logger/test/basic.test.ts:194:18
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20
+    at new Promise (<anonymous>)
+    at runWithCancel (file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:2955:64,
+        },
+      },
+      err: [Error: Fake],
+      level: 60,
+      msg: Fake,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Basic > context and release name co-exist 1`] = `
+[
+  [
+    {
+      level: 10,
+      msg: stuff,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+  [
+    {
+      level: 20,
+      msg: oh debug yes,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+  [
+    {
+      level: 30,
+      msg: Completed,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+  [
+    {
+      data: {
+        err: {
+          message: Warn,
+          name: Error,
+          stack: Error: Warn
+    at ~/logger/test/basic.test.ts:230:17
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20
+    at new Promise (<anonymous>)
+    at runWithCancel (file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:2955:64,
+        },
+      },
+      err: [Error: Warn],
+      level: 40,
+      msg: Warn,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+  [
+    {
+      data: {
+        err: {
+          message: Its an error,
+          name: Error,
+          stack: Error: Its an error
+    at ~/logger/test/basic.test.ts:231:18
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20
+    at new Promise (<anonymous>)
+    at runWithCancel (file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:2955:64,
+        },
+      },
+      err: [Error: Its an error],
+      level: 50,
+      msg: Its an error,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+  [
+    {
+      data: {
+        err: {
+          message: OMG fatal,
+          name: Error,
+          stack: Error: OMG fatal
+    at ~/logger/test/basic.test.ts:232:18
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20
+    at new Promise (<anonymous>)
+    at runWithCancel (file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:2955:64,
+        },
+      },
+      err: [Error: OMG fatal],
+      level: 60,
+      msg: OMG fatal,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Basic > log levels 1`] = `
+[
+  {
+    data: {
+      err: {
+        message: OMG fatal,
+        name: Error,
+        stack: Error: OMG fatal
+    at ~/logger/test/basic.test.ts:252:18
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20
+    at new Promise (<anonymous>)
+    at runWithCancel (file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:2955:64,
+      },
+    },
+    err: [Error: OMG fatal],
+    level: 60,
+    msg: OMG fatal,
+    time: 2025-01-01T00:00:00.000Z,
+  },
+]
+`;

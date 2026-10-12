@@ -1,0 +1,185 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Child Logger > Basic 1`] = `
+[
+  [
+    {
+      data: {
+        err: {
+          message: fatal,
+          name: Error,
+          stack: Error: fatal
+    at ~/logger/test/child.test.ts:17:23
+    at processTicksAndRejections (node:internal/process/task_queues:~:~)
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:20,
+        },
+        helloChildLogger: hello!,
+      },
+      err: [Error: fatal],
+      level: 60,
+      msg: fatal,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+  [
+    {
+      data: {
+        err: {
+          message: error,
+          name: Error,
+          stack: Error: error
+    at ~/logger/test/child.test.ts:18:23
+    at processTicksAndRejections (node:internal/process/task_queues:~:~)
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:20,
+        },
+        helloChildLogger: hello!,
+      },
+      err: [Error: error],
+      level: 50,
+      msg: error,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+  [
+    {
+      data: {
+        err: {
+          message: info,
+          name: Error,
+          stack: Error: info
+    at ~/logger/test/child.test.ts:19:22
+    at processTicksAndRejections (node:internal/process/task_queues:~:~)
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:20,
+        },
+        helloChildLogger: hello!,
+      },
+      err: [Error: info],
+      level: 30,
+      msg: info,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+  [
+    {
+      data: {
+        err: {
+          message: warn,
+          name: Error,
+          stack: Error: warn
+    at ~/logger/test/child.test.ts:20:22
+    at processTicksAndRejections (node:internal/process/task_queues:~:~)
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:20,
+        },
+        helloChildLogger: hello!,
+      },
+      err: [Error: warn],
+      level: 40,
+      msg: warn,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+  [
+    {
+      data: {
+        err: {
+          message: debug,
+          name: Error,
+          stack: Error: debug
+    at ~/logger/test/child.test.ts:21:23
+    at processTicksAndRejections (node:internal/process/task_queues:~:~)
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:20,
+        },
+        helloChildLogger: hello!,
+      },
+      err: [Error: debug],
+      level: 20,
+      msg: debug,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Child Logger > Child message format 1`] = `
+[
+  [
+    {"level":60,"time":"2025-01-01T00:00:00.000Z","msg":"Time is an illusion","woo":"yeah","helloChildLogger":"hello!","error":{"name":"Error","message":"","stack":"Error: \\n    at ~~/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:20"}}
+,
+  ],
+]
+`;
+
+exports[`Child Logger > level changes child > parent 1`] = `
+[
+  [
+    {
+      data: {
+        err: {
+          message: fatal,
+          name: Error,
+          stack: Error: fatal
+    at ~/logger/test/child.test.ts:98:23
+    at processTicksAndRejections (node:internal/process/task_queues:~:~)
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:20,
+        },
+        helloChildLogger: hello!,
+      },
+      err: [Error: fatal],
+      level: 60,
+      msg: fatal,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Child Logger > level changes parent > child 1`] = `
+[
+  [
+    {
+      ctx: {
+        parent: test,
+      },
+      level: 60,
+      msg: fatal,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+  [
+    {
+      ctx: {
+        extraChildContext: hello!,
+      },
+      data: {
+        extraChildData: hello!,
+      },
+      level: 60,
+      msg: fatal,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Child Logger > with context + cli 1`] = `
+[
+  [
+    2025-01-01T00:00:00.000Z FATAL  (CHILDLOGGER) fatal { err: { message: 'fatal', name: 'Error', stack: 'Error: fatal\\n    at ~~/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:20' }, helloChildLogger: 'hello!' },
+  ],
+  [
+    2025-01-01T00:00:00.000Z ERROR  (CHILDLOGGER) error { err: { message: 'error', name: 'Error', stack: 'Error: error\\n    at ~~/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:20' }, helloChildLogger: 'hello!' },
+  ],
+  [
+    2025-01-01T00:00:00.000Z INFO   (CHILDLOGGER) info { err: { message: 'info', name: 'Error', stack: 'Error: info\\n    at ~~/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:20' }, helloChildLogger: 'hello!' },
+  ],
+  [
+    2025-01-01T00:00:00.000Z WARN   (CHILDLOGGER) warn { err: { message: 'warn', name: 'Error', stack: 'Error: warn\\n    at ~~/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:20' }, helloChildLogger: 'hello!' },
+  ],
+  [
+    2025-01-01T00:00:00.000Z DEBUG  (CHILDLOGGER) debug { err: { message: 'debug', name: 'Error', stack: 'Error: debug\\n    at ~~/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:20' }, helloChildLogger: 'hello!' },
+  ],
+  [
+    2025-01-01T00:00:00.000Z TRACE  (CHILDLOGGER) trace { err: { message: 'trace', name: 'Error', stack: 'Error: trace\\n    at ~~/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:20' }, helloChildLogger: 'hello!' },
+  ],
+]
+`;

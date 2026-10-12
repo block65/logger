@@ -1,0 +1,16 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Context Wrapper > Basic 1`] = `
+[
+  [
+    {
+      ctx: {
+        name: CONTEXTNAME,
+      },
+      level: 30,
+      msg: hello,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+]
+`;

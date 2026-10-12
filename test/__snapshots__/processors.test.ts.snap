@@ -1,0 +1,19 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Processsors > Crashy 1`] = `
+[
+  {
+    level: 50,
+    msg: I sure hope this doesnt crash,
+    time: 2025-01-01T00:00:00.000Z,
+  },
+]
+`;
+
+exports[`Processsors > Crashy 2`] = `
+[
+  [
+    [Error: oops I crashed],
+  ],
+]
+`;

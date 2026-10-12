@@ -1,29 +1,4 @@
 {
-  "compilerOptions": {
-    "moduleResolution": "node16",
-    "target": "es2022",
-    "lib": ["es2022"],
-    "module": "es2022",
-    "incremental": true,
-    "strict": true,
-    "declaration": true,
-    "outDir": "dist",
-    "preserveSymlinks": true,
-    "forceConsistentCasingInFileNames": true,
-    "allowUnusedLabels": false,
-    "allowUnreachableCode": false,
-    "exactOptionalPropertyTypes": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitOverride": true,
-    "noImplicitReturns": true,
-    "noUncheckedIndexedAccess": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "verbatimModuleSyntax": true,
-    "removeComments": true,
-    "allowArbitraryExtensions": true,
-    "skipLibCheck": true
-  },
-  "include": ["./src", "./lib", "./bin", "./__tests__"],
-  "exclude": ["./dist", "node_modules"]
+  "extends": "@block65/tsconfig/nodejs24",
+  "include": ["./lib","./test"]
 }

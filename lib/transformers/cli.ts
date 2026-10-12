@@ -1,6 +1,5 @@
-import { Writable } from 'node:stream';
 import { inspect } from 'node:util';
-import { createColors } from 'colorette';
+import { createColors } from '@block65/color';
 import {
   Level,
   type LogDescriptor,
@@ -11,24 +10,13 @@ export interface CliOptions {
   color?: boolean;
 }
 
-const colors = createColors({ useColor: true });
-const noColors = createColors({ useColor: false });
+const colors = createColors(true);
+const noColors = createColors(false);
 
-export const cliTransformer = function cliTransformer(
-  log: LogDescriptor,
-  options: { useColor?: boolean } = {},
-): string {
+export function cliTransformer(log: LogDescriptor,
+  options: { useColor?: boolean; timestamps?: boolean } = {}): string {
   const {
-    bgRed,
-    bgYellow,
-    black,
-    blue,
-    bold,
-    dim,
-    gray,
-    green,
-    red,
-    whiteBright,
+    bgRed, bgYellow, black, blue, bold, dim,  green, red, whiteBright,
   } = options.useColor ? colors : noColors;
 
   const formatLevel = (level: number): string => {
@@ -51,38 +39,35 @@ export const cliTransformer = function cliTransformer(
     }
   };
 
-  const { level, msg, time, ctx, data } = log;
-  const { name = null, ...ctxRest } = { ...ctx };
+  const { level, msg, time: _, ctx, data } = log;
+  const { name = null, ...ctxRest } = ctx ?? {};
 
-  const maybeFormattedName = name ? `(${name}) ` : '';
-  const maybeFormattedMsg = msg ? `${bold(msg.toLocaleString())} ` : '';
+  const maybeFormattedName = name !== undefined && name !== null ? `(${name}) ` : '';
+  const maybeFormattedMsg = msg !== undefined && msg !==null ? `${msg.toLocaleString()} ` : '';
 
   const dataWithCtx = {
     ...data,
     ...(Object.keys(ctxRest).length > 0 && { ctx: ctxRest }),
   };
 
-  const formattedData =
-    dataWithCtx && Object.keys(dataWithCtx).length > 0
-      ? `${inspect(dataWithCtx, {
-          compact: true,
-          breakLength: Infinity,
-          sorted: true,
-          depth: 6,
-          ...('useColor' in options && { colors: options.useColor }),
-        })}`
-      : '';
+  const formattedData = dataWithCtx && Object.keys(dataWithCtx).length > 0
+    ? `${inspect(dataWithCtx, {
+      compact: true,
+      breakLength: Infinity,
+      sorted: true,
+      depth: 6,
+      ...('useColor' in options && { colors: options.useColor }),
+    })}`
+    : '';
 
   const formattedLevel = formatLevel(level).padEnd(6);
-  const formattedDate = gray(new Date(time).toJSON());
+  const maybeTimestamp = options.timestamps === false ? '' : dim(`${new Date().toISOString()} `);
 
-  return `${formattedDate} ${formattedLevel} ${maybeFormattedName}${maybeFormattedMsg}${formattedData}\n`;
-};
+  return `${maybeTimestamp}${formattedLevel} ${maybeFormattedName}${maybeFormattedMsg}${formattedData}`;
+}
 
-export const createCliTransformer = (
-  options?: CliOptions,
-): LoggerTransformer => {
-  const supportsColorCache = new WeakMap<Writable, boolean>();
+export function createCliTransformer(options?: CliOptions): LoggerTransformer {
+  const supportsColorCache = new WeakMap<WritableStream<unknown>, boolean>();
 
   return function cliTransformerCheckColor(log: LogDescriptor) {
     // user wants color, just do it
@@ -90,17 +75,14 @@ export const createCliTransformer = (
       return cliTransformer(log, { useColor: options.color });
     }
 
-    // try to work it out from the destination
-    // only a `WriteStream` can be checked, otherwise you get no color.
+    // For WritableStream we can't detect TTY, so default to no color
+    // unless explicitly set via options
     if (!supportsColorCache.has(this.destination)) {
-      const destHasColor =
-        'isTTY' in this.destination ? this.destination.hasColors() : false;
-
-      supportsColorCache.set(this.destination, destHasColor);
+      supportsColorCache.set(this.destination, false);
     }
 
-    const useColor = supportsColorCache.get(this.destination) || false;
+    const useColor = supportsColorCache.get(this.destination) ?? false;
 
     return cliTransformer(log, { useColor });
   };
-};
+}

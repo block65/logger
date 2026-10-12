@@ -1,0 +1,44 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Control > Error Object 1`] = `
+[
+  {
+    data: {
+      err: {
+        debug: wooyeah,
+        message: hallo,
+        name: Error,
+        stack: Error: hallo
+    at ~/logger/test/control.test.ts:21:32
+    at processTicksAndRejections (node:internal/process/task_queues:~:~)
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:20,
+      },
+    },
+    err: [Error: hallo],
+    level: 50,
+    msg: hallo,
+    time: 2025-01-01T00:00:00.000Z,
+  },
+]
+`;
+
+exports[`Control > Error Object serialized on non-error level 1`] = `
+[
+  {
+    data: {
+      err: {
+        message: hallo,
+        name: Error,
+        stack: Error: hallo
+    at ~/logger/test/control.test.ts:29:17
+    at processTicksAndRejections (node:internal/process/task_queues:~:~)
+    at file:~~/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:20,
+      },
+    },
+    err: [Error: hallo],
+    level: 30,
+    msg: hallo,
+    time: 2025-01-01T00:00:00.000Z,
+  },
+]
+`;

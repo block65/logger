@@ -1,7 +1,6 @@
 import { serializeError } from 'serialize-error';
 import type { JsonPrimitive } from 'type-fest';
-import type { JsonifiableObject } from 'type-fest/source/jsonifiable.js';
-import type { LogData, LogDescriptor, PlainTransformer } from '../logger.js';
+import type { JsonifiableObject, LogData, LogDescriptor, PlainTransformer } from '../logger.js';
 import { safeStringify, withNullProto } from '../utils.js';
 
 // const levelToStringMap = new Map<Level, string>([

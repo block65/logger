@@ -1,0 +1,27 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AWS Cloudwatch > Transformer 1`] = `
+[
+  2025-01-01T00:00:00.000Z		TRACE	This is a trace	{"level":10,"random":{"bool":true,"str":"hello","number":12,"arr":[1,2,3]}}
+,
+  2025-01-01T00:00:00.000Z		DEBUG	This is debug	{"level":20}
+,
+  2025-01-01T00:00:00.000Z		INFO	This is info	{"level":30}
+,
+  2025-01-01T00:00:00.000Z		WARN	This is a warning	{"level":40}
+,
+  2025-01-01T00:00:00.000Z		ERROR	Oh no an error	{"level":50,"err":{"message":"Error","type":"Error","stack":"stuff\\ncode"}}
+,
+  2025-01-01T00:00:00.000Z		FATAL	OMG this is fatal	{"level":60,"err":{"message":"Error","type":"Error","stack":"stuff\\ncode"}}
+,
+  2025-01-01T00:00:00.000Z		TRACE	This
+message
+contains
+newlines
+
+yes
+it
+does	{"level":10}
+,
+]
+`;

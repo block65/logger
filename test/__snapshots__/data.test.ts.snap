@@ -1,0 +1,196 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Data > 0 args ['string',123,false,Symbol(123)] does not crash 1`] = `
+[
+  [
+    {
+      level: 60,
+      msg: string,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Data > 1 args [123,'string',false,Symbol(123)] does not crash 1`] = `
+[
+  [
+    {
+      level: 60,
+      msg: 123,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Data > 2 args [false,'string',123,Symbol(123)] does not crash 1`] = `
+[
+  [
+    {
+      level: 60,
+      msg: false,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Data > 3 args [Symbol(123),'string',123,false] does not crash 1`] = `
+[
+  [
+    {
+      level: 60,
+      msg: Symbol(123),
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Data > 4 args [{ [Symbol(234)]: 'symbol as key' },'string',123,false] does not crash 1`] = `
+[
+  [
+    {
+      data: {
+        Symbol(234): symbol as key,
+      },
+      level: 60,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Data > 5 args [{ frozen: 123 },'string',123,false] does not crash 1`] = `
+[
+  [
+    {
+      data: {
+        frozen: 123,
+      },
+      level: 60,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Data > 6 args [Error: test,'string',123,false] does not crash 1`] = `
+[
+  [
+    {
+      data: {
+        err: {
+          message: test,
+          name: Error,
+          stack: Error
+    at fake.js:0:0,
+        },
+      },
+      err: [Error: test],
+      level: 60,
+      msg: test,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Data > 7 args [null,'string',123,false] does not crash 1`] = `
+[
+  [
+    {
+      level: 60,
+      msg: null,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Data > 8 args [undefined,'string',123,false] does not crash 1`] = `
+[
+  [
+    {
+      level: 60,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Data > 9 args [1n,'string',123,false] does not crash 1`] = `
+[
+  [
+    {
+      level: 60,
+      msg: 1,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Data > 10 args [Buffer[],'string',123,false] does not crash 1`] = `
+[
+  [
+    {
+      data: {
+        data: [],
+        type: Buffer,
+      },
+      level: 60,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Data > 11 args [{ message: 'test' },'string',123,false] does not crash 1`] = `
+[
+  [
+    {
+      data: {
+        message: test,
+      },
+      level: 60,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Data > 12 args [{ err: null },'string',123,false] does not crash 1`] = `
+[
+  [
+    {
+      data: {
+        err: null,
+      },
+      level: 60,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+]
+`;
+
+exports[`Data > 13 args [{ err: Error: err prop },'string',123,false] does not crash 1`] = `
+[
+  [
+    {
+      data: {
+        err: {
+          message: err prop,
+          name: Error,
+          stack: Error
+    at fake.js:0:0,
+        },
+      },
+      err: [Error: err prop],
+      level: 60,
+      time: 2025-01-01T00:00:00.000Z,
+    },
+  ],
+]
+`;
