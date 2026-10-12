@@ -3,8 +3,8 @@ import { runInNewContext } from "node:vm";
 import { build, type BuildOptions } from "esbuild";
 import { assert, describe, expect, test } from "vitest";
 
-// the conditions and platform wrangler bundles a worker with
-const workerBuild = {
+// the platform and conditions wrangler and browser bundlers resolve with
+const webBuild = {
 	bundle: true,
 	write: false,
 	metafile: true,
@@ -31,9 +31,9 @@ const webGlobals = {
 };
 
 describe("the runtime-neutral entry point", () => {
-	test("bundles for a worker without any Node built-in", async () => {
+	test("bundles for the web without any Node built-in", async () => {
 		const result = await build({
-			...workerBuild,
+			...webBuild,
 			entryPoints: ["lib/index.ts"],
 			format: "esm",
 		});
@@ -57,7 +57,7 @@ describe("the runtime-neutral entry point", () => {
 
 	test("logs in a context with web globals only", async () => {
 		const result = await build({
-			...workerBuild,
+			...webBuild,
 			entryPoints: ["lib/index.ts"],
 			format: "iife",
 			globalName: "loggerModule",
@@ -96,7 +96,7 @@ describe("the runtime-neutral entry point", () => {
 
 	test("the Node entry point fails the same build", async () => {
 		await expect(
-			build({ ...workerBuild, entryPoints: ["lib/node.ts"], format: "esm" }),
+			build({ ...webBuild, entryPoints: ["lib/node.ts"], format: "esm" }),
 		).rejects.toThrow(/node:os/u);
 	});
 });
