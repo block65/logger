@@ -145,7 +145,10 @@ function toLogDescriptor(
 		return {
 			time,
 			level,
-			msg: typeof arg2 === "string" ? arg2 : arg1.message,
+			msg:
+				typeof arg2 === "string"
+					? format(arg2, args, { stringify: safeStringify })
+					: arg1.message,
 			data: {
 				err: serializeError(arg1),
 			},

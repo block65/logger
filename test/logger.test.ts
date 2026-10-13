@@ -31,13 +31,13 @@ describe("log arguments", () => {
 		const err = Object.assign(new TypeError("bad input"), { code: "E_BAD" });
 
 		logger.error(err);
-		logger.error(err, "while parsing");
+		logger.error(err, "while parsing %s", "config.json");
 		await logger.end();
 
 		const [first, second] = logs;
 		assert(first && second);
 		expect(first.msg).toBe("bad input");
-		expect(second.msg).toBe("while parsing");
+		expect(second.msg).toBe("while parsing config.json");
 		expect(first.err).toBe(err);
 		expect(first.data?.err).toMatchObject({
 			name: "TypeError",
