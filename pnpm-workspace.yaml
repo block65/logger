@@ -1,0 +1,6 @@
+allowBuilds:
+  esbuild: false
+
+overrides:
+  oxlint: npm:@block65/oxlint@>=1.87.0
+  oxlint-tsgolint: npm:@block65/oxlint-tsgolint@>=7.0.200303

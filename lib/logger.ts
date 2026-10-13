@@ -1,536 +1,549 @@
-import { AsyncLocalStorage } from 'node:async_hooks';
-import { EventEmitter } from 'node:events';
-import { type WriteStream } from 'node:fs';
-import { PassThrough, type Writable } from 'node:stream';
-import type { WriteStream as TtyWriteStream } from 'node:tty';
-import Emittery, { type UnsubscribeFunction } from 'emittery';
-import format from 'quick-format-unescaped';
-import { serializeError } from 'serialize-error';
-import Chain from 'stream-chain';
-import type { JsonPrimitive } from 'type-fest';
-import type { JsonifiableObject } from 'type-fest/source/jsonifiable.js';
-import { isPlainObject, safeStringify } from './utils.js';
+import Emittery, {
+	type EmitteryEvent,
+	type UnsubscribeFunction,
+} from "emittery";
+import format from "quick-format-unescaped";
+import { serializeError } from "serialize-error";
+import type { Jsonifiable, JsonPrimitive } from "type-fest";
+import { isPlainObject, safeStringify, withNullProto } from "./utils.ts";
 
-type JsonifiableObjectWithError = JsonifiableObject & {
-  err?: Error | unknown | undefined;
-};
+export type JsonifiableObject = { [Key in string]?: Jsonifiable };
 
-interface LoggerOptions {
-  destination: Writable;
-  level?: Level | undefined;
-  processors?: Processor[];
-  transformer?: Transformer | undefined;
-  context?: LogDescriptor['ctx'] | undefined;
-}
+export type Level = 0 | 10 | 20 | 30 | 40 | 50 | 60;
 
-export type LoggerProcessor<T, R = Partial<T>> =
-  | ((this: Logger, log: T) => R)
-  | ((this: Logger, log: T) => Promise<R>);
-// | ((log: T) => Readable)
-// | ((log: T) => Generator<T, R, unknown>);
-
-export type PlainProcessor<T, R = Partial<T>> =
-  | ((log: T) => R)
-  | ((log: T) => Promise<R>);
-// | ((log: T) => Readable)
-// | ((log: T) => Generator<T, R, unknown>);
-
-export type Processor<T = LogDescriptor, R = Partial<T>> =
-  | LoggerProcessor<T, R>
-  | PlainProcessor<T, R>;
-
-export type PlainTransformer = PlainProcessor<LogDescriptor, unknown>;
-export type LoggerTransformer = LoggerProcessor<LogDescriptor, unknown>;
-export type Transformer = PlainTransformer | LoggerTransformer;
-
-export enum Level {
-  Silent = 0,
-  Trace = 10,
-  Debug = 20,
-  Info = 30,
-  Warn = 40,
-  Error = 50,
-  Fatal = 60,
-}
+// named like the enum it replaces, so `Level.Info` reads the same to callers
+// oxlint-disable-next-line block65/no-pascal-case-variable
+export const Level = Object.freeze({
+	Silent: 0,
+	Trace: 10,
+	Debug: 20,
+	Info: 30,
+	Warn: 40,
+	Error: 50,
+	Fatal: 60,
+} satisfies Record<string, Level>);
 
 export type LevelAsString = Lowercase<keyof typeof Level>;
 
-export type CreateLoggerOptions = Partial<LoggerOptions>;
-
-export type LogData = JsonifiableObjectWithError;
-
-export interface LogDescriptor {
-  time: Date;
-  level: Level;
-  msg?: JsonPrimitive;
-  ctx?: JsonifiableObject;
-  data?: LogData;
-  err?: Error | unknown;
-}
-
-export type LogMethod = {
-  (err: Error | unknown, str?: JsonPrimitive, ...args: unknown[]): void;
-  (data: JsonifiableObject, str?: JsonPrimitive, ...args: unknown[]): void;
-  (str: JsonPrimitive, ...args: unknown[]): void;
-};
-
-export interface AlsContext {
-  id: string;
-  context?: JsonifiableObject;
-}
-
-function stringifyIfNotUndefined<T extends unknown | undefined>(
-  val: T,
-): string | undefined {
-  return typeof val !== 'undefined' ? String(val) : val;
-}
-
-export function withNullProto<T extends Record<string | number, unknown>>(
-  obj: T,
-): T {
-  return Object.assign<object, T>(Object.create(null), obj);
-}
-
-function isPrimitive(value: unknown): value is JsonPrimitive {
-  return (
-    (typeof value !== 'undefined' &&
-      typeof value !== 'object' &&
-      typeof value !== 'function') ||
-    value === null
-  );
-}
-
-function isLogDescriptor(log: LogDescriptor | symbol): log is LogDescriptor {
-  return isPlainObject(log);
-}
+const stringLevelMap = new Map<string, Level>([
+	["silent", Level.Silent],
+	["trace", Level.Trace],
+	["debug", Level.Debug],
+	["info", Level.Info],
+	["warn", Level.Warn],
+	["error", Level.Error],
+	["fatal", Level.Fatal],
+]);
 
 /**
- * Arguments are all set to unknown as we really can't trust the user
+ * Looks up a level by name, ignoring case, and gives `undefined` for an
+ * unknown name
  */
+export function parseLevel(level: string | undefined): Level | undefined {
+	return level === undefined
+		? undefined
+		: stringLevelMap.get(level.toLowerCase());
+}
+
+// holds the caller's own values, which transformers stringify safely
+export type LogData = Record<string, unknown>;
+
+export type LogDescriptor = {
+	time: Date;
+	level: Level;
+	msg?: JsonPrimitive;
+	ctx?: JsonifiableObject;
+	data?: LogData;
+	err?: unknown;
+};
+
+/**
+ * Takes a log and returns it changed, for the next processor or the transformer
+ */
+export type Processor = (
+	this: Logger,
+	log: LogDescriptor,
+) => LogDescriptor | Promise<LogDescriptor>;
+
+/**
+ * Turns a log into what the destination receives, usually one line of text
+ */
+export type Transformer = (this: Logger, log: LogDescriptor) => unknown;
+
+export type LoggerOptions = {
+	destination: WritableStream<unknown>;
+	level?: Level | undefined;
+	processors?: Processor[] | undefined;
+	transformer?: Transformer | undefined;
+	context?: JsonifiableObject | undefined;
+};
+
+export type CreateLoggerOptions = Partial<LoggerOptions>;
+
+export type ChildLoggerOptions = Pick<
+	LoggerOptions,
+	"level" | "context" | "processors"
+>;
+
+export type LogMethod = {
+	(err: unknown, str?: JsonPrimitive, ...args: unknown[]): void;
+	(data: JsonifiableObject, str?: JsonPrimitive, ...args: unknown[]): void;
+	(str: JsonPrimitive, ...args: unknown[]): void;
+};
+
+export type LoggerEvents = {
+	log: LogDescriptor;
+	error: unknown;
+	flush: undefined;
+	end: undefined;
+};
+
+type LoggerEventName = keyof LoggerEvents;
+
+type LoggerEventListener<Name extends LoggerEventName> = (
+	event: EmitteryEvent<Name, LoggerEvents[Name]>,
+) => void | Promise<void>;
+
+function isPrimitive(value: unknown): value is JsonPrimitive {
+	return (
+		value === null ||
+		(value !== undefined &&
+			typeof value !== "object" &&
+			typeof value !== "function")
+	);
+}
+
+function formatMessage(template: unknown, args: unknown[], fallback: unknown) {
+	if (typeof template === "string") {
+		return format(template, args, { stringify: safeStringify });
+	}
+
+	// a primitive, or an object the caller chose to log as the message
+	// oxlint-disable-next-line typescript/no-base-to-string
+	return fallback === undefined ? undefined : String(fallback);
+}
+
+function hasToJSON(value: unknown): value is { toJSON: () => unknown } {
+	return (
+		typeof value === "object" &&
+		value !== null &&
+		"toJSON" in value &&
+		typeof value.toJSON === "function"
+	);
+}
+
+// every argument is unknown because callers log values of any type
 function toLogDescriptor(
-  level: Level,
-  arg1: unknown,
-  arg2?: unknown,
-  ...args: unknown[]
+	level: Level,
+	arg1: unknown,
+	arg2?: unknown,
+	...args: unknown[]
 ): LogDescriptor {
-  const time = new Date();
+	const time = new Date();
 
-  if (arg1 instanceof Error) {
-    return {
-      time,
-      level,
-      msg: typeof arg2 === 'string' ? arg2 : arg1.message,
-      data: {
-        err: serializeError(arg1),
-      },
-      err: arg1,
-    };
-  }
+	if (arg1 instanceof Error) {
+		return {
+			time,
+			level,
+			msg:
+				typeof arg2 === "string"
+					? format(arg2, args, { stringify: safeStringify })
+					: arg1.message,
+			data: {
+				err: serializeError(arg1),
+			},
+			err: arg1,
+		};
+	}
 
-  if (isPrimitive(arg1)) {
-    return {
-      time,
-      level,
-      msg: format(String(arg1), [arg2, ...args], {
-        stringify: safeStringify,
-      }),
-    };
-  }
+	if (isPrimitive(arg1)) {
+		return {
+			time,
+			level,
+			msg: format(String(arg1), [arg2, ...args], {
+				stringify: safeStringify,
+			}),
+		};
+	}
 
-  if (Array.isArray(arg1)) {
-    const msg =
-      typeof arg2 === 'string'
-        ? format(arg2, args, {
-            stringify: safeStringify,
-          })
-        : stringifyIfNotUndefined(arg2);
+	if (Array.isArray(arg1)) {
+		const msg = formatMessage(arg2, args, arg2);
 
-    return {
-      time,
-      level,
-      ...(msg && { msg }),
-      // this stops TS complaining about serializing array methods
-      // it may not be necessary
-      data: Object.fromEntries(arg1.map((value, idx) => [idx, value])),
-    };
-  }
+		return {
+			time,
+			level,
+			...(msg && { msg }),
+			data: Object.fromEntries(arg1.map((value, idx) => [idx, value])),
+		};
+	}
 
-  if (arg1 && isPlainObject(arg1)) {
-    const { err, ...data } = arg1;
+	if (isPlainObject(arg1)) {
+		const { err, ...data } = arg1;
+		const msg = formatMessage(arg2, args, arg2);
 
-    const msg =
-      typeof arg2 === 'string'
-        ? format(arg2, args, {
-            stringify: safeStringify,
-          })
-        : stringifyIfNotUndefined(arg2);
+		if (err instanceof Error) {
+			return {
+				time,
+				level,
+				...(msg && { msg }),
+				err,
+				data: withNullProto({
+					err: serializeError(err),
+					...data,
+				}),
+			};
+		}
 
-    if (err instanceof Error) {
-      return {
-        time,
-        level,
-        ...(msg && { msg }),
-        err,
-        data: withNullProto({
-          err: serializeError(err),
-          ...data,
-        }),
-      };
-    }
+		return {
+			time,
+			level,
+			...(msg && { msg }),
+			data: arg1,
+		};
+	}
 
-    return {
-      time,
-      level,
-      ...(msg && { msg }),
-      data: Object(arg1),
-    };
-  }
+	const msg = formatMessage(arg2, args, arg1);
 
-  const msg =
-    typeof arg2 === 'string'
-      ? format(arg2, args, {
-          stringify: safeStringify,
-        })
-      : stringifyIfNotUndefined(arg1);
+	// Buffer and similar objects describe themselves through toJSON
+	if (hasToJSON(arg1)) {
+		return {
+			time,
+			level,
+			...(msg && { msg }),
+			data: Object(arg1.toJSON()),
+		};
+	}
 
-  // this includes things like Buffer
-  if (
-    arg1 &&
-    typeof arg1 === 'object' &&
-    'toJSON' in arg1 &&
-    typeof arg1.toJSON === 'function'
-  ) {
-    return {
-      time,
-      level,
-      ...(msg && { msg }),
-      data: Object(arg1.toJSON()),
-    };
-  }
-
-  return {
-    time,
-    level,
-    ...(msg && { msg }),
-  };
+	return {
+		time,
+		level,
+		...(msg && { msg }),
+	};
 }
 
 export class Logger {
-  #inputStream = new PassThrough({
-    objectMode: true,
-    autoDestroy: true,
-  });
+	// a symbol written here is a marker, and flush() resolves when the marker
+	// reaches the end of the pipeline
+	readonly #input: WritableStreamDefaultWriter<LogDescriptor | symbol>;
 
-  public readonly als: AsyncLocalStorage<AlsContext>;
+	readonly #flushCallbacks = new Map<symbol, () => void>();
 
-  public level: Level;
+	readonly #abortController = new AbortController();
 
-  public readonly destination: Writable | WriteStream | TtyWriteStream;
+	readonly #pipeline: Promise<void>;
 
-  readonly #emitter = new Emittery<{
-    log: LogDescriptor;
-    error: unknown;
-    flush: undefined;
-    end: undefined;
-  }>();
+	readonly #emitter = new Emittery<LoggerEvents>();
 
-  readonly #processorChain: Chain;
+	readonly #context: JsonifiableObject | undefined;
 
-  readonly #context: LogData | undefined;
+	readonly #childLoggers = new Set<Logger>();
 
-  readonly #pipeCleanerChain: Chain;
+	#ended = false;
 
-  public setLevel(level: Level) {
-    this.level = level;
-  }
+	#destroyed = false;
 
-  #childLoggers = new Set<Logger>();
+	public level: Level;
 
-  /**
-   *
-   * @param options {LoggerOptions}
-   */
-  constructor(options: LoggerOptions) {
-    const {
-      level = Level.Info,
-      transformer,
-      processors = [],
-      destination,
-      context,
-    } = options;
+	public readonly destination: WritableStream<unknown>;
 
-    this.als = new AsyncLocalStorage<AlsContext>();
+	public constructor(options: LoggerOptions) {
+		const {
+			level = Level.Info,
+			transformer,
+			processors = [],
+			destination,
+			context,
+		} = options;
 
-    this.#context = context && withNullProto(context);
+		this.#context = context && withNullProto(context);
+		this.level = level;
+		this.destination = destination;
 
-    this.level = level;
+		const input = new TransformStream<
+			LogDescriptor | symbol,
+			LogDescriptor | symbol
+		>();
+		this.#input = input.writable.getWriter();
 
-    this.destination = destination;
+		const processorTransform = new TransformStream<
+			LogDescriptor | symbol,
+			unknown
+		>({
+			transform: async (chunk, controller) => {
+				if (typeof chunk === "symbol") {
+					controller.enqueue(chunk);
 
-    // TODO: validate processors here
-    // validate transformer also
+					return;
+				}
 
-    const processorWrapper = (
-      processor: Processor<LogDescriptor | symbol> | Transformer,
-    ): Processor<LogDescriptor | symbol> | Transformer => {
-      if (typeof processor === 'function') {
-        return async (log: LogDescriptor | symbol) => {
-          // run the processor on anything log descriptor-ish
-          if (isLogDescriptor(log)) {
-            try {
-              return processor.call(this, log);
-            } catch (err) {
-              this.#emitter.emit('error', err);
-              return log;
-            }
-          }
-          // pass the pipe cleaner (or any symbol) straight through
-          return log;
-        };
-      }
+				const processed = await this.#process(chunk, processors);
 
-      return processor;
-    };
+				if (!transformer) {
+					controller.enqueue(processed);
 
-    this.#processorChain = Chain.chain([
-      (log) => log,
-      ...[...processors, ...(transformer ? [transformer.bind(this)] : [])].map(
-        (processor) => processorWrapper(processor),
-      ),
-    ]);
+					return;
+				}
 
-    this.#inputStream.on('error', (err) => this.#emitter.emit('error', err));
-    this.#processorChain.on('error', (err) => this.#emitter.emit('error', err));
+				try {
+					const output: unknown = await transformer.call(this, processed);
+					controller.enqueue(output);
+				} catch (err) {
+					// the log is dropped, because only the transformer can format it
+					await this.#emitError(err);
+				}
+			},
+		});
 
-    this.#inputStream.pipe(this.#processorChain);
+		const pipeCleanerTransform = new TransformStream<unknown, unknown>({
+			transform: (chunk, controller) => {
+				if (typeof chunk === "symbol") {
+					this.#flushCallbacks.get(chunk)?.();
+					this.#flushCallbacks.delete(chunk);
+					return;
+				}
+				controller.enqueue(chunk);
+			},
+		});
 
-    // a chain to ignore the pipe cleaner symbol
-    this.#pipeCleanerChain = Chain.chain([
-      (obj) => (typeof obj === 'symbol' ? null : obj),
-    ]);
-    this.#pipeCleanerChain.on('error', (err) =>
-      this.#emitter.emit('error', err),
-    );
+		this.#pipeline = input.readable
+			.pipeThrough(processorTransform)
+			.pipeThrough(pipeCleanerTransform)
+			.pipeTo(destination, { signal: this.#abortController.signal })
+			.catch((err: unknown) => {
+				if (!this.#abortController.signal.aborted) {
+					void this.#emitError(err);
+				}
+			});
+	}
 
-    this.#processorChain.pipe(this.#pipeCleanerChain);
+	// a processor that throws is skipped, and the next one gets its input
+	async #process(log: LogDescriptor, processors: Processor[]) {
+		let current = log;
+		for (const processor of processors) {
+			try {
+				// each processor takes the output of the one before it
+				// oxlint-disable-next-line eslint/no-await-in-loop
+				current = await processor.call(this, current);
+			} catch (err) {
+				void this.#emitError(err);
+			}
+		}
 
-    if (this.destination.writable) {
-      this.#pipeCleanerChain.pipe(this.destination);
-    } else {
-      this.#emitter.emit('error', new Error('Destination is not writeable'));
-    }
+		return current;
+	}
 
-    this.destination.on('end', () => {
-      this.#pipeCleanerChain.unpipe(this.destination);
-    });
-  }
+	// resolves even when a listener throws, so callers can leave it unawaited
+	async #emitError(err: unknown) {
+		try {
+			await this.#emitter.emit("error", err);
+		} catch {
+			// a listener for "error" threw, and reporting it would loop
+		}
+	}
 
-  #write(
-    level: Level,
-    arg1: unknown,
-    arg2?: unknown,
-    ...args: unknown[]
-  ): void {
-    const alsContext = this.als.getStore();
+	#warnIfDestroyed() {
+		if (this.#destroyed) {
+			console.warn("Logger has been destroyed and cannot be used");
+		}
+	}
 
-    const hasAnyContext = !!this.#context || !!alsContext;
+	#enqueue(chunk: LogDescriptor | symbol) {
+		if (this.#ended || this.#destroyed) {
+			return;
+		}
 
-    const ctx = hasAnyContext
-      ? {
-          ...alsContext,
-          ...this.#context,
-        }
-      : undefined;
+		this.#input.write(chunk).catch((err: unknown) => this.#emitError(err));
+	}
 
-    const log = Object.freeze(
-      Object.assign(
-        toLogDescriptor(level, arg1, arg2, ...args),
-        ctx && { ctx },
-      ),
-    );
+	#write(level: Level, arg1: unknown, arg2?: unknown, ...args: unknown[]) {
+		this.#warnIfDestroyed();
 
-    if (log.level >= this.level) {
-      if (this.#inputStream.writable) {
-        this.#inputStream.write(log, (writeErr: Error | null | undefined) => {
-          if (writeErr) {
-            this.#emitter.emit('error', writeErr);
-          } else {
-            // no await here
-            this.#emitter
-              .emit('log', log)
-              .catch((err) => this.#emitter.emit('error', err));
-          }
-        });
-      } else {
-        this.#emitter
-          .emit('error', new Error('Input stream is not writeable'))
-          .catch(() => {});
-      }
-    }
-  }
+		if (level < this.level) {
+			return;
+		}
 
-  #updateMaxListeners(num: number) {
-    this.#inputStream.setMaxListeners(
-      Math.max(num, EventEmitter.defaultMaxListeners),
-    );
-  }
+		const log: LogDescriptor = Object.freeze({
+			...toLogDescriptor(level, arg1, arg2, ...args),
+			...(this.#context && { ctx: { ...this.#context } }),
+		});
 
-  public child(
-    data: JsonifiableObject,
-    options: Pick<LoggerOptions, 'level' | 'context' | 'processors'> = {},
-  ) {
-    // this prevents a MaxListenersExceededWarning when we create the new logger
-    // +2 because it has 1 listener by default and as we are
-    // pre-emptively increasing it *before* we create the new logger, that
-    // makes the other +1
-    this.#updateMaxListeners(this.#childLoggers.size + 2);
+		this.#enqueue(log);
+		this.#emitter
+			.emit("log", log)
+			.catch((err: unknown) => this.#emitError(err));
+	}
 
-    const child = new Logger({
-      level: this.level,
-      destination: this.#inputStream,
-      processors: [
-        function childLoggerProcessor(log) {
-          return {
-            ...log,
-            data: {
-              ...log.data,
-              ...data,
-            },
-          };
-        },
-        ...(options.processors || []),
-      ],
-      ...options,
-    });
+	public get destroyed(): boolean {
+		return this.#destroyed;
+	}
 
-    this.#childLoggers.add(child);
+	public setLevel(level: Level): void {
+		this.level = level;
+	}
 
-    child.on('end', () => {
-      this.#childLoggers.delete(child);
-      // +1 because it already has a listener by default
-      this.#updateMaxListeners(this.#childLoggers.size + 1);
-    });
+	/**
+	 * A logger that adds `data` to each log, then sends it through this
+	 * logger's processors and transformer. Its level defaults to this logger's
+	 * level, and its context replaces this logger's context
+	 */
+	public child(
+		data: JsonifiableObject,
+		options: ChildLoggerOptions = {},
+	): Logger {
+		this.#warnIfDestroyed();
 
-    return child;
-  }
+		const { level = this.level, processors = [], context } = options;
 
-  public flush = async () => {
-    // eslint-disable-next-line no-restricted-syntax
-    for await (const child of this.#childLoggers) {
-      await child.flush();
-    }
+		const destination = new WritableStream<LogDescriptor | symbol>({
+			write: (chunk) => {
+				this.#enqueue(chunk);
+			},
+		});
 
-    const pipeCleaner = Symbol('pipe-cleaner');
+		const child = new Logger({
+			level,
+			destination,
+			context,
+			processors: [
+				function childLoggerProcessor(log) {
+					return {
+						...log,
+						data: {
+							...log.data,
+							...data,
+						},
+					};
+				},
+				...processors,
+			],
+		});
 
-    await new Promise<void>((resolve, reject) => {
-      let t: NodeJS.Timeout | undefined;
+		this.#childLoggers.add(child);
 
-      const detectPipeCleaner = (obj: LogDescriptor | symbol) => {
-        if (obj === pipeCleaner) {
-          this.#processorChain.off('data', detectPipeCleaner);
-          this.#processorChain.off('error', reject);
-          if (t) {
-            clearTimeout(t);
-          }
+		child.on("end", () => {
+			this.#childLoggers.delete(child);
+		});
 
-          resolve();
-        }
-      };
+		return child;
+	}
 
-      this.#processorChain.on('data', detectPipeCleaner);
-      this.#processorChain.once('error', reject);
+	/**
+	 * Resolves when every log written so far, by this logger and its children,
+	 * has reached the destination
+	 */
+	public flush = async (): Promise<void> => {
+		if (this.#destroyed) {
+			return;
+		}
 
-      // timeout waiting for the pipe cleaner
-      // t = setTimeout(
-      //   () =>
-      //     reject(new Error('Timed out waiting for input stream to flush')),
-      //   2000,
-      // );
+		await Promise.all(
+			[...this.#childLoggers].map(async (child) => child.flush()),
+		);
 
-      if (this.#inputStream.writable) {
-        this.#inputStream.write(pipeCleaner);
-      } else {
-        // reject(new Error('Stream was not writeable'));
-        resolve();
-      }
-    }).catch((err) => this.#emitter.emit('error', err));
+		if (this.#ended) {
+			return;
+		}
 
-    await this.#emitter
-      .emit('flush')
-      .catch((err) => this.#emitter.emit('error', err));
-  };
+		const pipeCleaner = Symbol("pipe-cleaner");
 
-  public end = async () => {
-    // eslint-disable-next-line no-restricted-syntax
-    for await (const child of this.#childLoggers) {
-      await child.end();
-    }
+		await new Promise<void>((resolve) => {
+			this.#flushCallbacks.set(pipeCleaner, resolve);
+			this.#enqueue(pipeCleaner);
+		});
 
-    await this.flush();
+		await this.#emitter
+			.emit("flush")
+			.catch((err: unknown) => this.#emitError(err));
+	};
 
-    [this.#inputStream, this.#processorChain, this.#pipeCleanerChain].forEach(
-      (stream) => {
-        stream.destroy();
-        stream.unpipe().removeAllListeners();
-      },
-    );
+	/**
+	 * Flushes, then closes the destination. Later logs are dropped
+	 */
+	public end = async (): Promise<void> => {
+		if (this.#destroyed || this.#ended) {
+			return;
+		}
 
-    await this.#emitter
-      .emit('end')
-      .catch((err) => this.#emitter.emit('error', err));
+		await Promise.all(
+			[...this.#childLoggers].map(async (child) => child.end()),
+		);
 
-    this.#emitter.clearListeners();
-  };
+		await this.flush();
 
-  public on<Name extends 'log' | 'error' | 'flush' | 'end'>(
-    event: Name | Name[],
-    fn: (
-      eventData: {
-        log: LogDescriptor;
-        error: unknown;
-        flush: undefined;
-        end: undefined;
-      }[Name],
-    ) => void | Promise<void>,
-  ): UnsubscribeFunction {
-    return this.#emitter.on(event, fn);
-  }
+		this.#ended = true;
 
-  public off<Name extends 'log' | 'error' | 'flush' | 'end'>(
-    event: Name | Name[],
-    fn: (
-      eventData: {
-        log: LogDescriptor;
-        error: unknown;
-        flush: undefined;
-        end: undefined;
-      }[Name],
-    ) => void | Promise<void>,
-  ): void {
-    return this.#emitter.off(event, fn);
-  }
+		await this.#input.close().catch((err: unknown) => this.#emitError(err));
+		await this.#pipeline;
 
-  public trace: LogMethod = (...args) => {
-    this.#write(Level.Trace, ...args);
-  };
+		await this.#emitter
+			.emit("end")
+			.catch((err: unknown) => this.#emitError(err));
 
-  public debug: LogMethod = (...args) => {
-    this.#write(Level.Debug, ...args);
-  };
+		this.#emitter.clearListeners();
+	};
 
-  public info: LogMethod = (...args) => {
-    this.#write(Level.Info, ...args);
-  };
+	/**
+	 * Flushes, then aborts the destination and removes every listener and
+	 * child logger
+	 */
+	public destroy = async (): Promise<void> => {
+		if (this.#destroyed) {
+			return;
+		}
 
-  public warn: LogMethod = (...args) => {
-    this.#write(Level.Warn, ...args);
-  };
+		await Promise.all(
+			[...this.#childLoggers].map(async (child) => child.destroy()),
+		);
 
-  public error: LogMethod = (...args) => {
-    this.#write(Level.Error, ...args);
-  };
+		await this.flush();
 
-  public fatal: LogMethod = (...args) => {
-    this.#write(Level.Fatal, ...args);
-  };
+		this.#destroyed = true;
+		this.#ended = true;
+
+		this.#abortController.abort();
+
+		await this.#pipeline;
+
+		this.#emitter.clearListeners();
+		this.#childLoggers.clear();
+		this.#flushCallbacks.clear();
+	};
+
+	public on<Name extends LoggerEventName>(
+		event: Name | readonly Name[],
+		fn: LoggerEventListener<Name>,
+	): UnsubscribeFunction {
+		return this.#emitter.on(event, fn);
+	}
+
+	public off<Name extends LoggerEventName>(
+		event: Name | readonly Name[],
+		fn: LoggerEventListener<Name>,
+	): void {
+		this.#emitter.off(event, fn);
+	}
+
+	public trace: LogMethod = (...args: [unknown, unknown?, ...unknown[]]) => {
+		this.#write(Level.Trace, ...args);
+	};
+
+	public debug: LogMethod = (...args: [unknown, unknown?, ...unknown[]]) => {
+		this.#write(Level.Debug, ...args);
+	};
+
+	public info: LogMethod = (...args: [unknown, unknown?, ...unknown[]]) => {
+		this.#write(Level.Info, ...args);
+	};
+
+	public warn: LogMethod = (...args: [unknown, unknown?, ...unknown[]]) => {
+		this.#write(Level.Warn, ...args);
+	};
+
+	public error: LogMethod = (...args: [unknown, unknown?, ...unknown[]]) => {
+		this.#write(Level.Error, ...args);
+	};
+
+	public fatal: LogMethod = (...args: [unknown, unknown?, ...unknown[]]) => {
+		this.#write(Level.Fatal, ...args);
+	};
 }

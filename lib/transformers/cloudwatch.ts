@@ -1,44 +1,46 @@
-import { Level, type PlainTransformer, type Transformer } from '../logger.js';
-import { isEmptyObject, safeStringify, stringifyUndefined } from '../utils.js';
+import { Level, type LogDescriptor } from "../logger.ts";
+import {
+	isEmptyObject,
+	safeStringify,
+	stringifyUndefined,
+	toText,
+} from "../utils.ts";
 
-// https://github.com/aws/aws-lambda-nodejs-runtime-interface-client/blob/c31c41ffe5f2f03ae9e8589b96f3b005e2bb8a4a/src/utils/LogPatch.ts#L10
-type AwsLevelNames = 'FATAL' | 'ERROR' | 'WARN' | 'INFO' | 'DEBUG' | 'TRACE';
+// the level names that the AWS Lambda Node.js runtime writes
+type AwsLevelName = "FATAL" | "ERROR" | "WARN" | "INFO" | "DEBUG" | "TRACE";
 
-const levelNumberToCloudwatchStringMap = new Map<Level, AwsLevelNames>([
-  [Level.Fatal, 'FATAL'],
-  [Level.Error, 'ERROR'],
-  [Level.Warn, 'WARN'],
-  [Level.Info, 'INFO'],
-  [Level.Debug, 'DEBUG'],
-  [Level.Trace, 'TRACE'],
-  [Level.Silent, 'TRACE'],
-]);
-
-const cloudwatchTransformer: Transformer = function cloudwatchTransformer(log) {
-  const { level, msg, ctx, time, data } = log;
-
-  const { id: contextId = null, ...ctxRest } = { ...ctx };
-
-  const dataStr = safeStringify({
-    level,
-    ...stringifyUndefined(data),
-    ...(ctxRest && !isEmptyObject(ctxRest) && { ctx: ctxRest }),
-  });
-
-  const line = [
-    time.toISOString(),
-    contextId,
-    levelNumberToCloudwatchStringMap.get(level),
-    // the LF -> CR replacement is what happens in the AWS Lambda RIC
-    (typeof msg !== 'undefined' ? String(msg) : '')
-      .trim()
-      .replaceAll(/\n/g, '\r'),
-    dataStr,
-  ].join('\t');
-
-  return `${line}\n`;
+const awsLevelNames: Record<Level, AwsLevelName> = {
+	[Level.Silent]: "TRACE",
+	[Level.Trace]: "TRACE",
+	[Level.Debug]: "DEBUG",
+	[Level.Info]: "INFO",
+	[Level.Warn]: "WARN",
+	[Level.Error]: "ERROR",
+	[Level.Fatal]: "FATAL",
 };
 
-export function createCloudwatchTransformer(/* options = {} */): PlainTransformer {
-  return cloudwatchTransformer;
+/**
+ * Formats a log like the AWS Lambda runtime's console output, which CloudWatch
+ * parses for the level and request id
+ */
+export function cloudwatchTransformer(log: LogDescriptor): string {
+	const { level, msg, ctx = {}, time, data } = log;
+	const { id: contextId, ...ctxRest } = ctx;
+
+	const dataStr = safeStringify({
+		level,
+		...stringifyUndefined(data),
+		...(!isEmptyObject(ctxRest) && { ctx: ctxRest }),
+	});
+
+	const line = [
+		time.toISOString(),
+		toText(contextId),
+		awsLevelNames[level],
+		// the Lambda runtime turns LF into CR so a message stays on one line
+		toText(msg).trim().replaceAll("\n", "\r"),
+		dataStr,
+	].join("\t");
+
+	return `${line}\n`;
 }
