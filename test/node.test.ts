@@ -114,12 +114,12 @@ describe("createLogger level", () => {
 		).toBe(Level.Error);
 	});
 
-	test("is trace in development", () => {
+	test("ignores NODE_ENV", () => {
 		vi.stubEnv("NODE_ENV", "development");
 
 		expect(
 			createLogger({ destination: createCapture().destination }).level,
-		).toBe(Level.Trace);
+		).toBe(Level.Info);
 	});
 
 	test("from the options wins over the environment", () => {

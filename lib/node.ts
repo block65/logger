@@ -1,7 +1,6 @@
 import { hostname } from "node:os";
 import type { Except } from "type-fest";
 import {
-	Level,
 	Logger,
 	parseLevel,
 	type CreateLoggerOptions,
@@ -74,16 +73,13 @@ function platformTransformer(
  * A logger for the platform found in the environment. Lambda and ECS get the
  * CloudWatch format, Knative and Cloud Run get Cloud Logging JSON, a terminal
  * or CI gets readable lines, and other platforms get JSON lines. The level is
- * `options.level`, then `LOG_LEVEL`, then trace when `NODE_ENV` is
- * development. Logs go to stdout unless `options.destination` is set
+ * `options.level`, then `LOG_LEVEL`. Logs go to stdout unless
+ * `options.destination` is set
  */
 export function createLogger(options: NodeLoggerOptions = {}): Logger {
 	const { env } = process;
-	const isDevelopment = env.NODE_ENV === "development";
-
 	const {
-		level = parseLevel(env.LOG_LEVEL) ??
-			(isDevelopment ? Level.Trace : undefined),
+		level = parseLevel(env.LOG_LEVEL),
 		destination,
 		processors,
 		context,
